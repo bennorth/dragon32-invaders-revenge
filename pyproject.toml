@@ -1,0 +1,27 @@
+[project]
+name = "20250303-dragon-tapes"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Ben North", email = "ben@redfrontdoor.org"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy (>=2.2.3,<3.0.0)",
+    "scipy (>=1.15.2,<2.0.0)",
+    "pillow (>=11.1.0,<12.0.0)",
+    "jupyterlab (>=4.3.5,<5.0.0)",
+    "matplotlib (>=3.10.1,<4.0.0)",
+    "seaborn (>=0.13.2,<0.14.0)",
+    "colored (>=2.3.0,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+package-mode = false
