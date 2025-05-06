@@ -624,15 +624,23 @@ DEC 3B81
 DEC 3B90
 DEC 3B99
 COMMENT 3B6D
+COMMENT 3B6D ----------------------------------------------------------------------------
+COMMENT 3B6D Play a fragment of sound to take time proportional to PostDrawDelay.  The
+COMMENT 3B6D initial half-period is set by ///B = PlaySoundSlice_InitHalfPeriod + 2///.
+COMMENT 3B6D If B<17, this half-period is used for the whole sound-slice.  If B>=17, the
+COMMENT 3B6D half-period increases by 1 per three half-cycles.
+COMMENT 3B6D ;;
+COMMENT 3B6D (If PlaySoundSlice_InitHalfPeriod or PostDrawDelay is zero, do nothing.)
+COMMENT 3B6D ----------------------------------------------------------------------------
 COMMENT 3B77
 COMMENT 3B77 Compute approx (64)×(PostDrawDelay) into Y
 COMMENT 3B7D
 LABEL 3B6D Sub_PlaySoundSlice
-LABEL 3B7D PSS_loop_0
+LABEL 3B7D PSS_L1
 COMMENT 3B82
-LABEL 3B82 PSS_loop_1
+LABEL 3B82 PSS_L2
 COMMENT 3B84
-LABEL 3B84 PSS_loop_2
+LABEL 3B84 PSS_L3
 COMMENT 3BA2
 LABEL 3BA2 PSS_reset_exit
 LABEL 3BB3 PSS_exit
@@ -644,7 +652,8 @@ COMMENT 3A3C
 COMMENT 3A3C ----------------------------------------------------------------------------
 COMMENT 3A3C Advance any animations of exploding defenders (normal/special patrolling,
 COMMENT 3A3C or the shooting base).  Erase defender if its animation has finished.
-COMMENT 3A3C Leave appropriate value in ///Var_b_PlaySoundSlice_Q2/// for sound effects.
+COMMENT 3A3C Leave appropriate value in ///PlaySoundSlice_InitHalfPeriod/// to get
+COMMENT 3A3C desired sound effect.
 COMMENT 3A3C ----------------------------------------------------------------------------
 
 DEC 3A42

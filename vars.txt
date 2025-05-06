@@ -54,11 +54,11 @@ b 2F73 SpecialDefenderExpln_Period
 
 b 372E CheckHighScore_NFlashesLeft
 
-b 3B67 PlaySoundSlice_Q0
-w 3B68 PlaySoundSlice_Q1N
-b 3B6C PlaySoundSlice_Q2
+b 3B67 PlaySoundSlice_HalfCycles
+w 3B68 PlaySoundSlice_Unused
+b 3B6C PlaySoundSlice_InitHalfPeriod
 
-b 3B6A
+b 3B6A Unused_001
 b 3B6B StepDefenderExplns_Frames
 b 3AF8 StepDefenderExplns_EraseRows
 
