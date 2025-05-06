@@ -39,6 +39,13 @@ if (d >= active_player->next_difficulty_increase_score) {
 ```
 
 
+So I think we get difficulty increases at:
+
+3, 13, 23, 33, 43, 78, 113, 148
+
+(times 100 points)
+
+
 Initialised in memory image:
 
 ``` c

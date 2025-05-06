@@ -67,3 +67,15 @@ The 27 stride is big enough for defender (12) plus player (10).  Final
 list, in "scrambled" order:
 
 [104, -6, -67, 58, 26, 10, 90, -33, -101, 42, 74, -50, -84]
+
+
+## Logic for starting a new patrol
+
+Maintain state from start of game, not reset when a new player life
+(ship) starts.  Index into that list.  (In D32, state maintained as a
+pointer but we would use an actual index.)
+
+Start looking for an available row starting from that index.  Leave
+index pointing at the record after the one just used.  D32 code scans
+the screen for blue pixels to check whether the row is available.  We
+might keep an explicit array of bools to remember this.
