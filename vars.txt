@@ -1,0 +1,115 @@
+b 3645 TwoPlayerMode
+b 41D5 TwoPlayerModeDup
+
+b 41D0 R_Player_last_joy_X
+b 41D1 R_Player_last_joy_Y
+b 41D3 L_Player_last_joy_X
+b 41D4 L_Player_last_joy_Y
+
+b 3297 ShotInProgress
+
+b 3173 Init_PostDrawDelay
+b 30DE PostDrawDelay Init 12; set to 0, or 14, or 25 (whence steps down to 9), or 40
+b 30C9 IntroSoundPostDrawDelay
+
+b 36C3 SixZerosOut_NPairs
+b 32E1 ShotSoundProgress Make sound for 1,2,3,4,5 but not at 6
+b 3BDE SeemsUnused
+b 333F
+b 2F19 NormalDefenderExpln_Rows
+
+b 3A11 StepDefenderExplns_Phase
+b 3A12 StepDefenderExplns_Rows
+b 3A13 StepDefenderExplns_Explns
+
+
+b 338C
+
+
+b 2EDE DefenderMovementPhase Init 10; decr then defenders move when zero
+
+
+
+
+
+b 2D53 MoveDefenderCheckHit_Rows
+
+b 2D89 NextDefenderXVelocity
+b 2D8A DefendersRemaining_1
+b 2D8B NextDefenderKindPhase
+w 2E09 DefenderLaunchLocPtr
+W 2E0B Arr_DefenderLaunchLoc_start
+
+B 2EDF Init_DefenderMovePeriod
+B 338C Init_BaseFirePeriod
+
+b 2EE1 DefendersRemaining_2
+
+b 41D2 ActivePlayerIdx
+
+
+b 2F63 SpecialDefenderExpln_Rows
+B 2F72 SpecialDefenderExpln_InitPeriod
+b 2F73 SpecialDefenderExpln_Period
+
+b 372E CheckHighScore_NFlashesLeft
+
+b 3B67 PlaySoundSlice_Q0
+w 3B68 PlaySoundSlice_Q1N
+b 3B6C PlaySoundSlice_Q2
+
+b 3B6A
+b 3B6B StepDefenderExplns_Frames
+b 3AF8 StepDefenderExplns_EraseRows
+
+b 338F DefenderBase_Xcoord
+w 338A Loc_DefenderBase
+b 338D BaseBullet_fire_phase
+b 39DF LastDefenderDestroyedKind 1=normal, 10=red, 12=base
+w 39E0 LastDestroyedDefenderLoc
+b 3390 DefenderBase_SpawnSide
+
+b 31C0 DrawPlayer_Rows
+b 3231 ErasePlayer_Rows
+
+b 31E5 Q_ActivePlayer_X_fraction
+b 31E6 Q_ActivePlayer_X_whole
+
+w 372C Q_HighScore
+
+w 31E7 Q_Loc_ActivePlayer
+w 31E9 Q_Loc_ActivePlayer_PrevLoc
+
+w 3420 Loc_DefenderShot
+b 3422 DefenderShot_ActionPhase 0:launch shot, <0:NOP, 1:erase
+b 34BB DefenderShot_RowsRemaining
+
+w 37B9 Ptr_ActivePlayerData
+
+w 34F6 SoundPeriodLimit
+w 34F8 SoundPeriodIncr
+w 34FA SoundPeriod
+
+b 355A DrawOrErasePlayerExpln_Rows
+b 355B DrawOrErasePlayerExpln_Erase
+w 355C DrawOrErasePlayerExpln_Loc
+
+# Following is multiplied by 4 in Sub_24
+b 3CC3 StepPlayerExplosion_ActionPhase
+b 3CC4 Q_bool_PlayerExplnUnderway
+w 3CC5 Q_Loc_LastPlayerExpln
+
+b 3CC7
+
+b 3539 Padding_01
+
+
+b 3D5A
+
+b 3D5B bool_ActivePlayerAllLivesGone
+b 3D5C
+b 3D5D
+
+b 3D5E PlayerExplnSound_HalfPeriod
+
+b 3D5F
