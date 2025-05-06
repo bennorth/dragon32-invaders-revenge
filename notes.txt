@@ -1,0 +1,15 @@
+Run disassembler:
+
+python gen_vars.py > vars.f9dasm && ./f9dasm/f9dasm -info invaders-revenge.f9dasm L -j12 +/Sub_10
+
+
+Generate non-text graphics, for reference while making new ones:
+
+cd Original-graphics/sprites
+parallel python ../../make_img.py 8 {} {.}.png ::: *.txt
+
+Generate text graphics, for use:
+
+cd Original-graphics/text
+parallel python ../../make_img.py 3 {} {.}.png ::: *.txt
+
