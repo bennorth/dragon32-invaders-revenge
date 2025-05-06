@@ -1,0 +1,7 @@
+3F FC
+FF FF
+DD 77
+FF FF
+3F FC
+3C 3C
+C0 03
