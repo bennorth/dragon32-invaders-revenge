@@ -661,7 +661,6 @@ DEC 3A4B
 DEC 3A64
 DEC 3A75
 DEC 3A79
-COMMENT 3A91
 COMMENT 3A97
 COMMENT 3AB1
 COMMENT 3AC1
@@ -669,7 +668,10 @@ COMMENT 3ACB
 COMMENT 3AF8
 COMMENT 3A72
 COMMENT 3A72 A = defender-kind (1: normal(blue), 10: special(red), 12: base)
-COMMENT 3A91 If A=1, normal defender; A=10, special invader.
+COMMENT 3A78
+COMMENT 3A78 The defender base is being destroyed.
+COMMENT 3A91
+COMMENT 3A91 A defender ship is being destroyed (A=1: normal/blue, A=10: special/red).
 COMMENT 3A94 If special(red), advance U to special-ship-explosion GFX.
 LABEL 3A3C Sub_StepDefenderExplns
 COMMENT 3A4F
