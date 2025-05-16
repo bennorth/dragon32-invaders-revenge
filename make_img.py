@@ -47,6 +47,8 @@ if __name__ == "__main__":
         if line.startswith("# vertical"):
             layout = "vertical"
             continue
+        if line.startswith("#"):
+            continue
         row_bytes = list(map(int_from_hex, line.strip().split()))
         if im_wd_bytes is None:
             im_wd_bytes = len(row_bytes)
