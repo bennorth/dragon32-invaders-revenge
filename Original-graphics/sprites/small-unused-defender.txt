@@ -1,3 +1,6 @@
+# Seemingly unused small blue defender-like graphic.  Appears fairly
+# early in source, just after text "KENNETH KALISH" (which seems also to
+# be unused).
 28 28
 AA AA
 0A A0
