@@ -266,9 +266,12 @@ if __name__ == "__main__":
     print(mean_chirp)
     # <Chirp: f0 7807.3; 0.064042 / 31.281>
 
+
+
+std_chirp_duration = 18.7e-3
+
 if __name__ == "__main__":
     std_d_hp = 5.71e-6  # From mean() above
-    std_chirp_duration = 18.7e-3
 
     player_hit_chirps = [
         Chirp(0.064e-3, 31.3e-6, 2.2),
