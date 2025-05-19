@@ -1,6 +1,6 @@
-Run disassembler:
+Run disassembler and prettify output:
 
-python gen_vars.py > vars.f9dasm && ./f9dasm/f9dasm -info invaders-revenge.f9dasm L -j12 +/Sub_10
+python gen_vars.py > vars.f9dasm && ./f9dasm/f9dasm -info invaders-revenge.f9dasm | tail +3 | poetry run python reformat.py L -j12 +/SpecialDef
 
 
 Generate non-text graphics, for reference while making new ones:
