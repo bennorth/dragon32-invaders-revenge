@@ -1,0 +1,3 @@
+[submodule "f9dasm"]
+	path = f9dasm
+	url = git@github.com:bennorth/f9dasm.git
