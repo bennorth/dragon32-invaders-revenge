@@ -122,7 +122,7 @@ COMMENT 396B
 COMMENT 396B Init all defenders as left-to-right normal
 CONST 396C
 COMMENT 3973
-COMMENT 3973 Init all defenders' locations to $0B3F
+COMMENT 3973 Init all defenders' locations to $0B3F = (124, 41)
 CONST 3974
 COMMENT 397B
 CONST 3992
