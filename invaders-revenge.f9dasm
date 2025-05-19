@@ -41,7 +41,7 @@ COMMENT 39D5 array of structures.
 LABEL 39D5 FillDefenders_Data_Stride_4
 
 COMMENT 34FC
-LABEL 34FC Sub_Flash_ColourSets
+LABEL 34FC Sub_FlashColourSets
 COMMENT 3501 Choose Colour Set 1 (buff/cyan/magenta/orange)
 CONST 350B
 
@@ -221,6 +221,8 @@ LABEL 3868 Sub_TextOutTilPctCvtHash
 COMMENT 3868
 CHAR 386B
 CHAR 386F
+LABEL 3874 TOTPCH_L1
+LABEL 387A TOTPCH_exit
 
 LABEL 4094 GetJoysticksQueryResponse
 COMMENT 4094
@@ -795,6 +797,7 @@ COMMENT 384F Write digit given by A to screen starting
 COMMENT 384F at location X.  X is left one less than
 COMMENT 384F on entry to this routine.
 LABEL 384F Sub_DigitOut
+LABEL 3859 DO_L1
 
 LABEL 3810 Sub_MaybeIncreaseDifficulty
 COMMENT 3810
@@ -802,6 +805,9 @@ CONST 381E
 CONST 3823
 CONST 3826
 CONST 382A
+LABEL 3825 MID_L1
+LABEL 3836 MID_L2
+LABEL 383C MID_exit
 
 DEC 3BBF
 DEC 3BC5
@@ -905,6 +911,7 @@ COMMENT 37D6 active_player->n_lives += 1
 LABEL 37BB Sub_AwardPoints
 CONST 37D2
 CONST 37DA
+LABEL 37FC AP_L1
 
 DEC 35A4
 COMMENT 35A1
@@ -937,7 +944,15 @@ COMMENT 372F
 COMMENT 3756
 COMMENT 3756 Flash lines above/below high score
 COMMENT 3778
+LABEL 3744 CHS_L1
+LABEL 375D CHS_L2
+LABEL 3762 CHS_L3
+LABEL 3778 CHS_L4
+LABEL 377C CHS_L5
 CONST 3780
+LABEL 3784 CHS_L6
+LABEL 3789 CHS_L7
+
 
 COMMENT 378A
 LABEL 378A Sub_ResetAndDisplayScores
@@ -1083,27 +1098,27 @@ COMMENT 3286 15 bytes starting here are cleared 3BE9
 COMMENT 3286 Data in 3-byte structs:
 COMMENT 3286 b [0]: Bitmask for drawing shot (0x10 or 0x01)
 COMMENT 3286 w [1:2]: Location of bullet
-LABEL 3286 Data_Q_Shot_0
+LABEL 3286 Data_Shot_0
 HEX 3286
 WORD 3287
 CONST 3287
 
-LABEL 3289 Data_Q_Shot_1
+LABEL 3289 Data_Shot_1
 HEX 3289
 WORD 328A
 CONST 328A
 
-LABEL 328C Data_Q_Shot_2
+LABEL 328C Data_Shot_2
 HEX 328C
 WORD 328D
 CONST 328D
 
-LABEL 328F Data_Q_Shot_3
+LABEL 328F Data_Shot_3
 HEX 328F
 WORD 3290
 CONST 3290
 
-LABEL 3292 Data_Q_Shot_4
+LABEL 3292 Data_Shot_4
 HEX 3292
 WORD 3293
 CONST 3293
