@@ -31,7 +31,7 @@ COMMENT 36C4 the status area (top) from the play area (bottom)
 LABEL 36C4 Sub_DrawTwoStripes
 LABEL 36C9 DTS_L1
 
-LABEL 36D4 QQ_GraphicsInit
+LABEL 36D4 Sub_GraphicsInit
 COMMENT 36D4
 CONST 36DB
 
