@@ -57,7 +57,8 @@ b 3AF8 StepDefenderExplns_EraseRows
 
 b 338F DefenderBase_X_bytes
 w 338A Loc_DefenderBase
-b 338D BaseBullet_fire_phase
+b 338D BaseBullet_FirePhase
+b 338E
 b 39DF LastDefenderDestroyedKind 1=normal, 10=red, 12=base
 w 39E0 LastDestroyedDefenderLoc
 w 39E2
@@ -87,12 +88,10 @@ b 355B DrawOrErasePlayerExpln_Erase
 w 355C DrawOrErasePlayerExpln_Loc
 
 # Following is multiplied by 4 in Sub_24
-b 3CC3 StepPlayerExplosion_ActionPhase
-b 3CC4 Q_bool_PlayerExplnUnderway
-w 3CC5 Q_Loc_LastPlayerExpln
-
-b 3CC7
-
+b 3CC3 StepPlayerExpln_ActionPhase
+b 3CC4 bool_PlayerExplnUnderway
+w 3CC5 Loc_LastPlayerExpln
+b 3CC7 StepPlayerExpln_FragmentPhase
 
 b 3539
 
