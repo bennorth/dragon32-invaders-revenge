@@ -1,3 +1,5 @@
+w 372C HighScore Highest score yet, units of 100
+
 b 3645 TwoPlayerMode
 b 41D5 TwoPlayerModeDup
 
