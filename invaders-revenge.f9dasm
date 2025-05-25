@@ -1084,12 +1084,12 @@ COMMENT 2F74 -------------------------------------------------------------------
 COMMENT 2F74 Blt the initial "special defender" explosion graphic to X, and play two
 COMMENT 2F74 equal short rising-pitch chirps.
 COMMENT 2F74 ----------------------------------------------------------------------------
-LABEL 2F74 Sub_SpecialDefenderExpln
-LABEL 2F83 SDE_L1
-LABEL 2F8F SDE_L2
-LABEL 2F91 SDE_L3
-LABEL 2F97 SDE_L4
-LABEL 2F9A SDE_L5
+LABEL 2F74 Sub_InitSpecialDefenderExpln
+LABEL 2F83 ISDE_L1
+LABEL 2F8F ISDE_L2
+LABEL 2F91 ISDE_L3
+LABEL 2F97 ISDE_L4
+LABEL 2F9A ISDE_L5
 COMMENT 2F8F
 DEC 2F7F
 DEC 2F90
