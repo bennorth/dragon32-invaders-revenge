@@ -17,7 +17,7 @@ b 30C9 IntroSoundPostDrawDelay
 b 36C3 SixZerosOut_NPairs
 b 32E1 ShotSoundProgress Make sound for 1,2,3,4,5 but not at 6
 b 3BDE SeemsUnused
-b 333F
+b 333F PlayerShotHit_Rows
 b 2F19 NormalDefenderExpln_Rows
 
 b 3A11 StepDefenderExplns_Phase
@@ -55,7 +55,7 @@ b 3B6A Unused_001
 b 3B6B StepDefenderExplns_Frames
 b 3AF8 StepDefenderExplns_EraseRows
 
-b 338F DefenderBase_Xcoord
+b 338F DefenderBase_X_bytes
 w 338A Loc_DefenderBase
 b 338D BaseBullet_fire_phase
 b 39DF LastDefenderDestroyedKind 1=normal, 10=red, 12=base
