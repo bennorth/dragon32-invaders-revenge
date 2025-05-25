@@ -68,6 +68,7 @@ w 338A Loc_DefenderBase
 b 338D BaseBullet_fire_phase
 b 39DF LastDefenderDestroyedKind 1=normal, 10=red, 12=base
 w 39E0 LastDestroyedDefenderLoc
+w 39E2
 b 3390 DefenderBase_SpawnSide
 
 b 31C0 DrawPlayer_Rows
