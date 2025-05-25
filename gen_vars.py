@@ -30,3 +30,4 @@ for line in map(str.strip, open("vars.txt", "rt")):
     if kind in "wW":
         next_addr = hex(int(addr, 16) + 1).upper()[2:]
         print(f"WORD {addr}")
+        print(f"CONST {addr}-{next_addr}")
