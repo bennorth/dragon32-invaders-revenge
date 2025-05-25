@@ -16,7 +16,7 @@ b 30C9 IntroSoundPostDrawDelay
 
 b 36C3 SixZerosOut_NPairs
 b 32E1 ShotSoundProgress Make sound for 1,2,3,4,5 but not at 6
-b 3BDE SeemsUnused
+b 3BDE
 b 333F PlayerShotHit_Rows
 b 2F19 NormalDefenderExpln_Rows
 
@@ -48,10 +48,10 @@ b 2F73 SpecialDefenderExpln_Period
 b 372E CheckHighScore_NFlashesLeft
 
 b 3B67 PlaySoundSlice_HalfCycles
-w 3B68 PlaySoundSlice_Unused
+w 3B68
 b 3B6C PlaySoundSlice_InitHalfPeriod
 
-b 3B6A Unused_001
+b 3B6A
 b 3B6B StepDefenderExplns_Frames
 b 3AF8 StepDefenderExplns_EraseRows
 
@@ -93,8 +93,8 @@ w 3CC5 Q_Loc_LastPlayerExpln
 
 b 3CC7
 
-b 3539 Padding_01
 
+b 3539
 
 b 3D5A
 
