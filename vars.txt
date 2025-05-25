@@ -24,14 +24,7 @@ b 3A11 StepDefenderExplns_Phase
 b 3A12 StepDefenderExplns_Rows
 b 3A13 StepDefenderExplns_Explns
 
-
-
-
 b 2EDE DefenderMovementPhase Init 10; decr then defenders move when zero
-
-
-
-
 
 b 2D53 MoveDefenderCheckHit_Rows
 
@@ -47,7 +40,6 @@ B 338C Init_BaseFirePeriod
 b 2EE1 DefendersRemaining_2
 
 b 41D2 ActivePlayerIdx
-
 
 b 2F63 SpecialDefenderExpln_Rows
 B 2F72 SpecialDefenderExpln_InitPeriod
