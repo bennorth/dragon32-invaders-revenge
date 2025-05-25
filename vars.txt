@@ -25,7 +25,6 @@ b 3A12 StepDefenderExplns_Rows
 b 3A13 StepDefenderExplns_Explns
 
 
-b 338C
 
 
 b 2EDE DefenderMovementPhase Init 10; decr then defenders move when zero
