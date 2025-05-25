@@ -24,9 +24,9 @@ for line in map(str.strip, open("vars.txt", "rt")):
         print(f"COMMENT {addr} {comment}")
     print(f"LABEL {addr} {name}")
 
-    if pieces[0] in "bB":
+    if kind in "bB":
         print(f"HEX {addr}")
 
-    if pieces[0] in "wW":
+    if kind in "wW":
         next_addr = hex(int(addr, 16) + 1).upper()[2:]
         print(f"WORD {addr}")
