@@ -919,6 +919,8 @@ COMMENT 3804 and hundred-thousands at Y+5.
 COMMENT 3804
 
 LABEL 3704 Blt_5_rows
+LABEL 3706 B5R_L1
+LABEL 370D B5R_L2
 COMMENT 3704
 COMMENT 3704 Copy from U to X until $FF, X-stride $20; destroys B
 COMMENT 3704 5 bytes at a time, then update X to 1 more than before those 5
@@ -926,6 +928,7 @@ COMMENT 3704
 DEC 3705
 
 LABEL 371B Sub_SixZerosOut
+LABEL 3722 SZO_L1
 COMMENT 371B
 COMMENT 371B Write six zeros starting at X.
 COMMENT 371B
