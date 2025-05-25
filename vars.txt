@@ -69,8 +69,6 @@ b 3231 ErasePlayer_Rows
 b 31E5 Q_ActivePlayer_X_fraction
 b 31E6 Q_ActivePlayer_X_whole
 
-w 372C Q_HighScore
-
 w 31E7 Q_Loc_ActivePlayer
 w 31E9 Q_Loc_ActivePlayer_PrevLoc
 
