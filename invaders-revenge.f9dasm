@@ -6,6 +6,8 @@ FILE invaders-revenge.bin
 INCLUDE vars.f9dasm
 
 
+UNUSED 3E33-408C
+
 COMMENT 4160
 LABEL 4160 Sub_MaybeUpdateActivePlayer
 LABEL 416D MUAP_L1
