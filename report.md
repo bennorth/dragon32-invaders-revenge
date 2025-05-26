@@ -4,7 +4,7 @@
 
 Understand how the implementation works.  At least, how some of the interesting bits work.
 
-Replicate behaviour quite closely, so understand game logic.
+Replicate behaviour quite closely, so need to understand game logic.
 
 Replicate graphics and sounds.
 
@@ -39,6 +39,15 @@ Use of static arrays of structs for:
 
 Layouts of structs.
 
+## Defender state
+
+`Arr_DefendersData`
+`Data_Shot_0`; maybe give another label?
+`PlayerData_0_00_b_BaseFirePeriod` is start of first of two
+`Arr_DefenderExplosions`
+`Arr_PlayerExplnFragments`
+
+
 # Seemingly unused bits of binary
 
 Handful of seemingly unused graphics, variables.  Both "completely unreferred-to" but also "written but never read".  And large run of nonsense data.
@@ -56,3 +65,15 @@ Got some sense of shape of sound effects from code, but too difficult to complet
 * Length of individual chirps shortens as game speeds up, as it has to.
 
 Then ran in emulator [LINK XROAR], captured, analysed, re-synthesised.  Decided this was OK and in same spirit as re-doing the sprites at the higher resolution.  Sound cleaner and softer; not sure whether this is an improvement.
+
+# Misc remarks
+
+Interspersing of data and code.  Even sometimes a variable right in the middle of the subroutine it's part of: `Var_b_ShotSoundProgress`.
+
+Inventive use of system stack here and there.  Search for ",S".
+
+Re-use of "special defender explosion" intro for high-score sound effect.
+
+A few variables (locations) left whose purpose haven't been able to work out.  Some seem completely unused; some are written to but never read.
+
+Colour-code disassembly with backgrounds according to: code, data used locally just to one subroutine, data used across subroutines?
