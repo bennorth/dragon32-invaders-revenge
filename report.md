@@ -78,6 +78,10 @@ A few variables (locations) left whose purpose haven't been able to work out.  S
 
 Colour-code disassembly with backgrounds according to: code, data used locally just to one subroutine, data used across subroutines?
 
+Fall-through into subroutine: Sub_CycleDefenderLaunchLocPtr
+
+Pointers into arrays stored just after that array, giving rise to code comparing a pointer's value to its location.
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
