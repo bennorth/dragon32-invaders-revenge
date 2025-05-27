@@ -14,6 +14,7 @@ LABEL 071D Loc_x116_y008
 LABEL 0747 Loc_x028_y010
 LABEL 0757 Loc_x092_y010
 LABEL 07E0 Loc_x000_y015
+LABEL 07E1 Loc_x004_y015
 LABEL 07FD Loc_x116_y015
 LABEL 08C0 Loc_x000_y022
 LABEL 08DD Loc_x116_y022
@@ -316,29 +317,31 @@ DATA 2D4F-2D52
 
 HEX 2EB2-2EDD
 COMMENT 2EB2
+COMMENT 2EB2 ============================================================================
 COMMENT 2EB2 Array of 11 entries each of a four-byte structure:
-COMMENT 2EB2 [    byte - think can be initd to $01 for L-to-R or $1F for R-to-L
-COMMENT 2EB2 .           column index
-COMMENT 2EB2 .     byte - value $01 (L-to-R normal), $FF (R-to-L normal), $41 (L-to-R special)
-COMMENT 2EB2 .     word - on-screen location as address ]
-COMMENT 2EB2 Initialised (I think) with both byte values $01 and all word
-COMMENT 2EB2 values $0B3F.  So all structs are init'd to { $01, $01, $0B3F }
-COMMENT 2EB2 ;
-COMMENT 2EB2 Apart from first entry, which (I think) is the lone defender
-COMMENT 2EB2 which does a left-to-right patrol at the top of the play area
-COMMENT 2EB2 when the game first starts.
+COMMENT 2EB2 ;;
+COMMENT 2EB2 .  byte - direction: $01 L-to-R; $1F R-to-L
+COMMENT 2EB2 .  byte - kind/velocity: $01 L-R normal; $FF R-L normal; $41 L-R special
+COMMENT 2EB2 .  word - on-screen location as address
+COMMENT 2EB2 ;;
+COMMENT 2EB2 Initialised by code in Main_1a with both byte values $01 and all word
+COMMENT 2EB2 values $0B3F.  So all structs are init'd to { $01, $01, (124, 41) }.
+COMMENT 2EB2 ============================================================================
 LABEL 2EB2 Arr_DefendersData
 LABEL 2EB4 Arr_DefendersData_Loc
 
 COMMENT 2EE2
+COMMENT 2EE2 ----------------------------------------------------------------------------
+COMMENT 2EE2 If we're at the correct phase (when Var_b_SDM_Phase is 1 on entry to this
+COMMENT 2EE2 subroutine), reset the phase to the DefenderMovementPeriod slot of the
+COMMENT 2EE2 active player, and do one step of movement for all invaders.
+COMMENT 2EE2 ----------------------------------------------------------------------------
 DEC 2EF4
 LABEL 2EE2 Sub_StepDefendersMovement
 LABEL 2EF8 SDM_loop
-LABEL 2F13 SDM_L2
-
-
 COMMENT 2F0C
-LABEL 2F0C SDM_DrawToLoc
+LABEL 2F0C SDM_L2
+LABEL 2F13 SDM_L3
 COMMENT 2F18
 LABEL 2F18 SDM_exit
 
@@ -349,8 +352,11 @@ DEC 2E57
 COMMENT 2E19
 COMMENT 2E19 On entry, data about defender being processed in registers:
 COMMENT 2E19 .  B has struct[0] column idx
-COMMENT 2E19 .  A has (struct[1] & $BF) loc increment ($01 L-to-R / $FF R-to-L)
+COMMENT 2E19 .  A has loc increment (from struct[1], $01 L-R / $FF R-L)
 COMMENT 2E19 .  X has struct[2:3] location
+COMMENT 2E19 .  U points to graphics data according to kind of defender
+COMMENT 2E19 .  Y points just past struct of defender to be moved
+COMMENT 2E19 .    (struct is one element of Arr_DefendersData)
 LABEL 2E19 Sub_MoveDefenderCheckHit
 
 COMMENT 2E1B
@@ -397,6 +403,12 @@ COMMENT 2E98
 COMMENT 2E98 Still on screen; save new location and draw.
 
 COMMENT 2E0D
+COMMENT 2E0D ----------------------------------------------------------------------------
+COMMENT 2E0D Mark the entry of the Arr_DefendersData array immediately before the one
+COMMENT 2E0D pointed to by Y as unused (by setting its location field to zero), and
+COMMENT 2E0D launch a new patrol.  (The search for an available array slot is therefore
+COMMENT 2E0D guaranteed to succeed because of the slot we just marked as free.)
+COMMENT 2E0D ----------------------------------------------------------------------------
 LABEL 2E0D Sub_FinishDefenderPatrolStartNew
 
 
@@ -470,7 +482,6 @@ LABEL 37A2 PlayerData_0_01_b_DefenderMovePeriod
 LABEL 37A3 PlayerData_0_02_b_n_lives
 LABEL 37A4 PlayerData_0_03_Loc_TopLifeShip
 WORD 37A4
-CONST 37A4
 LABEL 37A6 PlayerData_0_05_w_score
 WORD 37A6
 CONST 37A6
@@ -492,7 +503,6 @@ LABEL 37AE PlayerData_1_01_b_DefenderMovePeriod
 LABEL 37AF PlayerData_1_02_b_n_lives
 LABEL 37B0 PlayerData_1_03_Loc_TopLifeShip
 WORD 37B0
-CONST 37B0
 LABEL 37B2 PlayerData_1_05_w_score
 WORD 37B2
 CONST 37B2
@@ -973,6 +983,7 @@ COMMENT 2DC9 Row contains blue; try next patrol-start location
 COMMENT 2DCD
 COMMENT 2DD0
 COMMENT 2DD0 Found suitable patrol-start location; store it
+COMMENT 2DD6 Fall through to cyclically advance pointer
 COMMENT 2DD6
 COMMENT 2DE9
 COMMENT 2D95
@@ -990,20 +1001,20 @@ LABEL 2DB8 IDP_L3
 LABEL 2DBA IDP_L4
 LABEL 2DC3 IDP_L5
 LABEL 2DCD IDP_L6
-LABEL 2DD6 IDP_L7
+LABEL 2DD6 Sub_CycleDefenderLaunchLocPtr
 CONST 2DDA
-LABEL 2DE5 IDP_L8
+LABEL 2DE5 CDLLP_L1
 LABEL 2DE9 IDP_continue
 
 
 COMMENT 2DEF
-COMMENT 2DEF Start points of patrols.  They are all pointers to the
-COMMENT 2DEF last byte of a screen row, at row indexes (from the top
-COMMENT 2DEF of the screen) of: 40, 48, 57, 66, 75, 84, 93, 102, 117,
-COMMENT 2DEF 127, 137, 147, 157.  A right-to-left defender travels
-COMMENT 2DEF along that row; a left-to-right defender travels along
-COMMENT 2DEF the row below.
-LABEL 2DEF Arr_DefenderLaunchLoc
+COMMENT 2DEF ============================================================================
+COMMENT 2DEF Start points of patrols.  They are all pointers to the last byte of a
+COMMENT 2DEF screen row, at row indexes (from the top of the screen) of: 40, 48, 57, 66,
+COMMENT 2DEF 75, 84, 93, 102, 117, 127, 137, 147, 157.  A right-to-left defender travels
+COMMENT 2DEF along that row; a left-to-right defender travels along the row below.
+COMMENT 2DEF ============================================================================
+LABEL 2DEF Arr_IDP_LaunchLocs
 WORD 2DEF-2E08
 
 
