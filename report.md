@@ -77,3 +77,7 @@ Re-use of "special defender explosion" intro for high-score sound effect.
 A few variables (locations) left whose purpose haven't been able to work out.  Some seem completely unused; some are written to but never read.
 
 Colour-code disassembly with backgrounds according to: code, data used locally just to one subroutine, data used across subroutines?
+
+# Refs
+
+* [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
