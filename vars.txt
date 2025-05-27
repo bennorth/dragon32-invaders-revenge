@@ -1,3 +1,5 @@
+b 2D88
+
 w 372C HighScore Highest score yet, units of 100
 
 b 3645 TwoPlayerMode
@@ -24,20 +26,21 @@ b 3A11 StepDefenderExplns_Phase
 b 3A12 StepDefenderExplns_Rows
 b 3A13 StepDefenderExplns_Explns
 
-b 2EDE DefenderMovementPhase Init 10; decr then defenders move when zero
+b 2EDE SDM_Phase Init 10; decr then defenders move when zero
 
-b 2D53 MoveDefenderCheckHit_Rows
+b 2D53 MDCH_BltRows
 
-b 2D89 NextDefenderXVelocity
-b 2D8A DefendersRemaining_1
-b 2D8B NextDefenderKindPhase
-w 2E09 DefenderLaunchLocPtr
-W 2E0B Arr_DefenderLaunchLoc_start
+b 2D89 IDP_NextXVelocity
+b 2D8A IDP_NRemaining
+b 2D8B IDP_NextKindPhase
+w 2E09 IDP_LaunchLocPtr
+W 2E0B Arr_IDP_LaunchLocs_start
 
 B 2EDF Init_DefenderMovePeriod
+b 2EE0
 B 338C Init_BaseFirePeriod
 
-b 2EE1 DefendersRemaining_2
+b 2EE1 SDM_NRemaining
 
 b 41D2 ActivePlayerIdx
 
