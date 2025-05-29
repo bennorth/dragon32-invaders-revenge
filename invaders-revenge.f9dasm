@@ -1010,9 +1010,10 @@ LABEL 2DE9 IDP_continue
 COMMENT 2DEF
 COMMENT 2DEF ============================================================================
 COMMENT 2DEF Start points of patrols.  They are all pointers to the last byte of a
-COMMENT 2DEF screen row, at row indexes (from the top of the screen) of: 40, 48, 57, 66,
-COMMENT 2DEF 75, 84, 93, 102, 117, 127, 137, 147, 157.  A right-to-left defender travels
-COMMENT 2DEF along that row; a left-to-right defender travels along the row below.
+COMMENT 2DEF screen row, at row indexes (i.e., y coords as measured from the top of the
+COMMENT 2DEF screen down) of: 40, 102, 137, 66, 84, 93, 48, 117, 157, 75, 57, 127, 147.
+COMMENT 2DEF A right-to-left defender travels along that row; a left-to-right defender
+COMMENT 2DEF travels along the row below.
 COMMENT 2DEF ============================================================================
 LABEL 2DEF Arr_IDP_LaunchLocs
 WORD 2DEF-2E08
