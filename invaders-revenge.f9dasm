@@ -350,6 +350,11 @@ DEC 2E48
 DEC 2E57
 
 COMMENT 2E19
+COMMENT 2E19 ----------------------------------------------------------------------------
+COMMENT 2E19 Move one defender one step.  Check whether it collides with the player or
+COMMENT 2E19 with a player's shot, and act accordingly if so — award points, and
+COMMENT 2E19 initiate an explosion and sound effect.
+COMMENT 2E19 ;;
 COMMENT 2E19 On entry, data about defender being processed in registers:
 COMMENT 2E19 .  B has struct[0] column idx
 COMMENT 2E19 .  A has loc increment (from struct[1], $01 L-R / $FF R-L)
@@ -357,6 +362,7 @@ COMMENT 2E19 .  X has struct[2:3] location
 COMMENT 2E19 .  U points to graphics data according to kind of defender
 COMMENT 2E19 .  Y points just past struct of defender to be moved
 COMMENT 2E19 .    (struct is one element of Arr_DefendersData)
+COMMENT 2E19 ----------------------------------------------------------------------------
 LABEL 2E19 Sub_MoveDefenderCheckHit
 
 COMMENT 2E1B
@@ -371,6 +377,8 @@ COMMENT 2E3D
 COMMENT 2E3D Defender intersects with some yellow; it got hit.
 COMMENT 2E40
 COMMENT 2E40 Overwrite X value on stack with zero to signal this defender gone.
+COMMENT 2E47
+COMMENT 2E47 Determine what kind of defender was destroyed.
 CONST 2E41
 COMMENT 2E45
 COMMENT 2E53
@@ -391,6 +399,10 @@ CONST 2E69
 LABEL 2E6B MDCH_L06
 LABEL 2E75 MDCH_L07
 CONST 2E78
+COMMENT 2E88
+COMMENT 2E88 Compute new column; if that takes the defender to or beyond the leftmost
+COMMENT 2E88 column, or to one beyond the rightmost column, mark this patrol as over and
+COMMENT 2E88 launch a new one.
 LABEL 2E88 MDCH_L08
 LABEL 2EA1 MDCH_L09
 
@@ -398,7 +410,6 @@ COMMENT 2E75
 DEC 2E9B
 COMMENT 2E80
 COMMENT 2E80 Top defender moves at double speed.
-COMMENT 2E88
 COMMENT 2E98
 COMMENT 2E98 Still on screen; save new location and draw.
 
@@ -408,6 +419,9 @@ COMMENT 2E0D Mark the entry of the Arr_DefendersData array immediately before th
 COMMENT 2E0D pointed to by Y as unused (by setting its location field to zero), and
 COMMENT 2E0D launch a new patrol.  (The search for an available array slot is therefore
 COMMENT 2E0D guaranteed to succeed because of the slot we just marked as free.)
+COMMENT 2E0D ;;
+COMMENT 2E0D This could be considered part of `Sub_MoveDefenderCheckHit`; its only use
+COMMENT 2E0D is being tail-called from there.
 COMMENT 2E0D ----------------------------------------------------------------------------
 LABEL 2E0D Sub_FinishDefenderPatrolStartNew
 
@@ -529,7 +543,11 @@ DEC 33A4
 DEC 33BD
 DEC 3409
 COMMENT 3391
-COMMENT 3391 Move the defender base and check whether it's been hit.
+COMMENT 3391 ----------------------------------------------------------------------------
+COMMENT 3391 Move the defender base and check whether it's been hit, launching the
+COMMENT 3176 appropriate actions (starting new base patrol, initiating explosion and
+COMMENT 3176 sound effect) if so.
+COMMENT 3391 ----------------------------------------------------------------------------
 LABEL 3391 Sub_MoveDefenderBaseCheckHit
 DEC 33D5
 LABEL 33D9 MDBCH_L1
@@ -580,14 +598,16 @@ COMMENT 34B1
 LABEL 34B1 SDSM_L3
 
 
-COMMENT 3174
 LABEL 3174 Var_ClearLowerScreen_Start
 HEX 3174-3175
 WORD 3174
 COMMENT 3176
-COMMENT 3176 Clear from the location in Var_ClearLowerScreen_Start to
-COMMENT 3176 the end of the screen, then set Var_ClearLowerScreen_Start
-COMMENT 3176 to 5/24 down from the top of the screen.
+COMMENT 3176 ----------------------------------------------------------------------------
+COMMENT 3176 Clear from the location in Var_ClearLowerScreen_Start to the end of the
+COMMENT 3176 screen, then set Var_ClearLowerScreen_Start to 5/24 down from the top of
+COMMENT 3176 the screen.  On boot, Var_ClearLowerScreen_Start points to the very
+COMMENT 3176 top-left of the screen.
+COMMENT 3176 ----------------------------------------------------------------------------
 LABEL 3176 Sub_ClearLowerScreen
 LABEL 3179 CLS_L1
 CONST 3187
@@ -874,12 +894,20 @@ LABEL 326D Sub_MovePlayerDown
 LABEL 327C MPD_L1
 
 COMMENT 3025
+COMMENT 3025 ----------------------------------------------------------------------------
+COMMENT 3025 Cycle between displaying two variants of the PAUSE text until the player
+COMMENT 3025 presses "P", at which point the message is cleared and play resumes.
+COMMENT 3025 ----------------------------------------------------------------------------
 LABEL 3025 Sub_DisplayPauseMsg
 LABEL 3028 DPM_L1
 COMMENT 303D
 LABEL 303D DPM_L2
 
 COMMENT 30A3
+COMMENT 30A3 ----------------------------------------------------------------------------
+COMMENT 30A3 Configure the desired graphics mode, play an introductory sound effect,
+COMMENT 30A3 then chain to the subroutine which asks the player to choose settings.
+COMMENT 30A3 ----------------------------------------------------------------------------
 LABEL 30A3 Sub_SetGraphicsMode
 LABEL 30B6 SGM_L1
 
@@ -1294,6 +1322,10 @@ COMMENT 3DD4 High-pitched beep
 
 
 COMMENT 304F
+COMMENT 304F ----------------------------------------------------------------------------
+COMMENT 304F Erase a 6×6 block of bytes (i.e., a 24-wide and 6-high rectangle of pixels)
+COMMENT 304F with the top-left such byte pointed to by X.
+COMMENT 304F ----------------------------------------------------------------------------
 LABEL 304F Sub_Erase6x6
 DEC 3050
 CONST 3053
@@ -1339,6 +1371,8 @@ COMMENT 3001 Text "SELECT " in red
 LABEL 3001 GFX_Text_SELECT_SPC
 HEX 3001-3024
 
+COMMENT 3065
+COMMENT 3065 ============================================================================
 COMMENT 3065
 COMMENT 3065 Text "PAUSE" in blue
 LABEL 3065 GFX_Text_PAUSE
