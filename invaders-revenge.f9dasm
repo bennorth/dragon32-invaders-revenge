@@ -334,7 +334,7 @@ COMMENT 2EE2
 COMMENT 2EE2 ----------------------------------------------------------------------------
 COMMENT 2EE2 If we're at the correct phase (when Var_b_SDM_Phase is 1 on entry to this
 COMMENT 2EE2 subroutine), reset the phase to the DefenderMovementPeriod slot of the
-COMMENT 2EE2 active player, and do one step of movement for all invaders.
+COMMENT 2EE2 active player, and do one step of movement for all active defenders.
 COMMENT 2EE2 ----------------------------------------------------------------------------
 DEC 2EF4
 LABEL 2EE2 Sub_StepDefendersMovement
