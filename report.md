@@ -82,6 +82,8 @@ Fall-through into subroutine: Sub_CycleDefenderLaunchLocPtr
 
 Pointers into arrays stored just after that array, giving rise to code comparing a pointer's value to its location.
 
+When blitting, checks that destination is in range (within screen memory) which panic if fail.
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
