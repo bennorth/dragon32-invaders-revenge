@@ -77,7 +77,7 @@ w 31E7 Q_Loc_ActivePlayer
 w 31E9 Q_Loc_ActivePlayer_PrevLoc
 
 w 3420 Loc_DefenderShot
-b 3422 DefenderShot_ActionPhase 0:launch shot, <0:NOP, 1:erase
+b 3422 DefenderShot_State 0:launch shot, <0:NOP, 1:erase
 b 34BB DefenderShot_RowsRemaining
 
 w 37B9 Ptr_ActivePlayerData
