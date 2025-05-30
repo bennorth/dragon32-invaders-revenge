@@ -909,6 +909,7 @@ COMMENT 3A97
 COMMENT 3AB1
 COMMENT 3AC1
 COMMENT 3ACB
+COMMENT 3AF8 ============================================================================
 COMMENT 3AF8
 COMMENT 3A72
 COMMENT 3A72 A = defender-kind (1: normal(blue), 10: special(red), 12: base)
@@ -1121,17 +1122,15 @@ COMMENT 2DEF ===================================================================
 LABEL 2DEF Arr_Const_IDP_LaunchLocs
 WORD 2DEF-2E08
 
+LABEL 3804 Sub_DisplayPlayerScore
 
-
-LABEL 3804 Sub_FourDigitsOut
-
-COMMENT 3804 (Fall through into six-digits-out.)
+COMMENT 3804 (Fall through into `Sub_DisplayPlayerScore`.)
 COMMENT 3804
-COMMENT 3804 Write a six-digit number which is a multiple of 100
-COMMENT 3804 with the units at location X.  The number has its
-COMMENT 3804 hundreds and thousands in BCD at Y+6 and its ten-thousands
-COMMENT 3804 and hundred-thousands at Y+5.
-COMMENT 3804
+COMMENT 3804 ----------------------------------------------------------------------------
+COMMENT 3804 Write a six-digit number which is a multiple of 100 with the units at
+COMMENT 3804 location X.  The number has its hundreds and thousands in BCD at Y+6 and
+COMMENT 3804 its ten-thousands and hundred-thousands at Y+5.
+COMMENT 3804 ----------------------------------------------------------------------------
 
 LABEL 3704 Blt_5_rows
 LABEL 3706 B5R_L1
@@ -1324,7 +1323,7 @@ COMMENT 3D94
 LABEL 3D94 PES_exit
 
 COMMENT 3A14
-COMMENT 3A14 ----------------------------------------------------------------------------
+COMMENT 3A14 ============================================================================
 COMMENT 3A14 Data to track defender explosions (ship or base).  Up to ten explosions
 COMMENT 3A14 can be happening at once.  Data here is 10 structs of 4 bytes each:
 COMMENT 3A14 ;;
@@ -1335,7 +1334,7 @@ COMMENT 3A14 ;;
 COMMENT 3A14 Slot is free if defender-loc == $0000.
 COMMENT 3A14 ;;
 COMMENT 3A14 Reset (all bytes cleared to $00) as part of Sub_ResetShotExplnData.
-COMMENT 3A14 ----------------------------------------------------------------------------
+COMMENT 3A14 ============================================================================
 LABEL 3A14 Arr_DefenderExplosions
 HEX 3A14-3A3B
 
