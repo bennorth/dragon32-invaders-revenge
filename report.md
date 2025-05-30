@@ -93,3 +93,8 @@ Most (all?) sounds clear `Var_b_PostDrawDelay`, to try to keep the frame rate co
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
+
+# TODO
+
+Consistency in descriptions of structs.
+
