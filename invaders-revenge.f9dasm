@@ -75,19 +75,27 @@ COMMENT 39D5 array of structures.
 LABEL 39D5 FillDefenders_Data_Stride_4
 
 COMMENT 34FC
+COMMENT 34FC ----------------------------------------------------------------------------
+COMMENT 34FC Briefly flash the screen by selecting Colour Set 1 (buff, cyan, magenta,
+COMMENT 34FC orange), and then falling through into `Sub_LongFallingPitchSound`, which
+COMMENT 34FC will at its end revert to Colour Set 0 (green, yellow, blue, red).
+COMMENT 34FC ----------------------------------------------------------------------------
 LABEL 34FC Sub_FlashColourSets
-COMMENT 3501 Choose Colour Set 1 (buff/cyan/magenta/orange)
 CONST 3505
 CONST 350B
 
+COMMENT 350D Fall through
 COMMENT 350D
+COMMENT 350D ----------------------------------------------------------------------------
+COMMENT 350D Play a reasonably long sound of falling pitch, starting at a high pitch,
+COMMENT 350D and ending at a pitch determined by D.  Before exit, select Colour Set 0.
+COMMENT 350D ----------------------------------------------------------------------------
 LABEL 350D Sub_LongFallingPitchSound
 CONST 3511
 LABEL 3513 LFPS_L1
 LABEL 351C LFPS_L2
 CONST 351D
-
-COMMENT 3535 Choose Colour Set 0 (green/yellow/blue/red)
+COMMENT 3530 Choose Colour Set 0 (green/yellow/blue/red)
 
 
 
@@ -201,7 +209,7 @@ COMMENT 2D3E
 
 LABEL 408D Entry
 
-LABEL 40DD TXT_Title
+LABEL 40DD TXT_JoysticksQuestion
 COMMENT 40DD
 CHAR 40DD-40FB
 
@@ -303,10 +311,7 @@ LABEL 30CA Sub_PanicTextModeAbort
 COMMENT 30CA
 COMMENT 30DA
 
-
 HEX 41D0-41D5
-
-COMMENT 40FC
 
 COMMENT 3FFD
 HEX 3FFD-408C
@@ -338,6 +343,7 @@ COMMENT 2EE2 active player, and do one step of movement for all active defenders
 COMMENT 2EE2 ----------------------------------------------------------------------------
 DEC 2EF4
 LABEL 2EE2 Sub_StepDefendersMovement
+COMMENT 2EF8
 LABEL 2EF8 SDM_loop
 COMMENT 2F0C
 LABEL 2F0C SDM_L2
@@ -394,9 +400,14 @@ COMMENT 2E5D Tasks arising from destroyed defender
 LABEL 2E5D MDCH_L04
 
 COMMENT 2E68
+COMMENT 2E68 Erase an 8-wide, 7-high block of pixels (i.e., 2 bytes wide), with the
+COMMENT 2E68 top-left byte pointed to by X.  This erases the defender.
 LABEL 2E68 MDCH_L05
 CONST 2E69
 LABEL 2E6B MDCH_L06
+COMMENT 2E75
+COMMENT 2E75 Retrieve location (X) and location/column increment (A).  If this is an
+COMMENT 2E75 active slot, compute new location.
 LABEL 2E75 MDCH_L07
 CONST 2E78
 COMMENT 2E88
@@ -406,12 +417,13 @@ COMMENT 2E88 launch a new one.
 LABEL 2E88 MDCH_L08
 LABEL 2EA1 MDCH_L09
 
-COMMENT 2E75
 DEC 2E9B
 COMMENT 2E80
-COMMENT 2E80 Top defender moves at double speed.
+COMMENT 2E80 A defender moving along the top row does so at double speed.  Update
+COMMENT 2E80 location and increment in this case.
 COMMENT 2E98
-COMMENT 2E98 Still on screen; save new location and draw.
+COMMENT 2E98 Still on screen; store new location and column to the structure, and draw
+COMMENT 2E98 defender in new position.
 
 COMMENT 2E0D
 COMMENT 2E0D ----------------------------------------------------------------------------
@@ -536,8 +548,6 @@ WORD 3295
 
 COMMENT 322C
 COMMENT 33DF
-COMMENT 33F2
-COMMENT 3419
 
 DEC 33A4
 DEC 33BD
@@ -545,56 +555,113 @@ DEC 3409
 COMMENT 3391
 COMMENT 3391 ----------------------------------------------------------------------------
 COMMENT 3391 Move the defender base and check whether it's been hit, launching the
-COMMENT 3176 appropriate actions (starting new base patrol, initiating explosion and
-COMMENT 3176 sound effect) if so.
+COMMENT 3391 appropriate actions (starting new base patrol, initiating explosion and
+COMMENT 3391 sound effect) if so.
 COMMENT 3391 ----------------------------------------------------------------------------
 LABEL 3391 Sub_MoveDefenderBaseCheckHit
 DEC 33D5
 LABEL 33D9 MDBCH_L1
 DEC 33E0
+
+COMMENT 33DF
+COMMENT 33DF Erase an 8-wide, 9-high block of pixels (i.e., 2 bytes wide) with the
+COMMENT 33DF top-left byte pointed to by X.  Panic if this takes us beyond screen
+COMMENT 33DF memory.
 LABEL 33E1 MDBCH_L2
+
+COMMENT 33F2
+COMMENT 33F2 Adjust the base's location and byte-column to try to track the player's
+COMMENT 33F2 ship.  Move base left if player is strictly to the left of base, otherwise
+COMMENT 33F2 move base right.
+
+COMMENT 3402
+COMMENT 3402 Store new defender location; blt defender-base graphic to that location.
 LABEL 3402 MDBCH_L3
 LABEL 340A MDBCH_L4
+COMMENT 3419
+COMMENT 3419 Part of above; move base right if player not to our left.
 LABEL 3419 MDBCH_L5
 LABEL 3418 MDBCH_exit
 
-DEC 3430
-DEC 3437
-DEC 3464
-DEC 34D4
-DEC 34EE
+
 COMMENT 3423
-COMMENT 3433
-COMMENT 3433 ActionPhase 5 --- draw red asterisk (bottom up), decr phase
-COMMENT 3450
-COMMENT 3450 ActionPhase 0 --- launch new shot; move to phase -1
-COMMENT 345C
-COMMENT 345C ActionPhase <0 (do nothing) or >0 but != 5 --- decr phase only
-COMMENT 345D
-COMMENT 345D ActionPhase 1 --- erase shot / asterisk; move to phase 0
+COMMENT 3423 ----------------------------------------------------------------------------
+COMMENT 3423 When a defender base shot has hit something, wait three frames then draw the
+COMMENT 3423 red asterisk small explosion graphic, and leave it there for a duration of
+COMMENT 3423 four frames before erasing it; on the next frame, launch a new shot and
+COMMENT 3423 become idle.  Progression through this sequence is tracked by the variable
+COMMENT 3423 `Var_B_DefenderShot_State`, which `Sub_InitDefenderShotHit` sets to `8`; in
+COMMENT 3423 turn, that subroutine is called when a hit is detected.
+COMMENT 3423 ----------------------------------------------------------------------------
+COMMENT 3423 Choose behaviour according to state on entry to sub: 0 vs -1 vs 5 vs other;
+COMMENT 3423 if state positive on entry, decrement it
 LABEL 3423 Sub_StepDefenderShotHitAnimation
+DEC 3430
+COMMENT 3433
+COMMENT 3433 State 5 --- draw red asterisk (bottom up), decr state, exit
+DEC 3437
 LABEL 343E SDSHA_L1
 LABEL 3447 SDSHA_L2
+COMMENT 3450
+COMMENT 3450 State 0 --- launch new shot; move to state -1 (idle); exit
 LABEL 3450 SDSHA_L3
-LABEL 345C SDSHA_L4
+COMMENT 345C
+COMMENT 345C State <0 or >0 but != 5 --- state was decr'd above; no further action; exit
+LABEL 345C SDSHA_exit
+COMMENT 345D
+COMMENT 345D State 1 --- erase shot / asterisk (bottom up); state was decr'd to 0 above
 LABEL 345D SDSHA_L5
+DEC 3464
 CONST 3469
 LABEL 346B SDSHA_L6
 LABEL 3472 SDSHA_L7
 
 COMMENT 34D0
+COMMENT 34D0 ----------------------------------------------------------------------------
+COMMENT 34D0 Initiate the behaviour when a defender base shot hits the player or a
+COMMENT 34D0 player shot: Draw the yellow asterisk explosion where the defender base
+COMMENT 34D0 shot is, play a low beep, and set the rest of the defender base shot hit
+COMMENT 34D0 animation in progress via `Var_b_DefenderShot_State`.
+COMMENT 34D0 ----------------------------------------------------------------------------
 LABEL 34D0 Sub_InitDefenderShotHit
+DEC 34D4
 LABEL 34D8 IDSH_L1
 LABEL 34E5 IDSH_L2
 COMMENT 34ED
 COMMENT 34ED Low-ish pitched beep
+DEC 34EE
+
 
 COMMENT 347B
+COMMENT 347B ----------------------------------------------------------------------------
+COMMENT 347B Perform one frame of work for dealing with the shot fired by the defender
+COMMENT 347B base.
+COMMENT 347B ----------------------------------------------------------------------------
+COMMENT 347B If we are in the middle of animating the explosion caused by the defender
+COMMENT 347B base shot hitting something, do nothing
 LABEL 347B Sub_StepDefenderShotMovement
+COMMENT 3480
+COMMENT 3480 Get lowest (of three) pixel of current shot; erase that pixel; check its
+COMMENT 3480 original value to determine whether it is yellow, in which case it has hit
+COMMENT 3480 something; see comment lower down for details of bit testing
+COMMENT 3495
+COMMENT 3495 Bottom pixel of shot has not hit anything; consider moving it up one pixel
 LABEL 3495 SDSM_L1
+COMMENT 3498 If this would position shot too high, launch new one...
+COMMENT 349D ...otherwise record this as new location
+COMMENT 34A2
+COMMENT 34A2 Check colour of rightmost pixel in byte of proposed new location of top of
+COMMENT 34A2 shot (recall: 0=G, 1=Y, 2=B, 3=R); if BIT $01 is clear, pixel is 0=green
+COMMENT 34A2 (background) or 2=blue (normal defender) and shot can be there
+COMMENT 34A6 We know BIT $01 is set; if BIT $02 is clear, pixel is 1=yellow and we have
+COMMENT 34A6 hit something destructible (player or player shot); otherwise it is 3=red
+COMMENT 34A6 and the shot can be there (special defender)
+COMMENT 34AA
+COMMENT 34AA Plot next pixel upwards of defender base shot by making it blue; exit
 LABEL 34AA SDSM_L2
 LABEL 34B0 SDSM_exit
 COMMENT 34B1
+COMMENT 34B1 Shot has reached double-stripe at the top of the play area; start a new one
 LABEL 34B1 SDSM_L3
 
 
@@ -896,7 +963,7 @@ LABEL 327C MPD_L1
 COMMENT 3025
 COMMENT 3025 ----------------------------------------------------------------------------
 COMMENT 3025 Cycle between displaying two variants of the PAUSE text until the player
-COMMENT 3025 presses "P", at which point the message is cleared and play resumes.
+COMMENT 3025 presses "P", at which point clear the message and resume play.
 COMMENT 3025 ----------------------------------------------------------------------------
 LABEL 3025 Sub_DisplayPauseMsg
 LABEL 3028 DPM_L1
@@ -913,6 +980,15 @@ LABEL 30B6 SGM_L1
 
 
 COMMENT 3298
+COMMENT 3298 ----------------------------------------------------------------------------
+COMMENT 3298 Attempt to launch a shot from the player's ship.  A free struct is sought,
+COMMENT 3298 and if one is found, it is populated with the location of the new shot, and
+COMMENT 3298 a bitmask for drawing it, depending on the fractional horizontal position
+COMMENT 3298 of the player's ship.  Also play a beep.  If a shot is already being
+COMMENT 3298 launched, do not launch another one, but instead prolong the beep, lowering
+COMMENT 3298 its pitch.
+COMMENT 3298 ----------------------------------------------------------------------------
+LABEL 3298 Sub_LaunchPlayerShot
 DEC 32C8
 DEC 32D7
 COMMENT 32A5
@@ -927,14 +1003,13 @@ COMMENT 32C7
 COMMENT 32C7 High-pitched beep
 COMMENT 32E2
 COMMENT 32E2 Loop if within bound set by max n.shots
-LABEL 3298 Sub_LaunchShot
-LABEL 32A9 LS_L1
-LABEL 32BF LS_L2
+LABEL 32A9 LPS_L1
+LABEL 32BF LPS_L2
 COMMENT 32D3
 COMMENT 32D3 Extend the beep, lowering the pitch
-LABEL 32D3 LS_L3
-LABEL 32E0 LS_exit
-LABEL 32E2 LS_next
+LABEL 32D3 LPS_L3
+LABEL 32E0 LPS_exit
+LABEL 32E2 LPS_next
 
 HEX 3231
 
@@ -982,7 +1057,7 @@ COMMENT 3BB4 pitch then falls until duration used up.
 COMMENT 3BB4 ;;
 COMMENT 3BB4 Called with values of A:
 COMMENT 3BB4 25 (SetGraphicsMode)
-COMMENT 3BB4 1 up to 5 (LaunchShot for player, as long as SPC held down)
+COMMENT 3BB4 1 up to 5 (LaunchPlayerShot, as long as SPC held down)
 COMMENT 3BB4 8 (InitDefenderShotHit)
 COMMENT 3BB4 2 (DrawOrErasePlayerExpln)
 COMMENT 3BB4 1 (QueryShotsSpeed)
@@ -1043,7 +1118,7 @@ COMMENT 2DEF screen down) of: 40, 102, 137, 66, 84, 93, 48, 117, 157, 75, 57, 12
 COMMENT 2DEF A right-to-left defender travels along that row; a left-to-right defender
 COMMENT 2DEF travels along the row below.
 COMMENT 2DEF ============================================================================
-LABEL 2DEF Arr_IDP_LaunchLocs
+LABEL 2DEF Arr_Const_IDP_LaunchLocs
 WORD 2DEF-2E08
 
 
@@ -1186,8 +1261,8 @@ COMMENT 2F1A
 LABEL 2F1A GFX_NormalDefenderExpln
 
 COMMENT 2F28
-COMMENT 2F28 Complement of current half-period of beep tone played
-COMMENT 2F28 when a normal defender is destroyed
+COMMENT 2F28 Complement of current half-period of beep tone played when a normal
+COMMENT 2F28 defender is destroyed
 LABEL 2F28 Var_b_NormalDefenderExpln_BeepHPeriodC
 
 HEX 2F64-2F71
@@ -1215,6 +1290,7 @@ COMMENT 2F44
 COMMENT 2F44 Play one cycle of tone
 COMMENT 2F58
 COMMENT 2F58 Decrease half-period complement, thereby increasing half-period
+COMMENT 2F5B
 COMMENT 2F5B Keep going if half-period complement is at least (in unsigned sense) $80
 LABEL 2F44 NDE_L2
 LABEL 2F4C NDE_L3
@@ -1265,31 +1341,28 @@ HEX 3A14-3A3B
 
 
 COMMENT 3286
-COMMENT 3286 15 bytes starting here are cleared 3BE9
-COMMENT 3286 Data in 3-byte structs:
-COMMENT 3286 b [0]: Bitmask for drawing shot (0x10 or 0x01)
-COMMENT 3286 w [1:2]: Location of bullet
-LABEL 3286 Data_Shot_0
+COMMENT 3286 ============================================================================
+COMMENT 3286 State of up to five shots that the player has fired.  Each shot is
+COMMENT 3286 described by a 3-byte structure:
+COMMENT 3286 ;;
+COMMENT 3286 [0] b  : Bitmask for drawing shot (0x10 or 0x01)
+COMMENT 3286 [1:2] w: Location of shot
+COMMENT 3286 ;;
+COMMENT 3286 (Cleared as part of `Sub_ResetShotExplnData`.)
+COMMENT 3286 ============================================================================
+LABEL 3286 Arr_PlayerShots
 HEX 3286
 WORD 3287
 CONST 3287
-
-LABEL 3289 Data_Shot_1
 HEX 3289
 WORD 328A
 CONST 328A
-
-LABEL 328C Data_Shot_2
 HEX 328C
 WORD 328D
 CONST 328D
-
-LABEL 328F Data_Shot_3
 HEX 328F
 WORD 3290
 CONST 3290
-
-LABEL 3292 Data_Shot_4
 HEX 3292
 WORD 3293
 CONST 3293
@@ -1388,15 +1461,10 @@ COMMENT 2FE2 Text " [1-5]" in red
 LABEL 2FE2 GFX_Text_SPC_1_to_5
 HEX 2FE2-3000
 
-
-
-COMMENT 3286
-
 COMMENT 4140
 COMMENT 4148
 COMMENT 4150
 COMMENT 4158
-
 
 LABEL BDDC D32_CasMotorOff
 
