@@ -84,6 +84,12 @@ Pointers into arrays stored just after that array, giving rise to code comparing
 
 When blitting, checks that destination is in range (within screen memory) which panic if fail.
 
+Use of colour checks for hit detection, e.g., `Sub_StepDefenderShotMovement`.
+
+Use of `PULS PC,A` to save a byte over `PULS A / RTS`.
+
+Most (all?) sounds clear `Var_b_PostDrawDelay`, to try to keep the frame rate consistent whether there is a sound playing or not.
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
