@@ -1150,10 +1150,42 @@ DEC 371C
 
 
 COMMENT 37BB
-COMMENT 37BB Add 100 × A points to the active player's score
+COMMENT 37BB ----------------------------------------------------------------------------
+COMMENT 37BB Add 100 × A points to the active player's score, and check for two
+COMMENT 37BB score-driven events:
+COMMENT 37BB ;;
+COMMENT 37BB If the newly-awarded points move the score over the next multiple of 10,000
+COMMENT 37BB points, award an extra life (up to the maximum of the life in play plus
+COMMENT 37BB three spares).
+COMMENT 37BB ;;
+COMMENT 37BB If the new points move the score over the next threshold where we should
+COMMENT 37BB increase the overall game speed, do so (`Sub_MaybeIncreaseDifficulty`)
+COMMENT 37BB ----------------------------------------------------------------------------
 LABEL 37BB Sub_AwardPoints
+COMMENT 37BE
+COMMENT 37BE active_player->Score[Hundreds/Thousands] += A with BCD
+COMMENT 37C3
+COMMENT 37C3 A = active_player->Score[Ten-Thousands/Hundred-Thousands]
+COMMENT 37C5
+COMMENT 37C5 If no carry from the hundreds/thousands, no extra life possible
+COMMENT 37C7
+COMMENT 37C7 There was a carry; add it to the ten-thousands/hundred-thousands
+COMMENT 37CD
+COMMENT 37CD X = active_player->Loc_TopLifeShip
+COMMENT 37D1
+COMMENT 37D1 If top life-ship high enough up that there must already be three...
+COMMENT 37D4 ...no extra life possible
+COMMENT 37D6
 COMMENT 37D6 active_player->NLives += 1
+COMMENT 37D8
+COMMENT 37D8 active_player->Loc_TopLifeShip -= 7 × $20
+COMMENT 37DE
+COMMENT 37DE Draw the new "spare life ship", preserving relevant variables
 CONST 37DA
+COMMENT 37FC
+COMMENT 37FC Extra life or not, check whether we should increase overall game speed
+COMMENT 37FE
+COMMENT 37FE Prepare to display new score: X = active_player->Loc_ScoreDisplay
 LABEL 37FC AP_L1
 
 DEC 35A4
