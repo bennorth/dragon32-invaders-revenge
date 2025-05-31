@@ -88,7 +88,7 @@ Use of colour checks for hit detection, e.g., `Sub_StepDefenderShotMovement`.
 
 Use of `PULS PC,A` to save a byte over `PULS A / RTS`.
 
-Most (all?) sounds clear `Var_b_PostDrawDelay`, to try to keep the frame rate consistent whether there is a sound playing or not.
+Most (all?) sounds clear `Var_b_PostDrawDelay`, to try to keep the frame rate consistent whether there is a sound playing or not.  Sound effects therefore have to shorten at higher game speeds, but this could be called a feature because the game sounds more frantic as it speeds up.
 
 Use of BCD and dedicated instructions (`DAA`) to store and work with score.
 
