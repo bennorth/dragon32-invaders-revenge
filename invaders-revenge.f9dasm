@@ -505,18 +505,18 @@ COMMENT 37A1
 HEX 37A1-37AC
 LABEL 37A1 PlayerData_0_00_b_BaseFirePeriod
 LABEL 37A2 PlayerData_0_01_b_DefenderMovePeriod
-LABEL 37A3 PlayerData_0_02_b_n_lives
+LABEL 37A3 PlayerData_0_02_b_NLives
 LABEL 37A4 PlayerData_0_03_Loc_TopLifeShip
 WORD 37A4
-LABEL 37A6 PlayerData_0_05_w_score
+LABEL 37A6 PlayerData_0_05_w_Score
 WORD 37A6
 CONST 37A6
 LABEL 37A8 PlayerData_0_07_w_NextSpeedUpScore
 WORD 37A8
 CONST 37A8
-LABEL 37AA PlayerData_0_09_Loc_score_display
+LABEL 37AA PlayerData_0_09_Loc_ScoreDisplay
 WORD 37AA
-LABEL 37AC PlayerData_0_0b_b_x_position_fraction
+LABEL 37AC PlayerData_0_0b_b_XPositionFraction
 
 
 
@@ -526,18 +526,18 @@ COMMENT 37AD This data block is 12 bytes on from block 0
 HEX 37AD-37AE
 LABEL 37AD PlayerData_1_00_b_BaseFirePeriod
 LABEL 37AE PlayerData_1_01_b_DefenderMovePeriod
-LABEL 37AF PlayerData_1_02_b_n_lives
+LABEL 37AF PlayerData_1_02_b_NLives
 LABEL 37B0 PlayerData_1_03_Loc_TopLifeShip
 WORD 37B0
-LABEL 37B2 PlayerData_1_05_w_score
+LABEL 37B2 PlayerData_1_05_w_Score
 WORD 37B2
 CONST 37B2
 LABEL 37B4 PlayerData_1_07_w_NextSpeedUpScore
 WORD 37B4
 CONST 37B4
-LABEL 37B6 PlayerData_1_09_Loc_score_display
+LABEL 37B6 PlayerData_1_09_Loc_ScoreDisplay
 WORD 37B6
-LABEL 37B8 PlayerData_1_0b_b_x_position_fraction
+LABEL 37B8 PlayerData_1_0b_b_XPositionFraction
 
 
 LABEL 3295 ShotPtrLimit
@@ -1151,8 +1151,8 @@ DEC 371C
 
 COMMENT 37BB
 COMMENT 37BB Add 100 × A points to the active player's score
-COMMENT 37D6 active_player->n_lives += 1
 LABEL 37BB Sub_AwardPoints
+COMMENT 37D6 active_player->NLives += 1
 CONST 37DA
 LABEL 37FC AP_L1
 

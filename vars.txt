@@ -70,11 +70,11 @@ b 3390 DefenderBase_SpawnSide
 b 31C0 DrawPlayer_Rows
 b 3231 ErasePlayer_Rows
 
-b 31E5 Q_ActivePlayer_X_fraction
-b 31E6 Q_ActivePlayer_X_whole
+b 31E5 ActivePlayer_X_fraction
+b 31E6 ActivePlayer_X_whole
 
-w 31E7 Q_Loc_ActivePlayer
-w 31E9 Q_Loc_ActivePlayer_PrevLoc
+w 31E7 Loc_ActivePlayer
+w 31E9 Loc_ActivePlayer_Prev
 
 w 3420 Loc_DefenderShot
 b 3422 DefenderShot_State 0:launch shot, <0:NOP, 1:erase
