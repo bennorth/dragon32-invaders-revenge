@@ -14,20 +14,25 @@ for line in map(str.strip, open("vars.txt", "rt")):
     kind = pieces[0]
     addr = pieces[1]
 
-    qual = "Var" if kind in "bw" else "Const"
+    qual = "Var" if kind in "bwa" else "Const"
 
     name = f"{qual}_{kind}_" + (str(next_id()) if len(pieces) < 3 else pieces[2])
     comment = None if len(pieces) < 4 else pieces[3]
 
-    print(f"COMMENT {addr}")
+    print(f"COMMENT {addr} <DCHUNK>")
     if comment is not None:
         print(f"COMMENT {addr} {comment}")
     print(f"LABEL {addr} {name}")
 
     if kind in "bB":
+        next_addr = hex(int(addr, 16) + 1).upper()[2:]
         print(f"HEX {addr}")
 
-    if kind in "wW":
-        next_addr = hex(int(addr, 16) + 1).upper()[2:]
+    if kind in "wWaA":
+        next_addr = hex(int(addr, 16) + 2).upper()[2:]
+        low_addr = hex(int(addr, 16) + 1).upper()[2:]
         print(f"WORD {addr}")
-        print(f"CONST {addr}-{next_addr}")
+        if kind not in "aA":
+            print(f"CONST {addr}-{low_addr}")
+
+    print(f"PREPCOMM {next_addr} </DCHUNK>")
