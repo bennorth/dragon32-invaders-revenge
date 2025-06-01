@@ -68,7 +68,7 @@ Then ran in emulator [LINK XROAR], captured, analysed, re-synthesised.  Decided 
 
 # Misc remarks
 
-Interspersing of data and code.  Even sometimes a variable right in the middle of the subroutine it's part of: `Var_b_ShotSoundProgress`.
+Interspersing of data and code.  Even sometimes a variable right in the middle of the subroutine it's part of: `Var_b_ShotSoundProgress` in the middle of `Sub_LaunchPlayerShot`.
 
 Inventive use of system stack here and there.  Search for ",S".
 
@@ -80,7 +80,7 @@ Colour-code disassembly with backgrounds according to: code, data used locally j
 
 Fall-through into subroutine: Sub_CycleDefenderLaunchLocPtr
 
-Pointers into arrays stored just after that array, giving rise to code comparing a pointer's value to its location.
+Pointers into arrays stored just after that array, giving rise to code comparing a pointer's value to its location.  See also `ShotPtrLimit`.
 
 When blitting, checks that destination is in range (within screen memory) which panic if fail.
 
@@ -91,6 +91,10 @@ Use of `PULS PC,A` to save a byte over `PULS A / RTS`.
 Most (all?) sounds clear `Var_b_PostDrawDelay`, to try to keep the frame rate consistent whether there is a sound playing or not.  Sound effects therefore have to shorten at higher game speeds, but this could be called a feature because the game sounds more frantic as it speeds up.
 
 Use of BCD and dedicated instructions (`DAA`) to store and work with score.
+
+Shared code between subs `Sub_MovePlayerRight` and `Sub_MovePlayerLeft`.
+
+Differences in if/then/else basic-block layout.  `Sub_RedrawPlayer` has `RP_L5`; others (FIND SOME) more "inline".
 
 # Refs
 
