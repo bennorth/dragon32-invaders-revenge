@@ -1,5 +1,6 @@
 b 2D88
 
+b 2F28 NDE_BeepHPeriodC Complement of current half-period of beep tone played when a normal defender is destroyed
 w 372C HighScore Highest score yet, units of 100
 
 b 3645 TwoPlayerMode
