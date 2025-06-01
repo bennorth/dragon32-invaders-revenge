@@ -347,6 +347,9 @@ COMMENT 30CA
 LABEL 30CA Sub_PanicTextModeAbort
 COMMENT 30DA </CCHUNK>
 
+COMMENT 30DA <UCHUNK>
+COMMENT 30DE </UCHUNK>
+
 HEX 41D0-41D5
 
 COMMENT 3FFD
@@ -758,53 +761,31 @@ LABEL 323A EP_L1
 LABEL 323C EP_L2
 
 
+COMMENT 3BDF <CCHUNK>COMMENT 3BDF %%AUTOTITLE
+COMMENT 3BDF Reset defender-explosion data and player-shot data to "all unused" state.
+COMMENT 3BDF
+LABEL 3BDF Sub_ResetShotExplnData
+COMMENT 3BFD </CCHUNK>
+DEC 3BE3
+DEC 3BED
+COMMENT 3BE9
+COMMENT 3BF3
+LABEL 3BE4 RSED_L1
+LABEL 3BEE RSED_L2
 
-COMMENT 3BFD
+
+
+COMMENT 3BFD <DCHUNK>
+COMMENT 3BFD %%AUTOTITLE
 COMMENT 3BFD Tiny scattering explosion fragments
-LABEL 3BFD Arr_PlayerExplnFragments
-
-
-
-COMMENT 3CC8 <CCHUNK>
-COMMENT 3CC8 %%AUTOTITLE
-COMMENT 3CC8
-LABEL 3CC8 Sub_StepPlayerExpln
-COMMENT 3D5A </CCHUNK>
-COMMENT 3CF3
-COMMENT 3CF3 Move each explosion fragment
-COMMENT 3CDE
-COMMENT 3CDE Initialise explosion fragments locations:
-COMMENT 3CDE frag[2:3] = frag[0:1] + LocPlayer
-COMMENT 3D00
-COMMENT 3D00 Erase all previous yellow bits
-COMMENT 3D06
-COMMENT 3D06 If still animating ...
-COMMENT 3D0B
-COMMENT 3D0B .... and new loc within bounds, draw new fragment
-COMMENT 3D27
-COMMENT 3D27 Unk
-COMMENT 3D59
-DEC 3CD8
-DEC 3D3A
-
-LABEL 3CE5 SPE_L1
-LABEL 3CF3 SPE_L2
-COMMENT 3CF7
-LABEL 3CF7 SPE_loop
-COMMENT 3D1F
-LABEL 3D1F SPE_next
-LABEL 3D2F SPE_L3
-LABEL 3D36 SPE_L4
-COMMENT 3D43
-CONST 3D47
-LABEL 3D59 SPE_exit
-
-COMMENT 3BFD
 COMMENT 3BFD Array of data, 198 (= 33 x 6) bytes long?
 COMMENT 3BFD [ word(init-loc-offset-from-destruction),
 COMMENT 3BFD   word(current-loc),
 COMMENT 3BFD   byte(loc-change-per-frame),
 COMMENT 3BFD   byte(bitmask-for-'or'ing) ]
+COMMENT 3BFD
+LABEL 3BFD Arr_PlayerExplnFragments
+COMMENT 3CC3 </DCHUNK>
 DATA 3BFD-3CC2
 WORD 3BFD-3C00
 CONST 3BFD-3C00
@@ -905,6 +886,43 @@ HEX 3CBB-3CBC
 WORD 3CBD-3CC0
 CONST 3CBD-3CC0
 HEX 3CC1-3CC2
+
+
+
+COMMENT 3CC8 <CCHUNK>
+COMMENT 3CC8 %%AUTOTITLE
+COMMENT 3CC8
+LABEL 3CC8 Sub_StepPlayerExpln
+COMMENT 3D5A </CCHUNK>
+COMMENT 3CF3
+COMMENT 3CF3 Move each explosion fragment
+COMMENT 3CDE
+COMMENT 3CDE Initialise explosion fragments locations:
+COMMENT 3CDE frag[2:3] = frag[0:1] + LocPlayer
+COMMENT 3D00
+COMMENT 3D00 Erase all previous yellow bits
+COMMENT 3D06
+COMMENT 3D06 If still animating ...
+COMMENT 3D0B
+COMMENT 3D0B .... and new loc within bounds, draw new fragment
+COMMENT 3D27
+COMMENT 3D27 Unk
+COMMENT 3D59
+DEC 3CD8
+DEC 3D3A
+
+LABEL 3CE5 SPE_L1
+LABEL 3CF3 SPE_L2
+COMMENT 3CF7
+LABEL 3CF7 SPE_loop
+COMMENT 3D1F
+LABEL 3D1F SPE_next
+LABEL 3D2F SPE_L3
+LABEL 3D36 SPE_L4
+COMMENT 3D43
+CONST 3D47
+LABEL 3D59 SPE_exit
+
 
 COMMENT 3D2F
 DEC 3D39
@@ -1077,16 +1095,16 @@ LABEL 3BD6 FPB_reset_exit
 
 
 COMMENT 2DEF <DCHUNK>
-COMMENT 2DEF ============================================================================
+COMMENT 2DEF %%AUTOTITLE
 COMMENT 2DEF Start points of patrols.  They are all pointers to the last byte of a
 COMMENT 2DEF screen row, at row indexes (i.e., y coords as measured from the top of the
 COMMENT 2DEF screen down) of: 40, 102, 137, 66, 84, 93, 48, 117, 157, 75, 57, 127, 147.
 COMMENT 2DEF A right-to-left defender travels along that row; a left-to-right defender
 COMMENT 2DEF travels along the row below.
-COMMENT 2DEF ============================================================================
+COMMENT 2DEF
 LABEL 2DEF Arr_Const_IDP_LaunchLocs
-WORD 2DEF-2E08
 COMMENT 2E09 </DCHUNK>
+WORD 2DEF-2E08
 
 COMMENT 3704 <CCHUNK>
 COMMENT 3704 %%AUTOTITLE
@@ -1250,19 +1268,6 @@ LABEL 3587 DOEPE_L3
 LABEL 3589 DOEPE_L4
 LABEL 359A DOEPE_L5
 
-COMMENT 3BDF
-COMMENT 3BDF ----------------------------------------------------------------------------
-COMMENT 3BDF Reset defender-explosion data and player-shot data to "all unused" state.
-COMMENT 3BDF ----------------------------------------------------------------------------
-LABEL 3BDF Sub_ResetShotExplnData
-DEC 3BE3
-DEC 3BED
-COMMENT 3BE9
-COMMENT 3BF3
-LABEL 3BE4 RSED_L1
-LABEL 3BEE RSED_L2
-
-
 COMMENT 39E4 <CCHUNK>
 COMMENT 39E4 %%AUTOTITLE
 COMMENT 39E4 Find a free slot in the /Arr_DefenderExplosions/ array; a slot is "free" if
@@ -1272,19 +1277,20 @@ COMMENT 39E4 defender-kind = 1: normal(blue) ship; 10: special(red) ship; 12: ba
 COMMENT 39E4 animation-frames-remaining = 7: ship; 24: base
 COMMENT 39E4 defender-loc = location of top-left byte of defender
 COMMENT 39E4
-LABEL 39E4 Sub_InitDefenderExplosion
 COMMENT 3A11 </CCHUNK>
+LABEL 39E4 Sub_InitDefenderExplosion
+COMMENT 39ED
+COMMENT 39ED Search for free slot (one whose defender-loc is $0000).
 LABEL 39ED IDE_L1
+COMMENT 3A0A
 LABEL 3A0A IDE_exit
 CONST 3A0B
 DEC 39EC
-DEC 3A04
-DEC 39FB
-COMMENT 39ED
-COMMENT 39ED Search for free slot (one whose defender-loc is $0000).
 COMMENT 39F8
 COMMENT 39F8 Found a free slot; populate as described above.
-COMMENT 3A0A
+DEC 39FB
+DEC 3A04
+
 
 COMMENT 2D62
 WORD 2D62-2D6B
@@ -1297,10 +1303,11 @@ COMMENT 2F1A %%AUTOTITLE
 LABEL 2F1A GFX_NormalDefenderExpln
 COMMENT 2F28 </DCHUNK>
 
-COMMENT 2F28
+COMMENT 2F28 <DCHUNK>
 COMMENT 2F28 Complement of current half-period of beep tone played when a normal
 COMMENT 2F28 defender is destroyed
-LABEL 2F28 Var_b_NormalDefenderExpln_BeepHPeriodC
+COMMENT 2F29 </DCHUNK>
+LABEL 2F28 Var_b_NDE_BeepHPeriodC
 
 HEX 2F64-2F71
 WORD 2F64-2F71
