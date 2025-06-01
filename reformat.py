@@ -58,9 +58,10 @@ class ListingChunk:
         div = soup.new_tag("div")
         class_suffix = {
             "C": "code",
-            "D": "data"
+            "D": "data",
+            "U": "unused",
         }[self.kind]
-        div.attrs["class"] = f"chunk-{class_suffix}"
+        div.attrs["class"] = f"listing-chunk chunk-{class_suffix}"
         for line in self.lines:
             div.append(line.html(soup))
         return div
