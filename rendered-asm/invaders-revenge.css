@@ -1,0 +1,76 @@
+main {
+    margin: 2rem;
+    font-family: "Menlo", "Monaco", "Ubuntu Mono", "Consolas", "source-code-pro", monospace;
+}
+
+main {
+    --column-0-width: 21rem;
+    --column-1-width: 2.75rem;
+    pre {
+        margin: 2px 0px;
+        min-height: 0.75rem;
+    }
+}
+
+main div.chunk-code { --chunk-background: #F9F2AA; }
+main div.chunk-data { --chunk-background: #E4F0FC; }
+main div.chunk-unused { --chunk-background: #F0F0F0; }
+
+main div.listing-chunk {
+    background-color: var(--chunk-background);
+    padding: 4px 0px;
+    margin: 0.75rem 0px;
+
+    h2 {
+        color: #005740;
+        margin: 3px 0px 9px 0px;
+    }
+}
+
+pre.chunk-h2 {
+    margin-bottom: 12px;
+    span.asm-comment {
+        font-size: 1.25rem;
+    }
+}
+.asm-comment-intro,
+.asm-comment {
+    color: #005740;
+    font-style: italic;
+    font-weight: bold;
+}
+span.asm-directive-instr {
+    display: inline-block;
+    width: var(--column-1-width);
+}
+span.asm-directive-operand {
+    display: inline-block;
+    width: var(--column-0-width);
+}
+
+.asm-comment-intro,
+span.asm-directive-label,
+span.asm-code-label {
+    display: inline-block;
+    width: var(--column-0-width);
+    padding-right: 0.5rem;
+    box-sizing: border-box;
+    text-align: right;
+    font-weight: bold;
+}
+span.asm-code-instr {
+    display: inline-block;
+    width: var(--column-1-width);
+    color: #944000;
+}
+span.asm-code-operand {
+    display: inline-block;
+    width: 18rem;
+}
+span.asm-code-dump-addr {
+    color: #903768;
+}
+span.asm-code-dump-data {
+    margin-left: 0.75rem;
+    color: #005A8F;
+}
