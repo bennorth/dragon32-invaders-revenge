@@ -44,9 +44,9 @@ b 2EE1 SDM_NRemaining
 
 b 41D2 ActivePlayerIdx
 
-b 2F63 SpecialDefenderExpln_Rows
-B 2F72 SpecialDefenderExpln_InitPeriod
-b 2F73 SpecialDefenderExpln_Period
+b 2F63 ISDE_Rows
+B 2F72 ISDE_InitPeriod
+b 2F73 ISDE_Period
 
 b 372E CheckHighScore_NFlashesLeft
 
