@@ -802,6 +802,7 @@ COMMENT 34A2
 COMMENT 34A2 Check colour of rightmost pixel in byte of proposed new location of top of
 COMMENT 34A2 shot (recall: 0=G, 1=Y, 2=B, 3=R); if BIT $01 is clear, pixel is 0=green
 COMMENT 34A2 (background) or 2=blue (normal defender) and shot can be there
+COMMENT 34A6
 COMMENT 34A6 We know BIT $01 is set; if BIT $02 is clear, pixel is 1=yellow and we have
 COMMENT 34A6 hit something destructible (player or player shot); otherwise it is 3=red
 COMMENT 34A6 and the shot can be there (special defender)
