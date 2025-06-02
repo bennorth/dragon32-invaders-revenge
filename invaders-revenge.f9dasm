@@ -438,11 +438,24 @@ LABEL 3025 Sub_DisplayPauseMsg
 COMMENT 3025 <CCHUNK>
 COMMENT 3025 %%AUTOTITLE
 COMMENT 3025 Cycle between displaying two variants of the PAUSE text until the player
-COMMENT 3025 presses "P", at which point clear the message and resume play.
+COMMENT 3025 presses something other than "P", at which point clear the message and
+COMMENT 3025 resume play.
 COMMENT 3025
+COMMENT 3029 If B has wrapped round, switch text colour
+COMMENT 302B
+COMMENT 302F If no key pressed, loop
+COMMENT 3031 If "p" key pressed...
+COMMENT 3033 ....loop
+COMMENT 3035
+COMMENT 3035 Exit pause: clear text from screen and resume play loop
 LABEL 3028 DPM_L1
 CHAR 3032
 COMMENT 303D
+COMMENT 303D Blt text, leaving U pointing one beyond just-blt'd text
+COMMENT 3047
+COMMENT 3047 If U is just beyond second (yellow) text...
+COMMENT 304B ....loop, resetting U to point to first (blue) text
+COMMENT 304D ....otherwise, loop, with U pointing to second (yellow) text
 LABEL 303D DPM_L2
 COMMENT 304F </CCHUNK>
 
