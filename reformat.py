@@ -116,7 +116,66 @@ class ListingChunk:
         img.attrs["src"] = "data:image/png;base64," + png_b64
         return [img]
 
+    def acquire_reformat_data_directive(self):
+        rfd_idx, rfd_n_bytes_per_row = None, None
+        for i, ln in enumerate(self.lines):
+            if isinstance(ln, CommentLine) and ln.comment.startswith("%%RFD"):
+                rfd_idx = i
+                pcs = ln.comment.split()
+                rfd_n_bytes_per_row = int(pcs[1])
+        if rfd_idx is not None:
+            self.lines.pop(rfd_idx)
+        return rfd_n_bytes_per_row
+
+    def first_code(self):
+        for ln in self.lines:
+            if isinstance(ln, CodeLine):
+                return ln
+
+    def maybe_reformat_data(self):
+        if (n_bytes_per_row := self.acquire_reformat_data_directive()) is None:
+            return
+        cbytes = self.code_bytes()
+        new_lines = []
+        first = True
+        addr = int(self.first_code().dump_addr, 16)
+        for idx0 in range(0, len(cbytes), n_bytes_per_row):
+            row_bytes = cbytes[idx0:idx0+n_bytes_per_row]
+            row_chrs = [chr(b) for b in row_bytes]
+            hexs_dump = "'.....'"
+            hexs = ",".join(f"${b:02X}" for b in row_bytes)
+            hexs_dump = " ".join(f"{b:02X}" for b in row_bytes)
+            chrs_dump = "".join(ch if (ord(ch) < 0x80 and ch.isprintable()) else "." for ch in row_chrs)
+            hex_wd = max(n_bytes_per_row * 3, 13)
+            full_dump = f"{hexs_dump:{hex_wd}}  '{chrs_dump}'"
+            new_line = CodeLine(
+                -1,
+                self.first_code().label if first else None,
+                "FCB",
+                hexs,
+                f"{addr:04X}",
+                full_dump
+            )
+            addr += n_bytes_per_row
+            new_lines.append(new_line)
+            first = False
+
+        all_new_lines = []
+        lines_iter = iter(self.lines)
+        for ln in lines_iter:
+            if not isinstance(ln, CodeLine):
+                all_new_lines.append(ln)
+            else:
+                all_new_lines.extend(new_lines)
+                for ln in lines_iter:
+                    if not isinstance(ln, CodeLine):
+                        all_new_lines.append(ln)
+                        break
+
+        self.lines = all_new_lines
+
     def html(self, soup):
+        self.maybe_reformat_data()
         div = soup.new_tag("div")
         class_suffix = {
             "C": "code",
