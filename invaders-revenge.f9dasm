@@ -346,7 +346,7 @@ COMMENT 2F1A %%AUTOTITLE
 DATA 2F1A-2F27
 COMMENT 2F28 </DCHUNK>
 
-LABEL 2F29 Sub_NormalDefenderExpln
+LABEL 2F29 Sub_InitNormalDefenderExpln
 COMMENT 2F29 <CCHUNK>
 COMMENT 2F29 %%AUTOTITLE
 COMMENT 2F29 Blt the initial "normal defender" explosion graphic to X, and play a short
@@ -356,14 +356,14 @@ COMMENT 2F29
 COMMENT 2F2B
 COMMENT 2F2B Blt 7 rows of explosion gfx to X
 DEC 2F2F
-LABEL 2F33 NDE_L1
+LABEL 2F33 INDE_L1
 COMMENT 2F3F
 COMMENT 2F3F Set initial half-period complement of falling-tone beep
 COMMENT 2F44
 COMMENT 2F44 Play one cycle of tone
-LABEL 2F44 NDE_L2
-LABEL 2F4C NDE_L3
-LABEL 2F55 NDE_L4
+LABEL 2F44 INDE_L2
+LABEL 2F4C INDE_L3
+LABEL 2F55 INDE_L4
 COMMENT 2F58
 COMMENT 2F58 Decrease half-period complement, thereby increasing half-period
 COMMENT 2F5B
