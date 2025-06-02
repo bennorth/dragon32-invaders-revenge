@@ -1508,8 +1508,9 @@ COMMENT 3D0B .... and new loc within bounds, draw new fragment
 COMMENT 3D1F
 LABEL 3D1F SPE_next
 COMMENT 3D27
-COMMENT 3D27 Unk
-COMMENT 3D2F
+COMMENT 3D27 If explosion over...
+COMMENT 3D2A ...set up for next one
+COMMENT 3D2C
 LABEL 3D2F SPE_L3
 COMMENT 3D36
 LABEL 3D36 SPE_L4
