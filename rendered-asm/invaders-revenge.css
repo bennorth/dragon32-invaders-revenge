@@ -29,6 +29,8 @@ main div.listing-chunk {
 
     img.gfx-img {
         margin: 0.25rem 0rem 0.25rem var(--column-0-width);
+        border: 6px solid #1dae15;
+        border-radius: 4px;
     }
 }
 
