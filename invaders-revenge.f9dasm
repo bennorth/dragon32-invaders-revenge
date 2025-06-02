@@ -1697,3 +1697,6 @@ LABEL 4A8F SIT_L1
 ******************************************************************************
 
 INCLUDE vars.f9dasm
+
+* Override a "location on screen" variable which starts off at zero:
+CONST 3420-3421
