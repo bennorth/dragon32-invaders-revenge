@@ -751,6 +751,9 @@ LABEL 34BC GFX_RedAsterisk
 COMMENT 34BC <DCHUNK>
 COMMENT 34BC %%GFX 2
 COMMENT 34BC %%AUTOTITLE
+COMMENT 34BC This is drawn vertically inverted, but it is symmetrical so the result is
+COMMENT 34BC the same.
+COMMENT 34BC
 HEX 34BC-34C5
 WORD 34BC-34C5
 COMMENT 34C6 </DCHUNK>
@@ -759,6 +762,9 @@ LABEL 34C6 GFX_YellowAsterisk
 COMMENT 34C6 <DCHUNK>
 COMMENT 34C6 %%GFX 2
 COMMENT 34C6 %%AUTOTITLE
+COMMENT 34C6 This is drawn vertically inverted, but it is symmetrical so the result is
+COMMENT 34C6 the same.
+COMMENT 34C6
 HEX 34C6-34CF
 WORD 34C6-34CF
 COMMENT 34D0 </DCHUNK>
