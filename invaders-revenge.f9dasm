@@ -236,6 +236,7 @@ COMMENT 2E1B "hit check and erase" tasks.
 COMMENT 2E22 $E1 = lower byte of $1F × $FF
 COMMENT 2E28
 DEC 2E29
+COMMENT 2E2D
 LABEL 2E39 MDCH_L01
 COMMENT 2E3D
 COMMENT 2E3D Defender intersects with some yellow; it got hit.
@@ -691,6 +692,7 @@ COMMENT 3391 sound effect) if so.
 COMMENT 3391
 COMMENT 3398
 COMMENT 3398 MovePhase = active_player->DefenderMovePeriod
+COMMENT 33A0
 DEC 33A4
 DEC 33BD
 DEC 33D5
