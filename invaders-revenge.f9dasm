@@ -1041,6 +1041,7 @@ COMMENT 37C7
 COMMENT 37C7 There was a carry; add it to the ten-thousands/hundred-thousands
 COMMENT 37CD
 COMMENT 37CD X = active_player->Loc_TopLifeShip
+COMMENT 37CF A = active_player->XPositionFraction
 COMMENT 37D1
 COMMENT 37D1 If top life-ship high enough up that there must already be three...
 COMMENT 37D4 ...no extra life possible
