@@ -14,7 +14,7 @@ for line in map(str.strip, open("vars.txt", "rt")):
     kind = pieces[0]
     addr = pieces[1]
 
-    qual = "Var" if kind in "bwa" else "Const"
+    qual = "Var" if kind in "bwsp" else "Const"
 
     name = f"{qual}_{kind}_" + (str(next_id()) if len(pieces) < 3 else pieces[2])
     comment = None if len(pieces) < 4 else pieces[3]
@@ -28,11 +28,11 @@ for line in map(str.strip, open("vars.txt", "rt")):
         next_addr = hex(int(addr, 16) + 1).upper()[2:]
         print(f"HEX {addr}")
 
-    if kind in "wWaA":
+    if kind in "wWpPsS":
         next_addr = hex(int(addr, 16) + 2).upper()[2:]
         low_addr = hex(int(addr, 16) + 1).upper()[2:]
         print(f"WORD {addr}")
-        if kind not in "aA":
+        if kind not in "pPsS":
             print(f"CONST {addr}-{low_addr}")
 
     print(f"PREPCOMM {next_addr} </DCHUNK>")
