@@ -604,7 +604,12 @@ COMMENT 31EB ActivePlayer_X_fraction ? left-just : right-just
 COMMENT 31EB and then draw the player using the same mask.
 COMMENT 31EB ???????????????? Have I got that right?  Seems odd.
 LABEL 31FA RP_L1
+COMMENT 3208
+COMMENT 3208 If both players have zero lives...
 LABEL 3208 RP_L2
+COMMENT 320E ....do not redraw player ship
+COMMENT 3210
+COMMENT 3210 Blt (with "OR") 6 rows and 3 bytes
 DEC 3214
 LABEL 3218 RP_L3
 DEC 3219
