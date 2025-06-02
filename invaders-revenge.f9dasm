@@ -809,6 +809,8 @@ LABEL 353A GFX_YellowExplodingPlayer
 COMMENT 353A <DCHUNK>
 COMMENT 353A %%GFX 4
 COMMENT 353A %%AUTOTITLE
+COMMENT 353A This is big enough to look OK for both values of fractional position.
+COMMENT 353A
 HEX 353A-3559
 WORD 353A-3559
 COMMENT 355A </DCHUNK>
