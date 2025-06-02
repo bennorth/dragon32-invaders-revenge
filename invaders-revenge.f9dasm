@@ -148,17 +148,30 @@ COMMENT 2D8C %%AUTOTITLE
 COMMENT 2D8C Start a new defender on a patrol across the screen.
 COMMENT 2D8C
 DEC 2D91
-LABEL 2D95 IDP_L1
 COMMENT 2D95
+COMMENT 2D95 Search for free slot (one with Location == 0) within Arr_DefendersData
+LABEL 2D95 IDP_L1
 COMMENT 2D9B
+COMMENT 2D9B A = $01 or $FF; negate for next time
+COMMENT 2DA1
+COMMENT 2DA1 phase += 1; if phase == 17...
 DEC 2DA5
+COMMENT 2DAB ....reset phase, and turn L-to-R normal defender into special
+COMMENT 2DB0
+COMMENT 2DB0 defender->KindAndVelocity = A (one of: $01, $41, $FF)
 LABEL 2DB0 IDP_L2
+COMMENT 2DB2
+COMMENT 2DB2 If R-to-L (necessarily normal)...
+COMMENT 2DB6 ....prepare to store $1F
+COMMENT 2DB8
+COMMENT 2DB8 defender->XColumn = $01 (L-to-R) or $1F (R-to-L)
 LABEL 2DB8 IDP_L3
 COMMENT 2DBA
 COMMENT 2DBA Search for patrol start location in unoccupied row
 LABEL 2DBA IDP_L4
 COMMENT 2DBE
-COMMENT 2DBE Scan row two rows down for existing defender (any blue pixel)
+COMMENT 2DBE Scan every other byte of row two rows down for evidence of existing
+COMMENT 2DBE defender (any blue pixel)
 DEC 2DC2
 COMMENT 2DC3
 LABEL 2DC3 IDP_L5
@@ -167,8 +180,9 @@ COMMENT 2DC9 Row contains blue; try next patrol-start location
 COMMENT 2DCD
 LABEL 2DCD IDP_L6
 COMMENT 2DD0
-COMMENT 2DD0 Found suitable patrol-start location; store it
-COMMENT 2DD6 Fall through to cyclically advance pointer...
+COMMENT 2DD0 Found suitable patrol-start location; store to defender->Location
+COMMENT 2DD6
+COMMENT 2DD6 Fall through to cyclically advance launch-location pointer...
 COMMENT 2DD6
 LABEL 2DD6 Sub_CycleDefenderLaunchLocPtr
 CONST 2DDA
