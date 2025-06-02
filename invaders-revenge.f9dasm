@@ -28,15 +28,29 @@ LABEL 0A60 Loc_x000_y035
 LABEL 0AE0 Loc_x000_y039
 LABEL 0AEC Loc_x048_y039
 LABEL 0B00 Loc_x000_y040
+LABEL 0B1F Loc_x124_y040
 LABEL 0B3F Loc_x124_y041
 LABEL 0B60 Loc_x000_y043
+LABEL 0C1F Loc_x124_y048
+LABEL 0D3F Loc_x124_y057
+LABEL 0E5F Loc_x124_y066
+LABEL 0F7F Loc_x124_y075
+LABEL 109F Loc_x124_y084
+LABEL 11BF Loc_x124_y093
 LABEL 1287 Loc_x028_y100
 LABEL 128E Loc_x056_y100
+LABEL 12DF Loc_x124_y102
+LABEL 14BF Loc_x124_y117
+LABEL 15FF Loc_x124_y127
+LABEL 173F Loc_x124_y137
+LABEL 187F Loc_x124_y147
+LABEL 19BF Loc_x124_y157
 LABEL 1BE0 Loc_x000_y175
 LABEL 1CA0 Loc_x000_y181
 LABEL 1CBE Loc_x120_y181
 LABEL 1DA0 Loc_x000_y189
 LABEL 1DE0 Loc_x000_y191
+
 LABEL 1E00 D32_GraphicsPage5
 
 LABEL BDDC D32_CasMotorOff
@@ -165,9 +179,8 @@ LABEL 2DEF Arr_Const_IDP_LaunchLocs
 COMMENT 2DEF <DCHUNK>
 COMMENT 2DEF %%AUTOTITLE
 COMMENT 2DEF Start points of patrols.  They are all pointers to the last byte of a
-COMMENT 2DEF screen row, at row indexes (i.e., y coords as measured from the top of the
-COMMENT 2DEF screen down) of: 40, 102, 137, 66, 84, 93, 48, 117, 157, 75, 57, 127, 147.
-COMMENT 2DEF A right-to-left defender travels along that row; a left-to-right defender
+COMMENT 2DEF screen row, at various row indexes (see values as Loc_X_Y labels).  A
+COMMENT 2DEF right-to-left defender travels along that row; a left-to-right defender
 COMMENT 2DEF travels along the row below.
 COMMENT 2DEF
 WORD 2DEF-2E08
