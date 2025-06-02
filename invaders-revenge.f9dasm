@@ -368,6 +368,7 @@ COMMENT 2F58
 COMMENT 2F58 Decrease half-period complement, thereby increasing half-period
 COMMENT 2F5B
 COMMENT 2F5B Keep going if half-period complement is at least (in unsigned sense) $80
+COMMENT 2F5D
 COMMENT 2F63 </CCHUNK>
 
 LABEL 2F64 GFX_BlueYellowSparks
@@ -392,6 +393,7 @@ DEC 2F90
 LABEL 2F91 ISDE_L3
 LABEL 2F97 ISDE_L4
 LABEL 2F9A ISDE_L5
+COMMENT 2FA8
 COMMENT 2FAE </CCHUNK>
 
 LABEL 2FAE GFX_Text_SHOTS
@@ -539,6 +541,7 @@ COMMENT 3164
 LABEL 3164 MPL_L7
 COMMENT 316A
 LABEL 316A MPL_L8
+COMMENT 3170
 COMMENT 3173 </CCHUNK>
 
 LABEL 3176 Sub_ClearLowerScreen
@@ -599,6 +602,7 @@ DEC 3214
 LABEL 3218 RP_L3
 DEC 3219
 LABEL 321A RP_L4
+COMMENT 322B
 LABEL 322B RP_exit
 COMMENT 322C
 LABEL 322C RP_L5
@@ -1219,9 +1223,9 @@ COMMENT 39C7 </CCHUNK>
 LABEL 39C7 Sub_EraseThenDrawPlayer
 COMMENT 39C7 <CCHUNK>
 COMMENT 39C7 %%AUTOTITLE
-COMMENT 39C7
 COMMENT 39C7 Erase and redraw the player at screen address X, but using the
 COMMENT 39C7 x-posn-fraction value from Var_b_ActivePlayer_X_fraction
+COMMENT 39C7
 COMMENT 39D5 </CCHUNK>
 
 LABEL 39D5 Sub_WriteDefendersDataWords
@@ -1231,6 +1235,7 @@ COMMENT 39D5 Write the contents of D to X and then every fourth
 COMMENT 39D5 location after that (so X, X+4, X+8, ...) as long
 COMMENT 39D5 as the locations stay within the `Arr_DefendersData`
 COMMENT 39D5 array of structures.
+COMMENT 39D5
 COMMENT 39DF </CCHUNK>
 
 LABEL 39E4 Sub_InitDefenderExplosion
