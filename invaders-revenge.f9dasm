@@ -675,6 +675,8 @@ COMMENT 3391 Move the defender base and check whether it's been hit, launching t
 COMMENT 3391 appropriate actions (starting new base patrol, initiating explosion and
 COMMENT 3391 sound effect) if so.
 COMMENT 3391
+COMMENT 3398
+COMMENT 3398 MovePhase = active_player->DefenderMovePeriod
 DEC 33A4
 DEC 33BD
 DEC 33D5
