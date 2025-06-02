@@ -96,6 +96,8 @@ Shared code between subs `Sub_MovePlayerRight` and `Sub_MovePlayerLeft`.
 
 Differences in if/then/else basic-block layout.  `Sub_RedrawPlayer` has `RP_L5`; others (FIND SOME) more "inline".
 
+When iterating over a fixed-size array, sometimes the codes counts how many entries, other times compares pointer to one-past-end of array.
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
