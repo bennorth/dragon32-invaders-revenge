@@ -239,13 +239,13 @@ DEC 2E29
 COMMENT 2E2D
 LABEL 2E39 MDCH_L01
 COMMENT 2E3D
-COMMENT 2E3D Defender intersects with some yellow; it got hit.
+COMMENT 2E3D Defender intersects with some yellow; it got hit
 COMMENT 2E40
-COMMENT 2E40 Overwrite X value on stack with zero to signal this defender gone.
+COMMENT 2E40 Overwrite X value on stack with zero to signal this defender gone
 CONST 2E41
 COMMENT 2E45
 COMMENT 2E47
-COMMENT 2E47 Determine what kind of defender was destroyed.
+COMMENT 2E47 Determine what kind of defender was destroyed
 DEC 2E48
 COMMENT 2E53
 COMMENT 2E53 Special (red) defender destroyed
@@ -259,26 +259,26 @@ COMMENT 2E5D Tasks arising from destroyed defender
 LABEL 2E5D MDCH_L04
 COMMENT 2E68
 COMMENT 2E68 Erase an 8-wide, 7-high block of pixels (i.e., 2 bytes wide), with the
-COMMENT 2E68 top-left byte pointed to by X.  This erases the defender.
+COMMENT 2E68 top-left byte pointed to by X; this erases the defender
 LABEL 2E68 MDCH_L05
 CONST 2E69
 LABEL 2E6B MDCH_L06
 COMMENT 2E75
-COMMENT 2E75 Retrieve location (X) and location/column increment (A).  If this is an
-COMMENT 2E75 active slot, compute new location.
+COMMENT 2E75 Retrieve location (X) and location/column increment (A); if this is an
+COMMENT 2E75 active slot, compute new location
 LABEL 2E75 MDCH_L07
 CONST 2E78
 COMMENT 2E80
-COMMENT 2E80 A defender moving along the top row does so at double speed.  Update
-COMMENT 2E80 location and increment in this case.
+COMMENT 2E80 A defender moving along the top row does so at double speed; update
+COMMENT 2E80 location and increment in this case
 COMMENT 2E88
 COMMENT 2E88 Compute new column; if that takes the defender to or beyond the leftmost
 COMMENT 2E88 column, or to one beyond the rightmost column, mark this patrol as over and
-COMMENT 2E88 launch a new one.
+COMMENT 2E88 launch a new one
 LABEL 2E88 MDCH_L08
 COMMENT 2E98
 COMMENT 2E98 Still on screen; store new location and column to the structure, and draw
-COMMENT 2E98 defender in new position.
+COMMENT 2E98 defender in new position
 DEC 2E9B
 LABEL 2EA1 MDCH_L09
 COMMENT 2EB2 </CCHUNK>
