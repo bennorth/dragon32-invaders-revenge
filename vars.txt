@@ -11,6 +11,7 @@ b 41D1 R_Player_last_joy_Y
 b 41D3 L_Player_last_joy_X
 b 41D4 L_Player_last_joy_Y
 
+p 3295 ShotPtrLimit
 b 3297 ShotInProgress
 
 b 3173 Init_PostDrawDelay
