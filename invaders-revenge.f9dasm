@@ -1073,11 +1073,26 @@ LABEL 3810 Sub_MaybeIncreaseDifficulty
 COMMENT 3810 <CCHUNK>
 COMMENT 3810 %%AUTOTITLE
 COMMENT 3810
+COMMENT 3813
+COMMENT 3813 If active_player->Score < active_player->NextSpeedUpScore...
+COMMENT 3818 ...do nothing
+COMMENT 381A
+COMMENT 381A Compute proposed next speed-up score
 CONST 381E
 CONST 3823
 LABEL 3825 MID_L1
 CONST 3826
+COMMENT 3828
+COMMENT 3828 If proposed speed-up score exceeds 15,000...
 CONST 382A
+COMMENT 382C ...do nothing
+COMMENT 382E
+COMMENT 382E active_player->NextSpeedUpScore = computed value
+COMMENT 3830
+COMMENT 3830 Decrease active_player->BaseMovePeriod but only down to 1
+COMMENT 3836
+COMMENT 3836 Decrease active_player->DefenderMovePeriod but only down to 1
+COMMENT 383C
 LABEL 3836 MID_L2
 LABEL 383C MID_exit
 COMMENT 383D </CCHUNK>
