@@ -96,10 +96,10 @@ a 355C DrawOrErasePlayerExpln_Loc
 b 35A0 EraseTopLivesShip_Rows
 
 # Following is multiplied by 4 in Sub_24
-b 3CC3 StepPlayerExpln_ActionPhase
+b 3CC3 SPE_ActionPhase
 b 3CC4 bool_PlayerExplnUnderway
 a 3CC5 Loc_LastPlayerExpln
-b 3CC7 StepPlayerExpln_FragmentPhase
+b 3CC7 SPE_FragmentPhase
 
 b 3539
 
