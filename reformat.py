@@ -1,9 +1,13 @@
 import sys
 import re
+import io
 from dataclasses import dataclass
 from colored import Fore as CF, Back as CB, Style as CS
 from bs4 import BeautifulSoup
 from typing import Any
+from PIL import Image
+from make_img import img_from_bytes
+from base64 import b64encode
 
 LABEL_WD = 40
 INSTR_WD = 40
@@ -62,6 +66,56 @@ class ListingChunk:
             and isinstance(self.lines[-3], BlankLine)
         )
 
+    def acquire_gfx_directive(self):
+        gfx_idx, gfx_n_bytes_per_row, gfx_layout = None, None, None
+        for i, ln in enumerate(self.lines):
+            if isinstance(ln, CommentLine) and ln.comment.startswith("%%GFX"):
+                gfx_idx = i
+                pcs = ln.comment.split()
+                gfx_n_bytes_per_row = int(pcs[1])
+                gfx_layout = pcs[2] if len(pcs) > 2 else "horizontal"
+        if gfx_idx is not None:
+            self.lines.pop(gfx_idx)
+        return gfx_n_bytes_per_row, gfx_layout
+
+    def code_bytes(self):
+        code_bytes = []
+        for ln in self.lines:
+            if not isinstance(ln, CodeLine):
+                continue
+            for byte_hex in ln.dump_data.split("'")[0].split():
+                code_bytes.append(int(byte_hex, 16))
+        return code_bytes
+
+    def img_divs(self, soup):
+        m_n_bytes_per_row, img_layout = self.acquire_gfx_directive()
+        if m_n_bytes_per_row is None:
+            return []
+
+        img_bytes = self.code_bytes()
+        if (
+            len(img_bytes) % m_n_bytes_per_row == 1
+            and img_layout == "vertical"
+            and img_bytes[-1] == 0xff
+        ):
+            # Text might have a $FF terminator
+            img_bytes = img_bytes[:-1]
+        if len(img_bytes) % m_n_bytes_per_row != 0:
+            raise ValueError(
+                f"len(img_bytes)={len(img_bytes)} not div {m_n_bytes_per_row}"
+            )
+
+        img_scale = 8 if img_layout == "horizontal" else 6
+        im = img_from_bytes(img_bytes, m_n_bytes_per_row, img_layout, img_scale, green_0=True)
+        png_bytesio = io.BytesIO()
+        im.save(png_bytesio, "PNG")
+        png_bytes = png_bytesio.getvalue()
+        png_b64 = b64encode(png_bytes).decode()
+        img = soup.new_tag("img")
+        img.attrs["class"] = "gfx-img"
+        img.attrs["src"] = "data:image/png;base64," + png_b64
+        return [img]
+
     def html(self, soup):
         div = soup.new_tag("div")
         class_suffix = {
@@ -71,6 +125,8 @@ class ListingChunk:
             "U": "unused",
         }[self.kind]
         div.attrs["class"] = f"listing-chunk chunk-{class_suffix}"
+        for div1 in self.img_divs(soup):
+            div.append(div1)
         lines_nub = self.lines[:-3] if self.ends_with_org() else self.lines
         for line in lines_nub:
             div.append(line.html(soup))

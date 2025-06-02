@@ -18,6 +18,7 @@ main div.chunk-unused { --chunk-background: #F0F0F0; }
 main div.chunk-directive { --chunk-background: #B5FFEB; }
 
 main div.listing-chunk {
+    position: relative;
     background-color: var(--chunk-background);
     padding: 4px 0px;
     margin: 0.75rem 0px;
@@ -25,6 +26,12 @@ main div.listing-chunk {
     h2 {
         color: #005740;
         margin: 3px 0px 9px 0px;
+    }
+
+    img.gfx-img {
+        position: absolute;
+        top: 6px;
+        right: 6px;
     }
 }
 
