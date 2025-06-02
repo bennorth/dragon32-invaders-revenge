@@ -37,6 +37,42 @@ def layout_iter(bytes, chunk_len, layout):
     else:
         raise ValueError(f'unknown layout "{layout}"')
 
+
+def img_from_bytes(bytes, im_wd_bytes, layout, scale, *, green_0=False):
+    n_bytes = len(bytes)
+    if n_bytes % im_wd_bytes != 0:
+        raise ValueError(f"got {n_bytes} bytes but need multiple of {im_wd_bytes}")
+
+    #print(bytes, (im_wd_bytes * PIXELS_PER_BYTE, n_bytes // im_wd_bytes))
+
+    img_height = n_bytes // im_wd_bytes
+
+    if layout == "vertical":
+        img_height, im_wd_bytes = im_wd_bytes, img_height
+
+    if green_0:
+        eff_palette = list(palette)
+        eff_palette[0] = (29, 174, 21, 255)
+    else:
+        eff_palette = palette
+
+    im = Image.new("RGBA", (2 * scale * im_wd_bytes * PIXELS_PER_BYTE, scale * img_height))
+    i_bytes = layout_iter(bytes, img_height, layout)
+    for row_idx in range(img_height):
+        for colbatch_idx in range(im_wd_bytes):
+            b = next(i_bytes)
+            pxs = pixels_from_byte(b)
+            for pxl_idx, pxl in enumerate(pxs):
+                for xdup in range(2 * scale):
+                    for ydup in range(scale):
+                        im.putpixel(
+                            (2 * scale * (colbatch_idx * PIXELS_PER_BYTE + pxl_idx) + xdup,
+                             scale * row_idx + ydup),
+                            eff_palette[pxl]
+                        )
+    return im
+
+
 if __name__ == "__main__":
     layout = "horizontal"
     scale = int(sys.argv[1])
@@ -56,30 +92,5 @@ if __name__ == "__main__":
             raise ValueError("inconsistent row lengths")
         bytes.extend(row_bytes)
 
-    n_bytes = len(bytes)
-    if n_bytes % im_wd_bytes != 0:
-        raise ValueError(f"got {n_bytes} bytes but need multiple of {im_wd_bytes}")
-
-    #print(bytes, (im_wd_bytes * PIXELS_PER_BYTE, n_bytes // im_wd_bytes))
-
-    img_height = n_bytes // im_wd_bytes
-
-    if layout == "vertical":
-        img_height, im_wd_bytes = im_wd_bytes, img_height
-
-    im = Image.new("RGBA", (2 * scale * im_wd_bytes * PIXELS_PER_BYTE, scale * img_height))
-    i_bytes = layout_iter(bytes, img_height, layout)
-    for row_idx in range(img_height):
-        for colbatch_idx in range(im_wd_bytes):
-            b = next(i_bytes)
-            pxs = pixels_from_byte(b)
-            for pxl_idx, pxl in enumerate(pxs):
-                for xdup in range(2 * scale):
-                    for ydup in range(scale):
-                        im.putpixel(
-                            (2 * scale * (colbatch_idx * PIXELS_PER_BYTE + pxl_idx) + xdup,
-                             scale * row_idx + ydup),
-                            palette[pxl]
-                        )
-
+    im = img_from_bytes(bytes, im_wd_bytes, layout, scale)
     im.save(sys.argv[3])
