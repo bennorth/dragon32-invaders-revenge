@@ -15,6 +15,7 @@ main {
 main div.chunk-code { --chunk-background: #F9F2AA; }
 main div.chunk-data { --chunk-background: #E4F0FC; }
 main div.chunk-unused { --chunk-background: #F0F0F0; }
+main div.chunk-directive { --chunk-background: #B5FFEB; }
 
 main div.listing-chunk {
     background-color: var(--chunk-background);

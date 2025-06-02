@@ -54,17 +54,31 @@ class ListingChunk:
         if self.kind != kind:
             raise ValueError(f"bad chunk: open {self.kind} but close {kind}")
 
+    def ends_with_org(self):
+        return (
+            isinstance(self.lines[-1], BlankLine)
+            and isinstance(self.lines[-2], DirectiveLine)
+            and self.lines[-2].instr == "ORG"
+            and isinstance(self.lines[-3], BlankLine)
+        )
+
     def html(self, soup):
         div = soup.new_tag("div")
         class_suffix = {
             "C": "code",
             "D": "data",
+            "A": "directive",  # "Assembler directive"; "D" taken
             "U": "unused",
         }[self.kind]
         div.attrs["class"] = f"listing-chunk chunk-{class_suffix}"
-        for line in self.lines:
+        lines_nub = self.lines[:-3] if self.ends_with_org() else self.lines
+        for line in lines_nub:
             div.append(line.html(soup))
-        return div
+        divs = [div]
+        if self.ends_with_org():
+            ch = ListingChunk("A", [self.lines[-2]])
+            divs.extend(ch.html(soup))
+        return divs
 
 
 class DoesNotMarkChunks:
@@ -252,7 +266,7 @@ for pline in listing_plines:
             raise ValueError("bad chunk nesting")
         open_chunk = mchunk
     elif open_chunk is not None and open_chunk.line_closes(pline):
-        html_main.append(open_chunk.html(soup))
+        html_main.extend(open_chunk.html(soup))
         open_chunk = None
     else:
         if open_chunk is not None:
@@ -263,7 +277,7 @@ for pline in listing_plines:
     #print(pline.pretty())
 
 if open_chunk is not None:
-    html_main.append(open_chunk.html(soup))
+    html_main.extend(open_chunk.html(soup))
 
 
 # Not "prettify()" because that inserts unwanted spaces:
