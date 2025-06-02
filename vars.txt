@@ -27,15 +27,15 @@ b 3A11 StepDefenderExplns_Phase
 b 3A12 StepDefenderExplns_Rows
 b 3A13 StepDefenderExplns_Explns
 
-b 2EDE SDM_Phase Init 10; decr then defenders move when zero
+b 2EDE SDM_MovePhase
 
 b 2D53 MDCH_BltRows
 
 b 2D89 IDP_NextXVelocity
 b 2D8A IDP_NRemaining
 b 2D8B IDP_NextKindPhase
-a 2E09 IDP_LaunchLocPtr
-A 2E0B Arr_IDP_LaunchLocs_start
+p 2E09 IDP_LaunchLoc
+P 2E0B Arr_IDP_LaunchLocs_start
 
 B 2EDF Init_DefenderMovePeriod
 b 2EE0
@@ -60,15 +60,15 @@ b 3B6B StepDefenderExplns_Frames
 b 3AF8 StepDefenderExplns_EraseRows
 
 b 338F DefenderBase_X_bytes
-a 338A Loc_DefenderBase
-b 338D BaseBullet_FirePhase
+s 338A DefenderBase
+b 338D MDBCH_MovePhase
 b 338E
 b 39DF LastDefenderDestroyedKind 1=normal, 10=red, 12=base
-a 39E0 LastDestroyedDefenderLoc
+s 39E0 LastDestroyedDefender
 w 39E2
 b 3390 DefenderBase_SpawnSide
 
-a 3174 Loc_ClearLowerScreen_Start
+s 3174 ClearLowerScreen_Start
 
 b 31C0 DrawPlayer_Rows
 b 3231 ErasePlayer_Rows
@@ -76,14 +76,14 @@ b 3231 ErasePlayer_Rows
 b 31E5 ActivePlayer_X_fraction
 b 31E6 ActivePlayer_X_whole
 
-a 31E7 Loc_ActivePlayer
-a 31E9 Loc_ActivePlayer_Prev
+s 31E7 ActivePlayer
+s 31E9 ActivePlayer_Prev
 
-a 3420 Loc_DefenderShot
+s 3420 DefenderShot
 b 3422 DefenderShot_State 0:launch shot, <0:NOP, 1:erase
 b 34BB DefenderShot_RowsRemaining
 
-a 37B9 Ptr_ActivePlayerData
+p 37B9 ActivePlayerData
 
 w 34F6 SoundPeriodLimit
 w 34F8 SoundPeriodIncr
@@ -91,14 +91,14 @@ w 34FA SoundPeriod
 
 b 355A DrawOrErasePlayerExpln_Rows
 b 355B DrawOrErasePlayerExpln_Erase
-a 355C DrawOrErasePlayerExpln_Loc
+s 355C DrawOrErasePlayerExpln
 
 b 35A0 EraseTopLivesShip_Rows
 
 # Following is multiplied by 4 in Sub_24
 b 3CC3 SPE_ActionPhase
 b 3CC4 bool_PlayerExplnUnderway
-a 3CC5 Loc_LastPlayerExpln
+s 3CC5 LastPlayerExpln
 b 3CC7 SPE_FragmentPhase
 
 b 3539
