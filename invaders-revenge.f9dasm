@@ -325,7 +325,7 @@ COMMENT 2F09 Prepare to blt special defender gfx instead
 COMMENT 2F0C
 COMMENT 2F0C X = defender->location
 COMMENT 2F0E If defender active (location != 0)...
-COMMENT 2F10 ...move it and check for collisions
+COMMENT 2F10 ....move it and check for collisions
 LABEL 2F0C SDM_L1
 COMMENT 2F13
 LABEL 2F13 SDM_L2
@@ -764,7 +764,7 @@ COMMENT 3495
 COMMENT 3495 Bottom pixel of shot has not hit anything; consider moving it up one pixel
 LABEL 3495 SDSM_L1
 COMMENT 3498 If this would position shot too high, launch new one...
-COMMENT 349D ...otherwise record this as new location
+COMMENT 349D ....otherwise record this as new location
 COMMENT 34A2
 COMMENT 34A2 Check colour of rightmost pixel in byte of proposed new location of top of
 COMMENT 34A2 shot (recall: 0=G, 1=Y, 2=B, 3=R); if BIT $01 is clear, pixel is 0=green
@@ -1058,7 +1058,7 @@ COMMENT 37CD X = active_player->Loc_TopLifeShip
 COMMENT 37CF A = active_player->XPositionFraction
 COMMENT 37D1
 COMMENT 37D1 If top life-ship high enough up that there must already be three...
-COMMENT 37D4 ...no extra life possible
+COMMENT 37D4 ....no extra life possible
 COMMENT 37D6
 COMMENT 37D6 active_player->NLives += 1
 COMMENT 37D8
@@ -1090,7 +1090,7 @@ COMMENT 3810 %%AUTOTITLE
 COMMENT 3810
 COMMENT 3813
 COMMENT 3813 If active_player->Score < active_player->NextSpeedUpScore...
-COMMENT 3818 ...do nothing
+COMMENT 3818 ....do nothing
 COMMENT 381A
 COMMENT 381A Compute proposed next speed-up score
 CONST 381E
@@ -1100,7 +1100,7 @@ CONST 3826
 COMMENT 3828
 COMMENT 3828 If proposed speed-up score exceeds 15,000...
 CONST 382A
-COMMENT 382C ...do nothing
+COMMENT 382C ....do nothing
 COMMENT 382E
 COMMENT 382E active_player->NextSpeedUpScore = computed value
 COMMENT 3830
@@ -1552,14 +1552,14 @@ LABEL 3CF7 SPE_loop
 COMMENT 3D00
 COMMENT 3D00 Erase all previous yellow bits
 COMMENT 3D06
-COMMENT 3D06 If still animating ...
+COMMENT 3D06 If still animating...
 COMMENT 3D0B
-COMMENT 3D0B .... and new loc within bounds, draw new fragment
+COMMENT 3D0B ....and new loc within bounds, draw new fragment
 COMMENT 3D1F
 LABEL 3D1F SPE_next
 COMMENT 3D27
 COMMENT 3D27 If explosion over...
-COMMENT 3D2A ...set up for next one
+COMMENT 3D2A ....set up for next one
 COMMENT 3D2C
 LABEL 3D2F SPE_L3
 COMMENT 3D36
