@@ -1,6 +1,7 @@
 OPTION noflex
 OPTION noconv
 OPTION offset 2D2D
+
 FILE invaders-revenge.bin
 
 LABEL 0600 Loc_x000_y000
@@ -82,54 +83,53 @@ UNUSED 3B55-3B66
 
 ******************************************************************************
 
+LABEL 2D2D Main_0
 COMMENT 2D2D <CCHUNK>
 COMMENT 2D2D %%AUTOTITLE
-LABEL 2D2D Main_0
 COMMENT 2D3E </CCHUNK>
 
+LABEL 2D3E Sub_WarmRestart
 COMMENT 2D3E <CCHUNK>
 COMMENT 2D3E %%AUTOTITLE
-LABEL 2D3E Sub_WarmRestart
-COMMENT 2D4F </CCHUNK>
 LABEL 2D45 WR_L1
 CONST 2D48
 LABEL 2D4C WR_L2
+COMMENT 2D4F </CCHUNK>
 
-COMMENT 2D4F <UCHUNK>
 LABEL 2D4F WarmRestart_WipeStart
+COMMENT 2D4F <UCHUNK>
 DATA 2D4F-2D52
 COMMENT 2D53 </UCHUNK>
 
+LABEL 2D54 TXT_Ken_Kalish
 COMMENT 2D54 <DCHUNK>
 COMMENT 2D54 %%AUTOTITLE
-LABEL 2D54 TXT_Ken_Kalish
-COMMENT 2D62 </DCHUNK>
 CHAR 2D54-2D61
+COMMENT 2D62 </DCHUNK>
 
-WORD 2D62-2D6B
+LABEL 2D62 GFX_SmallUnusedDefender
 COMMENT 2D62 <DCHUNK>
 COMMENT 2D62 %%AUTOTITLE
-LABEL 2D62 GFX_SmallUnusedDefender
+WORD 2D62-2D6B
 COMMENT 2D6C </DCHUNK>
 
+LABEL 2D6C GFX_SpecialDefender
 COMMENT 2D6C <DCHUNK>
 COMMENT 2D6C %%AUTOTITLE
-LABEL 2D6C GFX_SpecialDefender
 WORD 2D6C-2D79
 COMMENT 2D7A </DCHUNK>
 
+LABEL 2D7A GFX_NormalDefender
 COMMENT 2D7A <DCHUNK>
 COMMENT 2D7A %%AUTOTITLE
-LABEL 2D7A GFX_NormalDefender
 WORD 2D7A-2D87
 COMMENT 2D88 </DCHUNK>
 
+LABEL 2D8C Sub_InitDefenderPatrol
 COMMENT 2D8C <CCHUNK>
 COMMENT 2D8C %%AUTOTITLE
 COMMENT 2D8C Start a new defender on a patrol across the screen.
 COMMENT 2D8C
-LABEL 2D8C Sub_InitDefenderPatrol
-COMMENT 2DEF </CCHUNK>
 DEC 2D91
 LABEL 2D95 IDP_L1
 DEC 2DA5
@@ -158,7 +158,9 @@ LABEL 2DE9 IDP_continue
 COMMENT 2D95
 COMMENT 2D9B
 CONST 2DDA
+COMMENT 2DEF </CCHUNK>
 
+LABEL 2DEF Arr_Const_IDP_LaunchLocs
 COMMENT 2DEF <DCHUNK>
 COMMENT 2DEF %%AUTOTITLE
 COMMENT 2DEF Start points of patrols.  They are all pointers to the last byte of a
@@ -167,10 +169,10 @@ COMMENT 2DEF screen down) of: 40, 102, 137, 66, 84, 93, 48, 117, 157, 75, 57, 12
 COMMENT 2DEF A right-to-left defender travels along that row; a left-to-right defender
 COMMENT 2DEF travels along the row below.
 COMMENT 2DEF
-LABEL 2DEF Arr_Const_IDP_LaunchLocs
-COMMENT 2E09 </DCHUNK>
 WORD 2DEF-2E08
+COMMENT 2E09 </DCHUNK>
 
+LABEL 2E0D Sub_FinishDefenderPatrolStartNew
 COMMENT 2E0D <CCHUNK>
 COMMENT 2E0D %%AUTOTITLE
 COMMENT 2E0D Mark the entry of the Arr_DefendersData array immediately before the one
@@ -181,9 +183,9 @@ COMMENT 2E0D ;;
 COMMENT 2E0D This could be considered part of `Sub_MoveDefenderCheckHit`; its only use
 COMMENT 2E0D is being tail-called from there.
 COMMENT 2E0D
-LABEL 2E0D Sub_FinishDefenderPatrolStartNew
 COMMENT 2E19 </CCHUNK>
 
+LABEL 2E19 Sub_MoveDefenderCheckHit
 COMMENT 2E19 <CCHUNK>
 COMMENT 2E19 %%AUTOTITLE
 COMMENT 2E19 Move one defender one step.  Check whether it collides with the player or
@@ -198,13 +200,12 @@ COMMENT 2E19 .  U points to graphics data according to kind of defender
 COMMENT 2E19 .  Y points just past struct of defender to be moved
 COMMENT 2E19 .    (struct is one element of Arr_DefendersData)
 COMMENT 2E19
-LABEL 2E19 Sub_MoveDefenderCheckHit
-COMMENT 2EB2 </CCHUNK>
 COMMENT 2E1B
 COMMENT 2E1B First call where this defender appears?  If so, skip
 COMMENT 2E1B "hit check and erase" tasks.
-COMMENT 2E28
 COMMENT 2E22 $E1 = lower byte of $1F × $FF
+COMMENT 2E28
+DEC 2E29
 LABEL 2E39 MDCH_L01
 COMMENT 2E3D
 COMMENT 2E3D Defender intersects with some yellow; it got hit.
@@ -214,9 +215,11 @@ COMMENT 2E47
 COMMENT 2E47 Determine what kind of defender was destroyed.
 CONST 2E41
 COMMENT 2E45
+DEC 2E48
 COMMENT 2E53
 COMMENT 2E53 Special (red) defender destroyed
 LABEL 2E53 MDCH_L02
+DEC 2E57
 COMMENT 2E5A
 COMMENT 2E5A Normal (blue) defender destroyed
 LABEL 2E5A MDCH_L03
@@ -247,8 +250,9 @@ COMMENT 2E80 location and increment in this case.
 COMMENT 2E98
 COMMENT 2E98 Still on screen; store new location and column to the structure, and draw
 COMMENT 2E98 defender in new position.
+COMMENT 2EB2 </CCHUNK>
 
-HEX 2EB2-2EDD
+LABEL 2EB2 Arr_DefendersData
 COMMENT 2EB2 <DCHUNK>
 COMMENT 2EB2 %%AUTOTITLE
 COMMENT 2EB2 Array of 11 entries each of a four-byte structure:
@@ -260,10 +264,11 @@ COMMENT 2EB2 ;;
 COMMENT 2EB2 Initialised by code in Main_1a with both byte values $01 and all word
 COMMENT 2EB2 values $0B3F.  So all structs are init'd to { $01, $01, (124, 41) }.
 COMMENT 2EB2
-LABEL 2EB2 Arr_DefendersData
+HEX 2EB2-2EDD
 LABEL 2EB4 Arr_DefendersData_Loc
 COMMENT 2EDE </DCHUNK>
 
+LABEL 2EE2 Sub_StepDefendersMovement
 COMMENT 2EE2 <CCHUNK>
 COMMENT 2EE2 %%AUTOTITLE
 COMMENT 2EE2 If we're at the correct phase (when Var_b_SDM_Phase is 1 on entry to this
@@ -271,7 +276,6 @@ COMMENT 2EE2 subroutine), reset the phase to the DefenderMovementPeriod slot of 
 COMMENT 2EE2 active player, and do one step of movement for all active defenders.
 COMMENT 2EE2
 DEC 2EF4
-LABEL 2EE2 Sub_StepDefendersMovement
 COMMENT 2EF8
 LABEL 2EF8 SDM_loop
 COMMENT 2F0C
@@ -281,23 +285,21 @@ COMMENT 2F18
 LABEL 2F18 SDM_exit
 COMMENT 2F19 </CCHUNK>
 
+LABEL 2F1A GFX_NormalDefenderExpln
 COMMENT 2F1A <DCHUNK>
 COMMENT 2F1A %%AUTOTITLE
-LABEL 2F1A GFX_NormalDefenderExpln
 COMMENT 2F28 </DCHUNK>
 HEX 2F1A-2F27
 WORD 2F1A-2F27
 
-HEX 2F28
-DEC 2F2F
+LABEL 2F29 Sub_NormalDefenderExpln
 COMMENT 2F29 <CCHUNK>
 COMMENT 2F29 %%AUTOTITLE
 COMMENT 2F29 Blt the initial "normal defender" explosion graphic to X, and play a short
 COMMENT 2F29 (c.60ms) chirp consisting of 48 cycles of linearly increasing period (so
 COMMENT 2F29 gently falling pitch).
 COMMENT 2F29
-COMMENT 2F63 </CCHUNK>
-LABEL 2F29 Sub_NormalDefenderExpln
+DEC 2F2F
 COMMENT 2F2B
 COMMENT 2F2B Blt 7 rows of explosion gfx to X
 LABEL 2F33 NDE_L1
@@ -312,21 +314,22 @@ COMMENT 2F5B Keep going if half-period complement is at least (in unsigned sense
 LABEL 2F44 NDE_L2
 LABEL 2F4C NDE_L3
 LABEL 2F55 NDE_L4
+COMMENT 2F63 </CCHUNK>
 
+LABEL 2F64 GFX_BlueYellowSparks
 HEX 2F64-2F71
 WORD 2F64-2F71
 COMMENT 2F64 <DCHUNK>
 COMMENT 2F64 %%AUTOTITLE
-LABEL 2F64 GFX_BlueYellowSparks
 COMMENT 2F72 </DCHUNK>
 
+LABEL 2F74 Sub_InitSpecialDefenderExpln
 COMMENT 2F74 <CCHUNK>
 COMMENT 2F74 %%AUTOTITLE
 COMMENT 2F74 Blt the initial "special defender" explosion graphic to X, and play two
 COMMENT 2F74 equal short rising-pitch chirps.
 COMMENT 2F74
 COMMENT 2FAE </CCHUNK>
-LABEL 2F74 Sub_InitSpecialDefenderExpln
 LABEL 2F83 ISDE_L1
 LABEL 2F8F ISDE_L2
 LABEL 2F91 ISDE_L3
@@ -336,89 +339,89 @@ COMMENT 2F8F
 DEC 2F7F
 DEC 2F90
 
+LABEL 2FAE GFX_Text_SHOTS
 COMMENT 2FAE <DCHUNK>
 COMMENT 2FAE %%AUTOTITLE
 COMMENT 2FAE Text "SHOTS" in red
 COMMENT 2FAE
-LABEL 2FAE GFX_Text_SHOTS
 COMMENT 2FC8 </DCHUNK>
 HEX 2FAE-2FC7
 
+LABEL 2FC8 GFX_Text_SPEED
 COMMENT 2FC8 <DCHUNK>
 COMMENT 2FC8 %%AUTOTITLE
 COMMENT 2FC8 Text "SPEED" in red
 COMMENT 2FC8
-LABEL 2FC8 GFX_Text_SPEED
 COMMENT 2FE2 </DCHUNK>
 HEX 2FC8-2FE1
 
+LABEL 2FE2 GFX_Text_SPC_1_to_5
 COMMENT 2FE2 <DCHUNK>
 COMMENT 2FE2 %%AUTOTITLE
 COMMENT 2FE2 Text " [1-5]" in red
 COMMENT 2FE2
-LABEL 2FE2 GFX_Text_SPC_1_to_5
 COMMENT 3001 </DCHUNK>
 HEX 2FE2-3000
 
+LABEL 3001 GFX_Text_SELECT_SPC
 COMMENT 3001 <DCHUNK>
 COMMENT 3001 %%AUTOTITLE
 COMMENT 3001 Text "SELECT " in red
 COMMENT 3001
-LABEL 3001 GFX_Text_SELECT_SPC
 COMMENT 3025 </DCHUNK>
 HEX 3001-3024
 
+LABEL 3025 Sub_DisplayPauseMsg
 COMMENT 3025 <CCHUNK>
 COMMENT 3025 %%AUTOTITLE
 COMMENT 3025 Cycle between displaying two variants of the PAUSE text until the player
 COMMENT 3025 presses "P", at which point clear the message and resume play.
 COMMENT 3025
-COMMENT 304F </CCHUNK>
-LABEL 3025 Sub_DisplayPauseMsg
 LABEL 3028 DPM_L1
-COMMENT 3D2F
-DEC 3D39
+CHAR 3032
 COMMENT 303D
 LABEL 303D DPM_L2
+COMMENT 304F </CCHUNK>
 
+LABEL 304F Sub_EraseSixBySix
 COMMENT 304F <CCHUNK>
 COMMENT 304F %%AUTOTITLE
 COMMENT 304F Erase a 6×6 block of bytes (i.e., a 24-wide and 6-high rectangle of pixels)
 COMMENT 304F with the top-left such byte pointed to by X.
 COMMENT 304F
 COMMENT 3065 </CCHUNK>
-LABEL 304F Sub_EraseSixBySix
 DEC 3050
 CONST 3053
 LABEL 3055 ESBS_L1
 
+LABEL 3065 GFX_Text_PAUSE
 COMMENT 3065 <DCHUNK>
 COMMENT 3065 %%AUTOTITLE
 COMMENT 3065 Text "PAUSE" in blue
 COMMENT 3065
 COMMENT 3084 </DCHUNK>
-LABEL 3065 GFX_Text_PAUSE
 HEX 3065-3083
 
+LABEL 3084 GFX_Text_PAUSE_1
 COMMENT 3084 <DCHUNK>
 COMMENT 3084 %%AUTOTITLE
 COMMENT 3084 Text "PAUSE" in colours
 COMMENT 3084
 COMMENT 30A3 </DCHUNK>
-LABEL 3084 GFX_Text_PAUSE_1
 HEX 3084-30A2
 
+LABEL 30A3 Sub_SetGraphicsMode
 COMMENT 30A3 <CCHUNK>
 COMMENT 30A3 %%AUTOTITLE
 COMMENT 30A3 Configure the desired graphics mode, play an introductory sound effect,
 COMMENT 30A3 then chain to the subroutine which asks the player to choose settings.
 COMMENT 30A3
 COMMENT 30C9 </CCHUNK>
-LABEL 30A3 Sub_SetGraphicsMode
 DEC 30B2
 LABEL 30B6 SGM_L1
 DEC 30C3
 
+LABEL 30CA Sub_SetTextMode
 COMMENT 30CA <CCHUNK>
 COMMENT 30CA %%AUTOTITLE
 COMMENT 30CA Configure the VDG and SAM for text mode.  Some usages, to handle an error
@@ -427,16 +430,15 @@ COMMENT 30CA immediately.
 COMMENT 30CA ;;
 COMMENT 30CA Unknown: Why set A to $34?
 COMMENT 30CA
-LABEL 30CA Sub_SetTextMode
 COMMENT 30DA </CCHUNK>
 
 COMMENT 30DA <UCHUNK>
 COMMENT 30DE </UCHUNK>
 
+LABEL 30DF Sub_MainPlayLoop
 COMMENT 30DF <CCHUNK>
 COMMENT 30DF %%AUTOTITLE
 COMMENT 30DF
-LABEL 30DF Sub_MainPlayLoop
 COMMENT 30F7
 COMMENT 30F7 Overwritten by "JMP $4100" if joysticks enabled.
 COMMENT 3173 </CCHUNK>
@@ -456,6 +458,7 @@ LABEL 3164 MPL_L6
 COMMENT 316A
 LABEL 316A MPL_L7
 
+LABEL 3176 Sub_ClearLowerScreen
 COMMENT 3176 <CCHUNK>
 COMMENT 3176 %%AUTOTITLE
 COMMENT 3176 Clear from the location in Var_ClearLowerScreen_Start to the end of the
@@ -464,49 +467,47 @@ COMMENT 3176 the screen.  On boot, Var_ClearLowerScreen_Start points to the very
 COMMENT 3176 top-left of the screen.
 COMMENT 3176
 COMMENT 318E </CCHUNK>
-LABEL 3176 Sub_ClearLowerScreen
 LABEL 3179 CLS_L1
 CONST 3187
 LABEL 3189 CLS_L2
 
+LABEL 318E Sub_MovePlayerRight
 COMMENT 318E <CCHUNK>
 COMMENT 318E %%AUTOTITLE
 COMMENT 318E Move the player right one half-byte, i.e., two pixels.
 COMMENT 318E
 COMMENT 31A9 </CCHUNK>
-LABEL 318E Sub_MovePlayerRight
 COMMENT 31A5
 COMMENT 31A5 Other player movement subroutines jump here too
 LABEL 31A5 MPR_L1
 LABEL 31A8 MPR_L2
 
+LABEL 31A9 Sub_MovePlayerLeft
 COMMENT 31A9 <CCHUNK>
 COMMENT 31A9 %%AUTOTITLE
 COMMENT 31A9 Move the player left one half-byte, i.e., two pixels.
 COMMENT 31A9
-LABEL 31A9 Sub_MovePlayerLeft
 COMMENT 31C0 </CCHUNK>
 
+LABEL 31C1 GFX_PlayerRightJust
 HEX 31C1-31D2
 COMMENT 31C1 <DCHUNK>
-LABEL 31C1 GFX_PlayerRightJust
 COMMENT 31D3 </DCHUNK>
 
+LABEL 31D3 GFX_PlayerLeftJust
 HEX 31D3-31E4
 COMMENT 31D3 <DCHUNK>
-LABEL 31D3 GFX_PlayerLeftJust
 COMMENT 31E5 </DCHUNK>
 
+LABEL 31EB Sub_RedrawPlayer
 COMMENT 31EB <CCHUNK>
 COMMENT 31EB %%AUTOTITLE
 COMMENT 31EB Erase the player using mask
 COMMENT 31EB ActivePlayer_X_fraction ? left-just : right-just
 COMMENT 31EB and then draw the player using the same mask.
 COMMENT 31EB ???????????????? Have I got that right?  Seems odd.
-COMMENT 3231 </CCHUNK>
 DEC 3214
 DEC 3219
-LABEL 31EB Sub_RedrawPlayer
 LABEL 31FA RP_L1
 LABEL 3208 RP_L2
 LABEL 3218 RP_L3
@@ -514,28 +515,30 @@ LABEL 321A RP_L4
 LABEL 322B RP_exit
 COMMENT 322C
 LABEL 322C RP_L5
+COMMENT 3231 </CCHUNK>
 
+LABEL 3232 Sub_ErasePlayer
 DEC 3236
 DEC 323B
 COMMENT 3232 <CCHUNK>
 COMMENT 3232 %%AUTOTITLE
 COMMENT 3232
 COMMENT 325D </CCHUNK>
-LABEL 3232 Sub_ErasePlayer
 LABEL 323A EP_L1
 LABEL 323C EP_L2
 
+LABEL 325D Sub_MovePlayerUp
 COMMENT 325D <CCHUNK>
 COMMENT 325D %%AUTOTITLE
 COMMENT 326D </CCHUNK>
-LABEL 325D Sub_MovePlayerUp
 
+LABEL 326D Sub_MovePlayerDown
 COMMENT 326D <CCHUNK>
 COMMENT 326D %%AUTOTITLE
 COMMENT 3286 </CCHUNK>
-LABEL 326D Sub_MovePlayerDown
 LABEL 327C MPD_L1
 
+LABEL 3286 Arr_PlayerShots
 COMMENT 3286 <DCHUNK>
 COMMENT 3286 %%AUTOTITLE
 COMMENT 3286 State of up to five shots that the player has fired.  Each shot is
@@ -547,7 +550,6 @@ COMMENT 3286 ;;
 COMMENT 3286 (Cleared as part of `Sub_ResetShotExplnData`.)
 COMMENT 3286
 COMMENT 3297 </DCHUNK>
-LABEL 3286 Arr_PlayerShots
 HEX 3286
 WORD 3287
 CONST 3287
@@ -564,6 +566,7 @@ HEX 3292
 WORD 3293
 CONST 3293
 
+LABEL 3298 Sub_LaunchPlayerShot
 COMMENT 3298 <CCHUNK>
 COMMENT 3298 %%AUTOTITLE
 COMMENT 3298 Attempt to launch a shot from the player's ship.  A free struct is sought,
@@ -574,7 +577,6 @@ COMMENT 3298 launched, do not launch another one, but instead prolong the beep, 
 COMMENT 3298 its pitch.
 COMMENT 3298
 COMMENT 32E1 </CCHUNK>
-LABEL 3298 Sub_LaunchPlayerShot
 DEC 32C8
 DEC 32D7
 COMMENT 32A5
@@ -598,10 +600,10 @@ COMMENT 32E2 Loop if within bound set by max n.shots
 LABEL 32E2 LPS_next
 COMMENT 32E9 </CCHUNK>
 
+LABEL 32E9 Sub_MoveShotsDown
 COMMENT 32E9 <CCHUNK>
 COMMENT 32E9 %%AUTOTITLE
 COMMENT 333F </CCHUNK>
-LABEL 32E9 Sub_MoveShotsDown
 LABEL 32ED MSD_loop
 LABEL 3322 MSD_next
 LABEL 3329 MSD_ClearShot
@@ -614,13 +616,14 @@ COMMENT 3378 </CCHUNK>
 DEC 3341
 LABEL 3351 MSD_L1
 
+LABEL 3378 GFX_BlueDefenderBase
 COMMENT 3378 <DCHUNK>
 COMMENT 3378 %%AUTOTITLE
-LABEL 3378 GFX_BlueDefenderBase
 COMMENT 338A </DCHUNK>
 HEX 3378-3389
 WORD 3378-3389
 
+LABEL 3391 Sub_MoveDefenderBaseCheckHit
 DEC 33A4
 DEC 33BD
 DEC 3409
@@ -630,7 +633,6 @@ COMMENT 3391 Move the defender base and check whether it's been hit, launching t
 COMMENT 3391 appropriate actions (starting new base patrol, initiating explosion and
 COMMENT 3391 sound effect) if so.
 COMMENT 3391
-LABEL 3391 Sub_MoveDefenderBaseCheckHit
 COMMENT 3420 </CCHUNK>
 DEC 33D5
 LABEL 33D9 MDBCH_L1
@@ -685,6 +687,7 @@ CONST 3469
 LABEL 346B SDSHA_L6
 LABEL 3472 SDSHA_L7
 
+LABEL 347B Sub_StepDefenderShotMovement
 COMMENT 347B <CCHUNK>
 COMMENT 347B %%AUTOTITLE
 COMMENT 347B Perform one frame of work for dealing with the shot fired by the defender
@@ -692,7 +695,6 @@ COMMENT 347B base.
 COMMENT 347B
 COMMENT 347B If we are in the middle of animating the explosion caused by the defender
 COMMENT 347B base shot hitting something, do nothing
-LABEL 347B Sub_StepDefenderShotMovement
 COMMENT 34BB </CCHUNK>
 COMMENT 3480
 COMMENT 3480 Get lowest (of three) pixel of current shot; erase that pixel; check its
@@ -718,18 +720,19 @@ COMMENT 34B1
 COMMENT 34B1 Shot has reached double-stripe at the top of the play area; start a new one
 LABEL 34B1 SDSM_L3
 
-COMMENT 34BC <DCHUNK>
 LABEL 34BC GFX_RedAsterisk
+COMMENT 34BC <DCHUNK>
 COMMENT 34C6 </DCHUNK>
 HEX 34BC-34C5
 WORD 34BC-34C5
 
-COMMENT 34C6 <DCHUNK>
 LABEL 34C6 GFX_YellowAsterisk
+COMMENT 34C6 <DCHUNK>
 COMMENT 34D0 </DCHUNK>
 HEX 34C6-34CF
 WORD 34C6-34CF
 
+LABEL 34D0 Sub_InitDefenderShotHit
 COMMENT 34D0 <CCHUNK>
 COMMENT 34D0 %%AUTOTITLE
 COMMENT 34D0 Initiate the behaviour when a defender base shot hits the player or a
@@ -737,7 +740,6 @@ COMMENT 34D0 player shot: Draw the yellow asterisk explosion where the defender 
 COMMENT 34D0 shot is, play a low beep, and set the rest of the defender base shot hit
 COMMENT 34D0 animation in progress via `Var_b_DefenderShot_State`.
 COMMENT 34D0
-LABEL 34D0 Sub_InitDefenderShotHit
 COMMENT 34F6 </CCHUNK>
 DEC 34D4
 LABEL 34D8 IDSH_L1
@@ -746,25 +748,25 @@ COMMENT 34ED
 COMMENT 34ED Low-ish pitched beep
 DEC 34EE
 
+LABEL 34FC Sub_FlashColourSets
 COMMENT 34FC <CCHUNK>
 COMMENT 34FC %%AUTOTITLE
 COMMENT 34FC Briefly flash the screen by selecting Colour Set 1 (buff, cyan, magenta,
 COMMENT 34FC orange), and then falling through into `Sub_LongFallingPitchSound`, which
 COMMENT 34FC will at its end revert to Colour Set 0 (green, yellow, blue, red).
 COMMENT 34FC
-LABEL 34FC Sub_FlashColourSets
 COMMENT 350D
 COMMENT 350D Fall through...
 COMMENT 350D </CCHUNK>
 CONST 3505
 CONST 350B
 
+LABEL 350D Sub_LongFallingPitchSound
 COMMENT 350D <CCHUNK>
 COMMENT 350D %%AUTOTITLE
 COMMENT 350D Play a reasonably long sound of falling pitch, starting at a high pitch,
 COMMENT 350D and ending at a pitch determined by D.  Before exit, select Colour Set 0.
 COMMENT 350D
-LABEL 350D Sub_LongFallingPitchSound
 COMMENT 3539 </CCHUNK>
 CONST 3511
 LABEL 3513 LFPS_L1
@@ -772,17 +774,17 @@ LABEL 351C LFPS_L2
 CONST 351D
 COMMENT 3530 Choose Colour Set 0 (green/yellow/blue/red)
 
+LABEL 353A GFX_YellowExplodingPlayer
 COMMENT 353A <DCHUNK>
 COMMENT 353A %%AUTOTITLE
-LABEL 353A GFX_YellowExplodingPlayer
 COMMENT 355A </DCHUNK>
 HEX 353A-3559
 WORD 353A-3559
 
+LABEL 355E Sub_DrawOrErasePlayerExpln
 DEC 359B
 COMMENT 355E <CCHUNK>
 COMMENT 355E %%AUTOTITLE
-LABEL 355E Sub_DrawOrErasePlayerExpln
 COMMENT 35A0 </CCHUNK>
 DEC 356B
 CONST 3570
@@ -792,9 +794,9 @@ LABEL 3587 DOEPE_L3
 LABEL 3589 DOEPE_L4
 LABEL 359A DOEPE_L5
 
+LABEL 35A1 Sub_HandlePlayerCrash
 COMMENT 35A1 <CCHUNK>
 COMMENT 35A1 %%AUTOTITLE
-LABEL 35A1 Sub_HandlePlayerCrash
 COMMENT 362C </CCHUNK>
 DEC 35A4
 LABEL 35B5 HPC_L1
@@ -805,6 +807,7 @@ LABEL 3604 HPC_L4
 LABEL 3615 HPC_L5
 LABEL 361E HPC_L6
 
+LABEL 362C Sub_EraseTopLivesShip
 COMMENT 35F8
 COMMENT 3604
 COMMENT 3615
@@ -816,46 +819,45 @@ COMMENT 362C top-lives-display-ship location.  U points to
 COMMENT 362C player-data structure.
 COMMENT 362C
 COMMENT 3645 </CCHUNK>
-LABEL 362C Sub_EraseTopLivesShip
 DEC 362F
 DEC 3631
 CONST 3634
 LABEL 3636 ETLS_L1
 
+LABEL 3646 Sub_EndOfGame
 COMMENT 3646 <CCHUNK>
 COMMENT 3646 %%AUTOTITLE
-LABEL 3646 Sub_EndOfGame
 COMMENT 365E </CCHUNK>
 DEC 364D
 LABEL 3659 EOG_L1
 
+LABEL 365E GFX_Text_HIGH_SCORE
 COMMENT 365E <DCHUNK>
 COMMENT 365E %%AUTOTITLE
 COMMENT 365E Text "HIGH SCORE" in red (shares just "SCORE" in next data block)
 COMMENT 3677 </DCHUNK>
-LABEL 365E GFX_Text_HIGH_SCORE
 HEX 365E-3690
 
+LABEL 3677 GFX_Text_SCORE
 COMMENT 3677 <DCHUNK>
 COMMENT 3677 %%AUTOTITLE
 COMMENT 3677 Text "SCORE" in red
 COMMENT 3691 </DCHUNK>
-LABEL 3677 GFX_Text_SCORE
 HEX 3677-3690
 
+LABEL 3691 GFX_Arr_Digits
 COMMENT 3691 <DCHUNK>
 COMMENT 3691 %%AUTOTITLE
-LABEL 3691 GFX_Arr_Digits
 COMMENT 36C3 </DCHUNK>
 HEX 3691-36C2
 
+LABEL 36C4 Sub_DrawTwoStripes
 COMMENT 36C4 <CCHUNK>
 COMMENT 36C4 %%AUTOTITLE
 COMMENT 36C4 Draw the two horizontal red strips separating
 COMMENT 36C4 the status area (top) from the play area (bottom)
 COMMENT 36C4
 COMMENT 36D4 </CCHUNK>
-LABEL 36C4 Sub_DrawTwoStripes
 LABEL 36C9 DTS_L1
 
 COMMENT 36D4 <CCHUNK>
@@ -865,30 +867,30 @@ COMMENT 3704 </CCHUNK>
 COMMENT 36D4
 CONST 36DB
 
+LABEL 3704 Sub_BltFiveRows
 COMMENT 3704 <CCHUNK>
 COMMENT 3704 %%AUTOTITLE
 COMMENT 3704 Copy from U to X until $FF, X-stride $20; destroys B
 COMMENT 3704 5 bytes at a time, then update X to 1 more than before those 5
 COMMENT 3704
-LABEL 3704 Sub_BltFiveRows
 COMMENT 371B </CCHUNK>
 LABEL 3706 BFR_L1
 LABEL 370D BFR_L2
 DEC 3705
 
+LABEL 371B Sub_SixZerosOut
 LABEL 3722 SZO_L1
 COMMENT 371B <CCHUNK>
 COMMENT 371B %%AUTOTITLE
 COMMENT 371B Write six zeros starting at X.
 COMMENT 371B
-LABEL 371B Sub_SixZerosOut
 COMMENT 372C </CCHUNK>
 DEC 371C
 
+LABEL 372F Sub_CheckHighScore
 COMMENT 372F <CCHUNK>
 COMMENT 372F %%AUTOTITLE
 COMMENT 372F
-LABEL 372F Sub_CheckHighScore
 COMMENT 378A </CCHUNK>
 COMMENT 3756
 DEC 3757
@@ -905,16 +907,16 @@ CONST 3780
 LABEL 3784 CHS_L6
 LABEL 3789 CHS_L7
 
+LABEL 378A Sub_ResetAndDisplayScores
 COMMENT 378A <CCHUNK>
 COMMENT 378A %%AUTOTITLE
-LABEL 378A Sub_ResetAndDisplayScores
 COMMENT 37A1 </CCHUNK>
 CONST 378B
 
+LABEL 37A1 Arr_PlayerData
 HEX 37A1-37AC
 COMMENT 37A1 <DCHUNK>
 COMMENT 37A1 %%AUTOTITLE
-LABEL 37A1 Arr_PlayerData
 COMMENT 37B9 </DCHUNK>
 LABEL 37A2 PlayerData_0_01_b_DefenderMovePeriod
 LABEL 37A3 PlayerData_0_02_b_NLives
@@ -930,11 +932,11 @@ LABEL 37AA PlayerData_0_09_Loc_ScoreDisplay
 WORD 37AA
 LABEL 37AC PlayerData_0_0b_b_XPositionFraction
 
+LABEL 37AD Arr_PlayerData
 COMMENT 37AD
 HEX 37AD-37B8
 COMMENT 37AD This data block is 12 bytes on from block 0
 HEX 37AD-37AE
-LABEL 37AD PlayerData_1_00_b_BaseFirePeriod
 LABEL 37AE PlayerData_1_01_b_DefenderMovePeriod
 LABEL 37AF PlayerData_1_02_b_NLives
 LABEL 37B0 PlayerData_1_03_Loc_TopLifeShip
@@ -953,6 +955,7 @@ LABEL 3295 ShotPtrLimit
 HEX 3295-3296
 WORD 3295
 
+LABEL 37BB Sub_AwardPoints
 COMMENT 37BB <CCHUNK>
 COMMENT 37BB %%AUTOTITLE
 COMMENT 37BB Add 100 × A points to the active player's score, and check for two
@@ -965,7 +968,6 @@ COMMENT 37BB ;;
 COMMENT 37BB If the new points move the score over the next threshold where we should
 COMMENT 37BB increase the overall game speed, do so (`Sub_MaybeIncreaseDifficulty`)
 COMMENT 37BB
-LABEL 37BB Sub_AwardPoints
 COMMENT 3804
 COMMENT 3804 Fall through into `Sub_DisplayPlayerScore`...
 COMMENT 3804 </CCHUNK>
@@ -995,19 +997,19 @@ COMMENT 37FE
 COMMENT 37FE Prepare to display new score: X = active_player->Loc_ScoreDisplay
 LABEL 37FC AP_L1
 
+LABEL 3804 Sub_DisplayPlayerScore
 COMMENT 3804 <CCHUNK>
 COMMENT 3804 %%AUTOTITLE
 COMMENT 3804 Write a six-digit number which is a multiple of 100 with the units at
 COMMENT 3804 location X.  The number has its hundreds and thousands in BCD at Y+6 and
 COMMENT 3804 its ten-thousands and hundred-thousands at Y+5.
 COMMENT 3804
-LABEL 3804 Sub_DisplayPlayerScore
 COMMENT 3810 </CCHUNK>
 
+LABEL 3810 Sub_MaybeIncreaseDifficulty
 COMMENT 3810 <CCHUNK>
 COMMENT 3810 %%AUTOTITLE
 COMMENT 3810
-LABEL 3810 Sub_MaybeIncreaseDifficulty
 COMMENT 383D </CCHUNK>
 CONST 381E
 CONST 3823
@@ -1017,68 +1019,74 @@ LABEL 3825 MID_L1
 LABEL 3836 MID_L2
 LABEL 383C MID_exit
 
+LABEL 383D Sub_TwoDigitsOut
 COMMENT 383D <CCHUNK>
 COMMENT 383D %%AUTOTITLE
 COMMENT 383D Write BCD number in A to screen with the units
 COMMENT 383D at location X.  X is left two less than
 COMMENT 383D on entry to this routine.
 COMMENT 383D
-LABEL 383D Sub_TwoDigitsOut
 COMMENT 384E </CCHUNK>
 
+LABEL 384F Sub_DigitOut
 COMMENT 384F <CCHUNK>
 COMMENT 384F %%AUTOTITLE
 COMMENT 384F Write digit given by A to screen starting at location X.
 COMMENT 384F X is left one less than on entry to this routine.
 COMMENT 384F
-LABEL 384F Sub_DigitOut
 COMMENT 3868 </CCHUNK>
 DEC 3850
 DEC 3858
 LABEL 3859 DO_L1
 
+LABEL 3868 Sub_TextOutTilPctCvtHash
 COMMENT 3868 <CCHUNK>
 COMMENT 3868 %%AUTOTITLE
 COMMENT 3868
-LABEL 3868 Sub_TextOutTilPctCvtHash
 COMMENT 387B </CCHUNK>
 CHAR 386B
 CHAR 386F
 LABEL 3874 TOTPCH_L1
 LABEL 387A TOTPCH_exit
 
+LABEL 387B TXT_Title
+CHAR 387B-3899
 COMMENT 387B <DCHUNK>
 COMMENT 387B %%AUTOTITLE
-LABEL 387B TXT_Title
 COMMENT 389A </DCHUNK>
 
+LABEL 389A TXT_By
+CHAR 389A-38AB
 COMMENT 389A <DCHUNK>
 COMMENT 389A %%AUTOTITLE
-LABEL 389A TXT_By
 COMMENT 38AC </DCHUNK>
 
+LABEL 38AC TXT_AuthorCopyright
+CHAR 38AC-38E1
 COMMENT 38AC <DCHUNK>
 COMMENT 38AC %%AUTOTITLE
-LABEL 38AC TXT_AuthorCopyright
 COMMENT 38E2 </DCHUNK>
 
+LABEL 38E2 TXT_HowManyPlayers
+CHAR 38E2-3902
 COMMENT 38E2 <DCHUNK>
 COMMENT 38E2 %%AUTOTITLE
-LABEL 38E2 TXT_HowManyPlayers
 COMMENT 3903 </DCHUNK>
 
+LABEL 3903 Main_1
 COMMENT 3903 <CCHUNK>
 COMMENT 3903 %%AUTOTITLE
-LABEL 3903 Main_1
 CONST 391E
 LABEL 3926 M1_L1
 LABEL 3932 M1_L2
+CHAR 3937
+CHAR 393B
 COMMENT 3947 </CCHUNK>
 
+LABEL 3947 Main_1a
 COMMENT 3947 <CCHUNK>
 COMMENT 3947 %%AUTOTITLE
 COMMENT 3947 Initialise for fresh game
-LABEL 3947 Main_1a
 COMMENT 394A
 COMMENT 394A Init active player's X-coord-whole to 1
 COMMENT 394F
@@ -1099,23 +1107,24 @@ COMMENT 397B
 LABEL 39A6 M1A_L1
 COMMENT 39C7 </CCHUNK>
 
+LABEL 39C7 Sub_EraseThenDrawPlayer
 COMMENT 39C7 <CCHUNK>
 COMMENT 39C7 %%AUTOTITLE
-LABEL 39C7 Sub_EraseThenDrawPlayer
 COMMENT 39C7
 COMMENT 39C7 Erase and redraw the player at screen address X, but using the
 COMMENT 39C7 x-posn-fraction value from Var_b_ActivePlayer_X_fraction
 COMMENT 39D5 </CCHUNK>
 
+LABEL 39D5 Sub_WriteDefendersDataWords
 COMMENT 39D5 <CCHUNK>
 COMMENT 39D5 %%AUTOTITLE
 COMMENT 39D5 Write the contents of D to X and then every fourth
 COMMENT 39D5 location after that (so X, X+4, X+8, ...) as long
 COMMENT 39D5 as the locations stay within the `Arr_DefendersData`
 COMMENT 39D5 array of structures.
-LABEL 39D5 Sub_WriteDefendersDataWords
 COMMENT 39DF </CCHUNK>
 
+LABEL 39E4 Sub_InitDefenderExplosion
 COMMENT 39E4 <CCHUNK>
 COMMENT 39E4 %%AUTOTITLE
 COMMENT 39E4 Find a free slot in the /Arr_DefenderExplosions/ array; a slot is "free" if
@@ -1126,7 +1135,6 @@ COMMENT 39E4 animation-frames-remaining = 7: ship; 24: base
 COMMENT 39E4 defender-loc = location of top-left byte of defender
 COMMENT 39E4
 COMMENT 3A11 </CCHUNK>
-LABEL 39E4 Sub_InitDefenderExplosion
 COMMENT 39ED
 COMMENT 39ED Search for free slot (one whose defender-loc is $0000).
 LABEL 39ED IDE_L1
@@ -1139,6 +1147,7 @@ COMMENT 39F8 Found a free slot; populate as described above.
 DEC 39FB
 DEC 3A04
 
+LABEL 3A14 Arr_DefenderExplosions
 COMMENT 3A14 <DCHUNK>
 COMMENT 3A14 %%AUTOTITLE
 COMMENT 3A14 Data to track defender explosions (ship or base).  Up to ten explosions
@@ -1152,10 +1161,10 @@ COMMENT 3A14 Slot is free if defender-loc == $0000.
 COMMENT 3A14 ;;
 COMMENT 3A14 Reset (all bytes cleared to $00) as part of Sub_ResetShotExplnData.
 COMMENT 3A14
-LABEL 3A14 Arr_DefenderExplosions
 COMMENT 3A3C </DCHUNK>
 HEX 3A14-3A3B
 
+LABEL 3A3C Sub_StepDefenderExplns
 COMMENT 3A3C <CCHUNK>
 COMMENT 3A3C %%AUTOTITLE
 COMMENT 3A3C Advance any animations of exploding defenders (normal/special patrolling,
@@ -1163,8 +1172,6 @@ COMMENT 3A3C or the shooting base).  Erase defender if its animation has finishe
 COMMENT 3A3C Leave appropriate value in `PlaySoundSlice_InitHalfPeriod` to get
 COMMENT 3A3C desired sound effect.
 COMMENT 3A3C
-LABEL 3A3C Sub_StepDefenderExplns
-COMMENT 3AF8 </CCHUNK>
 DEC 3A42
 DEC 3A4B
 COMMENT 3A4F
@@ -1207,43 +1214,45 @@ CONST 3AD9
 LABEL 3ADB SDE_L7
 LABEL 3AE2 SDE_L8
 LABEL 3AF1 SDE_L9
+COMMENT 3AF8 </CCHUNK>
 
+LABEL 3AF9 GFX_YellowNormalDefender
 COMMENT 3AF9 <DCHUNK>
 COMMENT 3AF9 %%AUTOTITLE
-LABEL 3AF9 GFX_YellowNormalDefender
 COMMENT 3B07 </DCHUNK>
 WORD 3AF9-3B06
 
+LABEL 3B07 GFX_RedYellowEyesNormalDefender
 COMMENT 3B07 <DCHUNK>
 COMMENT 3B07 %%AUTOTITLE
-LABEL 3B07 GFX_RedYellowEyesNormalDefender
 COMMENT 3B15 </DCHUNK>
 WORD 3B07-3B14
 
+LABEL 3B15 GFX_YellowSpecialDefender
 COMMENT 3B15 <DCHUNK>
 COMMENT 3B15 %%AUTOTITLE
-LABEL 3B15 GFX_YellowSpecialDefender
 COMMENT 3B23 </DCHUNK>
 WORD 3B15-3B22
 
+LABEL 3B23 GFX_RedYellowEyesSpecialDefender
 COMMENT 3B23 <DCHUNK>
 COMMENT 3B23 %%AUTOTITLE
-LABEL 3B23 GFX_RedYellowEyesSpecialDefender
 COMMENT 3B31 </DCHUNK>
 WORD 3B23-3B30
 
+LABEL 3B31 GFX_RedBaseYellowSparks
 COMMENT 3B31 <DCHUNK>
 COMMENT 3B31 %%AUTOTITLE
-LABEL 3B31 GFX_RedBaseYellowSparks
 COMMENT 3B43 </DCHUNK>
 WORD 3B31-3B42
 
+LABEL 3B43 GFX_YellowBaseRedSparks
 COMMENT 3B43 <DCHUNK>
 COMMENT 3B43 %%AUTOTITLE
-LABEL 3B43 GFX_YellowBaseRedSparks
 COMMENT 3B67 </DCHUNK>
 WORD 3B43-3B54
 
+LABEL 3B6D Sub_PlaySoundSlice
 DEC 3B81
 DEC 3B90
 DEC 3B99
@@ -1259,7 +1268,6 @@ COMMENT 3B6D -------------------------------------------------------------------
 COMMENT 3B77
 COMMENT 3B77 Compute approx (64)×(PostDrawDelay) into Y
 COMMENT 3B7D
-LABEL 3B6D Sub_PlaySoundSlice
 LABEL 3B7D PSS_L1
 COMMENT 3B82
 LABEL 3B82 PSS_L2
@@ -1274,6 +1282,7 @@ COMMENT 3B93
 COMMENT 3B98
 COMMENT 3BB4 </CCHUNK>
 
+LABEL 3BB4 Sub_FallingPitchBeep
 DEC 3BBF
 DEC 3BC5
 COMMENT 3BB4 <CCHUNK>
@@ -1291,7 +1300,6 @@ COMMENT 3BB4 2 (DrawOrErasePlayerExpln)
 COMMENT 3BB4 1 (QueryShotsSpeed)
 COMMENT 3BB4 128 (InitPostDrawDelay)
 COMMENT 3BB4 ----------------------------------------------------------------------------
-LABEL 3BB4 Sub_FallingPitchBeep
 COMMENT 3BBB
 COMMENT 3BBB Compute approx (128)×(PostDrawDelay - 4) into Y
 COMMENT 3BC2
@@ -1303,11 +1311,11 @@ LABEL 3BCA FPB_L2
 LABEL 3BD6 FPB_reset_exit
 COMMENT 3BDE </CCHUNK>
 
+LABEL 3BDF Sub_ResetShotExplnData
 COMMENT 3BDF <CCHUNK>
 COMMENT 3BDF %%AUTOTITLE
 COMMENT 3BDF Reset defender-explosion data and player-shot data to "all unused" state.
 COMMENT 3BDF
-LABEL 3BDF Sub_ResetShotExplnData
 DEC 3BE3
 LABEL 3BE4 RSED_L1
 COMMENT 3BE9
@@ -1316,6 +1324,7 @@ LABEL 3BEE RSED_L2
 COMMENT 3BF3
 COMMENT 3BFD </CCHUNK>
 
+LABEL 3BFD Arr_PlayerExplnFragments
 COMMENT 3BFD <DCHUNK>
 COMMENT 3BFD %%AUTOTITLE
 COMMENT 3BFD Tiny scattering explosion fragments
@@ -1325,7 +1334,6 @@ COMMENT 3BFD   word(current-loc),
 COMMENT 3BFD   byte(loc-change-per-frame),
 COMMENT 3BFD   byte(bitmask-for-'or'ing) ]
 COMMENT 3BFD
-LABEL 3BFD Arr_PlayerExplnFragments
 COMMENT 3CC3 </DCHUNK>
 DATA 3BFD-3CC2
 WORD 3BFD-3C00
@@ -1428,10 +1436,10 @@ WORD 3CBD-3CC0
 CONST 3CBD-3CC0
 HEX 3CC1-3CC2
 
+LABEL 3CC8 Sub_StepPlayerExpln
 COMMENT 3CC8 <CCHUNK>
 COMMENT 3CC8 %%AUTOTITLE
 COMMENT 3CC8
-LABEL 3CC8 Sub_StepPlayerExpln
 COMMENT 3D5A </CCHUNK>
 COMMENT 3CF3
 COMMENT 3CF3 Move each explosion fragment
@@ -1446,6 +1454,9 @@ COMMENT 3D0B
 COMMENT 3D0B .... and new loc within bounds, draw new fragment
 COMMENT 3D27
 COMMENT 3D27 Unk
+COMMENT 3D2F
+COMMENT 3D36
+DEC 3D39
 COMMENT 3D59
 DEC 3CD8
 LABEL 3CE5 SPE_L1
@@ -1461,23 +1472,30 @@ COMMENT 3D43
 CONST 3D47
 LABEL 3D59 SPE_exit
 
+LABEL 3D60 Sub_PlayerExplnSound
 COMMENT 3D60 <CCHUNK>
 COMMENT 3D60 %%AUTOTITLE
 COMMENT 3D60
-LABEL 3D60 Sub_PlayerExplnSound
+CONST 3D72
+CONST 3D77
+LABEL 3D79 PES_L1
+LABEL 3D7E PES_L2
+LABEL 3D88 PES_L3
+COMMENT 3D94
+LABEL 3D94 PES_exit
 COMMENT 3D98 </CCHUNK>
 
+LABEL 3D98 Sub_ResetShotsSpeed
 COMMENT 3D98 <CCHUNK>
 COMMENT 3D98 %%AUTOTITLE
 COMMENT 3D98
-LABEL 3D98 Sub_ResetShotsSpeed
 COMMENT 3DA6 </CCHUNK>
 DEC 3D9F
 
+LABEL 3DA6 Sub_QueryShotsSpeed
 COMMENT 3DA6 <CCHUNK>
 COMMENT 3DA6 %%AUTOTITLE
 COMMENT 3DA6
-LABEL 3DA6 Sub_QueryShotsSpeed
 COMMENT 3DD4
 COMMENT 3DD4 High-pitched beep
 COMMENT 3DE3
@@ -1487,10 +1505,10 @@ COMMENT 3DEA
 COMMENT 3DEA Fall through...
 COMMENT 3DEA </CCHUNK>
 
+LABEL 3DEA Sub_InitPostDrawDelay
 COMMENT 3DEA <CCHUNK>
 COMMENT 3DEA %%AUTOTITLE
 COMMENT 3DEA
-LABEL 3DEA Sub_InitPostDrawDelay
 COMMENT 3DFD </CCHUNK>
 DEC 3DEB
 DEC 3DC0
@@ -1498,20 +1516,27 @@ DEC 3DD0
 DEC 3DD5
 DEC 3DF0
 
+LABEL 3DFD Sub_PromptedReadKbd_1_5_R
 COMMENT 3DFD <CCHUNK>
 COMMENT 3DFD %%AUTOTITLE
 COMMENT 3DFD Read Ret, "R", or 1–5 from kbd
 COMMENT 3DFD Return $0D(Ret), $52(R), or $01–$05
 COMMENT 3DFD
-LABEL 3DFD Sub_PromptedReadKbd_1_5_R
+CONST 3E0A
+CONST 3E0D
+LABEL 3E0F PRK_L1
+LABEL 3E1D PRK_L2
+LABEL 3E32 PRK_exit
 COMMENT 408D </CCHUNK>
 
+LABEL 408D Sub_InitialEntryPoint
 COMMENT 408D <CCHUNK>
 COMMENT 408D %%AUTOTITLE
-LABEL 408D Sub_InitialEntryPoint
 COMMENT 40B7 </CCHUNK>
 COMMENT 4094
 LABEL 4094 IEP_L1
+CHAR 4098
+CHAR 409C
 COMMENT 40A1
 COMMENT 40A1 Overwrite code in the keyboard-checking subroutine.
 COMMENT 40A1 The bytes here, 7E 41 00, are "JMP 4100"
@@ -1519,71 +1544,75 @@ LABEL 40A1 IEP_L2
 COMMENT 40B4
 LABEL 40B4 IEP_L3
 
+LABEL 40B7 Sub_AwaitKeyPress
 COMMENT 40B7 <CCHUNK>
 COMMENT 40B7 %%AUTOTITLE
 COMMENT 40B7
-LABEL 40B7 Sub_AwaitKeyPress
 COMMENT 40BD </CCHUNK>
 
+LABEL 40BD Sub_ResetScreen
 COMMENT 40BD <CCHUNK>
 COMMENT 40BD %%AUTOTITLE
 COMMENT 40BD
-LABEL 40BD Sub_ResetScreen
 COMMENT 40CD </CCHUNK>
 CONST 40C3
 LABEL 40C5 RS_L1
 
+LABEL 40CD Sub_TextOutTilNulCvtPct
 COMMENT 40CD <CCHUNK>
 COMMENT 40CD %%AUTOTITLE
 COMMENT 40CD
-LABEL 40CD Sub_TextOutTilNulCvtPct
 COMMENT 40DD </CCHUNK>
 LABEL 40D7 TOTNCP_L1
 LABEL 40DC TOTNCP_L2
 
+LABEL 40DD TXT_JoysticksQuestion
 COMMENT 40DD <DCHUNK>
 COMMENT 40DD %%AUTOTITLE
-LABEL 40DD TXT_JoysticksQuestion
 COMMENT 40FC </DCHUNK>
 CHAR 40DD-40FB
 
+LABEL 4100 Sub_CheckJoysticks
 COMMENT 4100 <CCHUNK>
 COMMENT 4100 %%AUTOTITLE
 COMMENT 4100
-LABEL 4100 Sub_CheckJoysticks
 COMMENT 4160 </CCHUNK>
 LABEL 4122 CJ_L1
 LABEL 412C CJ_L2
+COMMENT 4140
 LABEL 4140 CJ_L3
+COMMENT 4148
 LABEL 4148 CJ_L4
+COMMENT 4150
 LABEL 4150 CJ_L5
+COMMENT 4158
 LABEL 4158 CJ_L6
 
+LABEL 4160 Sub_MaybeUpdateActivePlayer
 COMMENT 4160 <CCHUNK>
 COMMENT 4160 %%AUTOTITLE
 COMMENT 4160
-LABEL 4160 Sub_MaybeUpdateActivePlayer
 COMMENT 4173 </CCHUNK>
 LABEL 416D MUAP_L1
 
+LABEL 4173 Sub_InitPlayers
 COMMENT 4173 <CCHUNK>
 COMMENT 4173 %%AUTOTITLE
 COMMENT 4173
-LABEL 4173 Sub_InitPlayers
 COMMENT 4179
 COMMENT 4179 Fall through...
 COMMENT 4179 </CCHUNK>
 
+LABEL 4179 Sub_InitPlayerPositions
 COMMENT 4179 <CCHUNK>
 COMMENT 4179 %%AUTOTITLE
 COMMENT 4179
-LABEL 4179 Sub_InitPlayerPositions
 COMMENT 4188 </CCHUNK>
 
+LABEL 4188 Sub_CheckLeftJoystick
 COMMENT 4188 <CCHUNK>
 COMMENT 4188 %%AUTOTITLE
 COMMENT 4188
-LABEL 4188 Sub_CheckLeftJoystick
 COMMENT 41D0 </CCHUNK>
 COMMENT 4192
 LABEL 4192 CLJ_L1
@@ -1598,146 +1627,64 @@ LABEL 41B6 CLJ_L5
 COMMENT 41BC
 LABEL 41BC CLJ_L6
 
+LABEL 41D6 TXT_NeedInstructions
+CHAR 41D6-4212
 COMMENT 41D6 <DCHUNK>
 COMMENT 41D6 %%AUTOTITLE
 COMMENT 41D6
-LABEL 41D6 TXT_NeedInstructions
 COMMENT 4213 </DCHUNK>
 
+LABEL 4213 TXT_Instructions_1
+CHAR 4213-437D
 COMMENT 4213 <DCHUNK>
 COMMENT 4213 %%AUTOTITLE
-LABEL 4213 TXT_Instructions_1
 COMMENT 437E </DCHUNK>
 
+LABEL 437E TXT_Instructions_2
+CHAR 437E-4531
 COMMENT 437E <DCHUNK>
 COMMENT 437E %%AUTOTITLE
-LABEL 437E TXT_Instructions_2
 COMMENT 4532 </DCHUNK>
 
+LABEL 4532 TXT_Instructions_3
+CHAR 4532-4672
 COMMENT 4532 <DCHUNK>
 COMMENT 4532 %%AUTOTITLE
-LABEL 4532 TXT_Instructions_3
 COMMENT 4673 </DCHUNK>
 
+LABEL 4673 TXT_Instructions_4
+CHAR 4673-471E
 COMMENT 4673 <DCHUNK>
 COMMENT 4673 %%AUTOTITLE
-LABEL 4673 TXT_Instructions_4
 COMMENT 471E </DCHUNK>
 
+LABEL 471E TXT_Instructions_5
+CHAR 471E-48B2
 COMMENT 471E <DCHUNK>
 COMMENT 471E %%AUTOTITLE
-LABEL 471E TXT_Instructions_5
 COMMENT 48B3 </DCHUNK>
 
+LABEL 48B3 TXT_Instructions_6
+CHAR 48B3-4A3F
 COMMENT 48B3 <DCHUNK>
 COMMENT 48B3 %%AUTOTITLE
-LABEL 48B3 TXT_Instructions_6
 COMMENT 4A40 </DCHUNK>
 
+LABEL 4A40 Sub_AskWhetherInstructions
 COMMENT 4A40 <CCHUNK>
 COMMENT 4A40 %%AUTOTITLE
 COMMENT 4A40
-LABEL 4A40 Sub_AskWhetherInstructions
+CHAR 4A4D
+CHAR 4A51
 COMMENT 4A56 </CCHUNK>
 LABEL 4A49 AWI_L1
 
+LABEL 4A56 Sub_ShowInstructionTexts
 COMMENT 4A56 <CCHUNK>
 COMMENT 4A56 %%AUTOTITLE
 COMMENT 4A56
-LABEL 4A56 Sub_ShowInstructionTexts
 LABEL 4A8F SIT_L1
 
-
-
-
-
-CHAR 3AF8
-
-
-
-
-
-
-CHAR 3937
-CHAR 393B
-
-CHAR 3032
-
-
-
-CHAR 41D6-4212
-
-CHAR 4213-4A3F
-
-CHAR 387B-3902
-
-
-* Joysticks? query responses
-CHAR 4098
-CHAR 409C
-
-* Need instructions? query responses
-CHAR 4A4D
-CHAR 4A51
-
-
-
-
-
-
-
-HEX 41D0-41D5
-
-COMMENT 3FFD
-HEX 3FFD-408C
-
-DEC 2E29
-DEC 2E48
-DEC 2E57
-
-
-
-
-
-
-HEX 2EDE-2EE1
-
-HEX 3B41-3B42
-
-
-
-
-**************************************  RESUME HERE
-
-
-
-HEX 3231
-
-
-COMMENT 3D36
-
-CONST 3D72
-CONST 3D77
-LABEL 3D79 PES_L1
-LABEL 3D7E PES_L2
-LABEL 3D88 PES_L3
-COMMENT 3D94
-LABEL 3D94 PES_exit
-
-
-
-CONST 3E0A
-CONST 3E0D
-LABEL 3E0F PRK_L1
-LABEL 3E1D PRK_L2
-LABEL 3E32 PRK_exit
-
-* Graphics data
-
-COMMENT 4140
-COMMENT 4148
-COMMENT 4150
-COMMENT 4158
-
+******************************************************************************
 
 INCLUDE vars.f9dasm
