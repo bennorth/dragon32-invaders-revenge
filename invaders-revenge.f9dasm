@@ -385,10 +385,16 @@ COMMENT 2F74 %%AUTOTITLE
 COMMENT 2F74 Blt the initial "special defender" explosion graphic to X, and play two
 COMMENT 2F74 equal short rising-pitch chirps.
 COMMENT 2F74
+COMMENT 2F76
+COMMENT 2F76 If about to draw explosion too high up screen...
+COMMENT 2F79 ....don't
+COMMENT 2F7B
+COMMENT 2F7B Blt 7 rows of explosion gfx to X
 DEC 2F7F
 LABEL 2F83 ISDE_L1
-LABEL 2F8F ISDE_L2
 COMMENT 2F8F
+COMMENT 2F8F Play two chirps
+LABEL 2F8F ISDE_L2
 DEC 2F90
 LABEL 2F91 ISDE_L3
 LABEL 2F97 ISDE_L4
