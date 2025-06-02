@@ -980,19 +980,19 @@ LABEL 37A1 Arr_PlayerData
 COMMENT 37A1 <DCHUNK>
 COMMENT 37A1 %%AUTOTITLE
 HEX 37A1-37AC
-LABEL 37A2 PlayerData_0_01_b_DefenderMovePeriod
-LABEL 37A3 PlayerData_0_02_b_NLives
-LABEL 37A4 PlayerData_0_03_Loc_TopLifeShip
+LABEL 37A2 PlayerData_0_b_DefenderMovePeriod
+LABEL 37A3 PlayerData_0_b_NLives
+LABEL 37A4 PlayerData_0_s_TopLifeShip
 WORD 37A4
-LABEL 37A6 PlayerData_0_05_w_Score
+LABEL 37A6 PlayerData_0_w_Score
 WORD 37A6
 CONST 37A6
-LABEL 37A8 PlayerData_0_07_w_NextSpeedUpScore
+LABEL 37A8 PlayerData_0_w_NextSpeedUpScore
 WORD 37A8
 CONST 37A8
-LABEL 37AA PlayerData_0_09_Loc_ScoreDisplay
+LABEL 37AA PlayerData_0_s_ScoreDisplay
 WORD 37AA
-LABEL 37AC PlayerData_0_0b_b_XPositionFraction
+LABEL 37AC PlayerData_0_b_XPositionFraction
 COMMENT 37B9 </DCHUNK>
 
 LABEL 37AD Arr_PlayerData_1
@@ -1000,19 +1000,19 @@ COMMENT 37AD
 COMMENT 37AD This data block is 12 bytes on from block 0
 HEX 37AD-37AE
 HEX 37AD-37B8
-LABEL 37AE PlayerData_1_01_b_DefenderMovePeriod
-LABEL 37AF PlayerData_1_02_b_NLives
-LABEL 37B0 PlayerData_1_03_Loc_TopLifeShip
+LABEL 37AE PlayerData_1_b_DefenderMovePeriod
+LABEL 37AF PlayerData_1_b_NLives
+LABEL 37B0 PlayerData_1_s_TopLifeShip
 WORD 37B0
-LABEL 37B2 PlayerData_1_05_w_Score
+LABEL 37B2 PlayerData_1_s_Score
 WORD 37B2
 CONST 37B2
-LABEL 37B4 PlayerData_1_07_w_NextSpeedUpScore
+LABEL 37B4 PlayerData_1_w_NextSpeedUpScore
 WORD 37B4
 CONST 37B4
-LABEL 37B6 PlayerData_1_09_Loc_ScoreDisplay
+LABEL 37B6 PlayerData_1_s_ScoreDisplay
 WORD 37B6
-LABEL 37B8 PlayerData_1_0b_b_XPositionFraction
+LABEL 37B8 PlayerData_1_b_XPositionFraction
 
 LABEL 3295 ShotPtrLimit
 WORD 3295
