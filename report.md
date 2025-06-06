@@ -100,6 +100,12 @@ When iterating over a fixed-size array, sometimes the codes counts how many entr
 
 Should we find a use for the *SmallUnusedDefender*?
 
+The code for testing the keyboard and updating the player's position is inline in `MainPlayLoop` but other tasks are in subroutines.
+
+Code at `CLS_L2` is unclear; looks like the `BNE` will never be taken, because X will always be decremented to zero.  Am I missing something?
+
+Code for moving player: why do we store unchanged X?
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
