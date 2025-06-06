@@ -74,8 +74,8 @@ s 3174 ClearLowerScreen_Start
 b 31C0 RP_Rows
 b 3231 EP_Rows
 
-b 31E5 ActivePlayer_X_fraction
-b 31E6 ActivePlayer_X_whole
+b 31E5 ActivePlayer_X_fraction Whether player in left ($FF) or right ($00) position for its byte-column
+b 31E6 ActivePlayer_X_whole Byte-column of centre of three-byte-column image of player ship
 
 s 31E7 ActivePlayer
 s 31E9 ActivePlayer_Prev
