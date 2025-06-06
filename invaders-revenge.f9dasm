@@ -605,8 +605,18 @@ COMMENT 318E </CCHUNK>
 LABEL 318E Sub_MovePlayerRight
 COMMENT 318E <CCHUNK>
 COMMENT 318E %%AUTOTITLE
-COMMENT 318E Move the player right one half-byte, i.e., two pixels.
+COMMENT 318E Move the player right one half-byte, i.e., two pixels.  The condition for
+COMMENT 318E no update (whole + fraction == $1E) can in theory happen in two ways:
+COMMENT 318E (whole, fraction) == ($1E, $00) or ($1F, $FF).  But the former will always
+COMMENT 318E happen before the latter can become true, so the rightmost the player can
+COMMENT 318E be is at ($1E, $00), i.e., right-justified with centre byte in column $1E.
 COMMENT 318E
+COMMENT 318E If player already at right-end limit of travel...
+COMMENT 3196 ....do not move (see comment above for detail)
+COMMENT 3198
+COMMENT 319B If toggling fraction results in new value being $00=right...
+COMMENT 319E ....we can leave byte-column and screen-pos as they are
+COMMENT 31A0 ....otherwise (new value $FF=left), increase byte-column and screen-pos
 COMMENT 31A5
 COMMENT 31A5 Other player movement subroutines jump here too
 LABEL 31A5 MPR_L1
@@ -616,8 +626,18 @@ COMMENT 31A9 </CCHUNK>
 LABEL 31A9 Sub_MovePlayerLeft
 COMMENT 31A9 <CCHUNK>
 COMMENT 31A9 %%AUTOTITLE
-COMMENT 31A9 Move the player left one half-byte, i.e., two pixels.
+COMMENT 31A9 Move the player left one half-byte, i.e., two pixels.  The condition for no
+COMMENT 31A9 update (whole + fraction == $00) can in theory happen in two ways: if
+COMMENT 31A9 (whole, fraction) == ($01, $FF) or ($00, $00).  But the former will always
+COMMENT 31A9 happen before the latter can become true, so the leftmost the player can be
+COMMENT 31A9 is at ($01, $FF), i.e., left-justified with centre byte in column $01.
 COMMENT 31A9
+COMMENT 31A9 If player already at left-end limit of travel...
+COMMENT 31AF ....do not move (see comment above for detail)
+COMMENT 31B1
+COMMENT 31B4 If toggling fraction results in new value being $FF=left...
+COMMENT 31B7 ....we can leave byte-column and screen-pos as they are
+COMMENT 31B9 ....otherwise (new value $00=right), decrease byte-column and screen-pos
 COMMENT 31C0 </CCHUNK>
 
 LABEL 31C1 GFX_PlayerRightJust
