@@ -13,3 +13,10 @@ Generate text graphics, for use:
 cd Original-graphics/text
 parallel python ../../make_img.py 3 {} {.}.png ::: *.txt
 
+Monitor rendered version:
+
+ls -1 gen_vars.py reformat.py invaders-revenge.f9dasm vars.txt | entr -c ./make-html.sh
+
+Live-reload server for that:
+
+npx alive-server --no-browser rendered-asm
