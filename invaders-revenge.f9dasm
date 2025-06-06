@@ -691,11 +691,26 @@ COMMENT 325D </CCHUNK>
 LABEL 325D Sub_MovePlayerUp
 COMMENT 325D <CCHUNK>
 COMMENT 325D %%AUTOTITLE
+COMMENT 325D
+COMMENT 325D Compute screen position two rows higher
+COMMENT 3263
+COMMENT 3263 If proposed new position is too high up screen...
+COMMENT 3266 ....do not store new value
+COMMENT 326A ....otherwise (not too high up), DO store new value
 COMMENT 326D </CCHUNK>
 
 LABEL 326D Sub_MovePlayerDown
 COMMENT 326D <CCHUNK>
 COMMENT 326D %%AUTOTITLE
+COMMENT 326D
+COMMENT 326D Compute screen position two rows lower
+COMMENT 3273
+COMMENT 3273 If player is above double-stripe...
+COMMENT 3278 ....move down six more rows to enter main play area
+COMMENT 327C
+COMMENT 327C If proposed new location is too low down screen...
+COMMENT 327F ....do not store new value
+COMMENT 3283 ....otherwise (not too low down), DO store new value
 LABEL 327C MPD_L1
 COMMENT 3286 </CCHUNK>
 
