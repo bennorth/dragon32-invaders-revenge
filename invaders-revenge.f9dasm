@@ -528,24 +528,61 @@ LABEL 30DF Sub_MainPlayLoop
 COMMENT 30DF <CCHUNK>
 COMMENT 30DF %%AUTOTITLE
 COMMENT 30DF
+COMMENT 30DF Infinite loop, performing all tasks for playing the game:
+COMMENT 30DF ;;
+COMMENT 30DF Move all the player's shots down, checking for hitting something
+COMMENT 30DF Check for keypresses moving the player or firing a player shot
+COMMENT 30DF Every Nth loop, move the defender base
+COMMENT 30DF Move the player, checking for collisions
+COMMENT 30DF Do one step of animation of player explosion (if active)
+COMMENT 30DF Play a little bit of sound
+COMMENT 30DF Do one step of animation of any active defender explosions
+COMMENT 30DF Do one step of animation of defender's shot hitting something
+COMMENT 30DF Do one step of animation of defender's shot
+COMMENT 30DF Every Nth loop, move the defenders
+COMMENT 30DF Delay to keep game at proper pace
+COMMENT 30DF ;;
+COMMENT 30DF In the above, "Nth" is used to denote that the action occurs once in a
+COMMENT 30DF period which gets shorter as the player gets more points.
+COMMENT 30DF
+COMMENT 30E2
+COMMENT 30E2 If the player's ship is exploding...
+COMMENT 30E5 ....do not allow the player to move the ship
+COMMENT 30E9
+COMMENT 30E9 If key "P" pressed...
+COMMENT 30F3 ....enter flashing PAUSE loop
 COMMENT 30F7
-COMMENT 30F7 Overwritten by "JMP $4100" if joysticks enabled.
+COMMENT 30F7 Three bytes at `MPL_MovePlayerFromKeyboard` are overwritten by "JMP $4100"
+COMMENT 30F7 if joysticks are enabled.
+COMMENT 30F7
+COMMENT 30F7 If key "right arrow" pressed...
 LABEL 30F7 MPL_MovePlayerFromKeyboard
+COMMENT 3103 ....update position to move right
 COMMENT 3106
+COMMENT 3106 If key "left arrow" pressed...
 LABEL 3106 MPL_L1
+COMMENT 3112 ....update position to move left
 COMMENT 3115
+COMMENT 3115 If key "down arrow" pressed...
 LABEL 3115 MPL_L2
+COMMENT 3121 ....update position to move down
 COMMENT 3124
+COMMENT 3124 If key "up arrow" pressed...
 LABEL 3124 MPL_L3
+COMMENT 3130 ....update position to move up
 COMMENT 3133
 LABEL 3133 MPL_L4
-COMMENT 3145
-COMMENT 3147
+COMMENT 3136
+COMMENT 3136 If key "space" pressed...
+COMMENT 3142 ....fire player shot
+COMMENT 3145 ....and leave flag alone
+COMMENT 3147 ....otherwise ("space" not pressed), clear flag
 LABEL 3147 MPL_L5
 COMMENT 314A
 LABEL 314A MPL_L6
-COMMENT 3164
-COMMENT 3164 Delay for time proportional to `Var_b_PostDrawDelay`
+COMMENT 315F
+COMMENT 315F If a delay is required...
+COMMENT 3164 ....do so, for time proportional to `Var_b_PostDrawDelay`
 LABEL 3164 MPL_L7
 COMMENT 316A
 LABEL 316A MPL_L8
