@@ -810,9 +810,21 @@ COMMENT 3398
 COMMENT 3398 MovePhase = active_player->DefenderMovePeriod
 COMMENT 33A0
 DEC 33A4
+COMMENT 33B4
+COMMENT 33B4 Defender base hit; record its location...
+COMMENT 33BC ....and the fact that a base was just destroyed
 DEC 33BD
+COMMENT 33C1 ....and initiate the explosion
+COMMENT 33C6
+COMMENT 33C6 Start by assuming defender base will spawn at left edge...
+COMMENT 33CC ....but if SpawnSide == $00 == RIGHT...
+COMMENT 33D1 ....arrange to spawn at right edge instead
 DEC 33D5
 LABEL 33D9 MDBCH_L1
+COMMENT 33D9
+COMMENT 33D9 Store screen-pos of to-be-spawned base
+COMMENT 33DC
+COMMENT 33DC Get ready to spawn from other side next time
 COMMENT 33DF
 COMMENT 33DF Erase an 8-wide, 9-high block of pixels (i.e., 2 bytes wide) with the
 COMMENT 33DF top-left byte pointed to by X.  Panic if this takes us beyond screen
