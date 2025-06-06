@@ -739,21 +739,33 @@ COMMENT 3298 of the player's ship.  Also play a beep.  If a shot is already bein
 COMMENT 3298 launched, do not launch another one, but instead prolong the beep, lowering
 COMMENT 3298 its pitch.
 COMMENT 3298
+COMMENT 3298 If a shot is already in the process of being fired...
+COMMENT 329B ....do not launch another, but do (perhaps) extend sound effect
+COMMENT 329D
+COMMENT 329D If player is above double-stripe...
+COMMENT 32A3 ....do not launch a shot — TODO check if sound still happens
 COMMENT 32A5
-COMMENT 32A5 Scan for available shot struct
+COMMENT 32A5 Scan for available shot struct...
 LABEL 32A9 LPS_L1
+COMMENT 32AF .... leaving Y just past struct to populate
 COMMENT 32AF
-COMMENT 32AF Y just past struct to populate
+COMMENT 32AF Compute screen-pos 6 rows down, one byte to right of player
 COMMENT 32B6
-COMMENT 32B6 Choose left or right shot mask
+COMMENT 32B6 Start by assuming right-half shot mask...
+COMMENT 32B8 ....but if fraction is $FF=left...
+COMMENT 32BD ....use left-half mask instead
 LABEL 32BF LPS_L2
+COMMENT 32BF
+COMMENT 32BF Store to Bitmask field of to-be-populated struct
 COMMENT 32C1
-COMMENT 32C1 Draw shot and store location
+COMMENT 32C1 Draw shot
+COMMENT 32C5
+COMMENT 32C5 Store to ScreenPos field of to-be-populated struct
 COMMENT 32C7
 COMMENT 32C7 High-pitched beep
 DEC 32C8
 COMMENT 32D3
-COMMENT 32D3 Extend the beep, lowering the pitch
+COMMENT 32D3 Extend the beep for up to five calls, lowering the pitch
 LABEL 32D3 LPS_L3
 DEC 32D7
 LABEL 32E0 LPS_exit
