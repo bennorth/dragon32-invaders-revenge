@@ -616,8 +616,8 @@ COMMENT 318E If player already at right-end limit of travel...
 COMMENT 3196 ....do not move (see comment above for detail)
 COMMENT 3198
 COMMENT 319B If toggling fraction results in new value being $00=right...
-COMMENT 319E ....we can leave byte-column and screen-pos as they are
-COMMENT 31A0 ....otherwise (new value $FF=left), increase byte-column and screen-pos
+COMMENT 319E ....we can leave byte-column and screen-loc as they are
+COMMENT 31A0 ....otherwise (new value $FF=left), increase byte-column and screen-loc
 COMMENT 31A5
 COMMENT 31A5 Other player movement subroutines jump here too
 LABEL 31A5 MPR_L1
@@ -637,8 +637,8 @@ COMMENT 31A9 If player already at left-end limit of travel...
 COMMENT 31AF ....do not move (see comment above for detail)
 COMMENT 31B1
 COMMENT 31B4 If toggling fraction results in new value being $FF=left...
-COMMENT 31B7 ....we can leave byte-column and screen-pos as they are
-COMMENT 31B9 ....otherwise (new value $00=right), decrease byte-column and screen-pos
+COMMENT 31B7 ....we can leave byte-column and screen-loc as they are
+COMMENT 31B9 ....otherwise (new value $00=right), decrease byte-column and screen-loc
 COMMENT 31C0 </CCHUNK>
 
 LABEL 31C1 GFX_PlayerRightPosn
@@ -709,9 +709,9 @@ LABEL 325D Sub_MovePlayerUp
 COMMENT 325D <CCHUNK>
 COMMENT 325D %%AUTOTITLE
 COMMENT 325D
-COMMENT 325D Compute screen position two rows higher
+COMMENT 325D Compute screen location two rows higher
 COMMENT 3263
-COMMENT 3263 If proposed new position is too high up screen...
+COMMENT 3263 If proposed new location is too high up screen...
 COMMENT 3266 ....do not store new value
 COMMENT 326A ....otherwise (not too high up), DO store new value
 COMMENT 326D </CCHUNK>
@@ -720,7 +720,7 @@ LABEL 326D Sub_MovePlayerDown
 COMMENT 326D <CCHUNK>
 COMMENT 326D %%AUTOTITLE
 COMMENT 326D
-COMMENT 326D Compute screen position two rows lower
+COMMENT 326D Compute screen location two rows lower
 COMMENT 3273
 COMMENT 3273 If player is above double-stripe...
 COMMENT 3278 ....move down six more rows to enter main play area
@@ -738,8 +738,12 @@ COMMENT 3286 %%RFD 3
 COMMENT 3286 State of up to five shots that the player has fired.  Each shot is
 COMMENT 3286 described by a 3-byte structure:
 COMMENT 3286 ;;
-COMMENT 3286 [0] b  : Bitmask for drawing shot (0x10 or 0x01)
-COMMENT 3286 [1:2] w: Location of shot
+COMMENT 3286 [0]   b: Bitmask (0x10 or 0x01)
+COMMENT 3286 [1:2] w: ScreenLoc --- location of bottom pixel of shot
+COMMENT 3286 ;;
+COMMENT 3286 Bitmask is used for drawing using `OR`, which turns a pixel from green to
+COMMENT 3286 yellow.  It is also shifted left and then used (with `AND`) to detect when
+COMMENT 3286 the shot overlaps with some blue or red.
 COMMENT 3286 ;;
 COMMENT 3286 (Cleared as part of `Sub_ResetShotExplnData`.)
 COMMENT 3286
@@ -766,7 +770,8 @@ COMMENT 32A5 Scan for available shot struct...
 LABEL 32A9 LPS_L1
 COMMENT 32AF .... leaving Y just past struct to populate
 COMMENT 32AF
-COMMENT 32AF Compute screen-pos 6 rows down, one byte to right of player
+COMMENT 32AF Compute screen-loc 6 rows down, one byte to right of player's location,
+COMMENT 32AF i.e., under the centre byte-column of the three-wide ship image
 COMMENT 32B6
 COMMENT 32B6 Start by assuming right-half shot mask...
 COMMENT 32B8 ....but if fraction is $FF=left...
@@ -777,7 +782,7 @@ COMMENT 32BF Store to Bitmask field of to-be-populated struct
 COMMENT 32C1
 COMMENT 32C1 Draw shot
 COMMENT 32C5
-COMMENT 32C5 Store to ScreenPos field of to-be-populated struct
+COMMENT 32C5 Store to ScreenLoc field of being-populated struct
 COMMENT 32C7
 COMMENT 32C7 High-pitched beep
 DEC 32C8
@@ -839,7 +844,7 @@ COMMENT 33D1 ....arrange to spawn at right edge instead
 DEC 33D5
 LABEL 33D9 MDBCH_L1
 COMMENT 33D9
-COMMENT 33D9 Store screen-pos of to-be-spawned base
+COMMENT 33D9 Store screen-loc of to-be-spawned base
 COMMENT 33DC
 COMMENT 33DC Get ready to spawn from other side next time
 COMMENT 33DF
