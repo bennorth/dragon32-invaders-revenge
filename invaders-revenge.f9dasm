@@ -679,14 +679,30 @@ COMMENT 322C
 LABEL 322C RP_L5
 COMMENT 3231 </CCHUNK>
 
-LABEL 3232 Sub_ErasePlayer
+LABEL 3232 Sub_ErasePlayerCheckHit
 COMMENT 3232 <CCHUNK>
 COMMENT 3232 %%AUTOTITLE
 COMMENT 3232
+COMMENT 3235
+COMMENT 3235 Prepare to loop over 6 rows of bitmask
 DEC 3236
-LABEL 323A EP_L1
+LABEL 323A EPCH_L1
+COMMENT 323A
+COMMENT 323A Prepare to loop over 3 byte-columns of bitmask (12 pixels)
 DEC 323B
-LABEL 323C EP_L2
+LABEL 323C EPCH_L2
+COMMENT 323C
+COMMENT 323C Turn next mask byte into red/blue detect mask (recall: 0=G, 1=Y, 2=B, 3=R)
+COMMENT 323F
+COMMENT 323F If the player overlaps with something red or blue...
+COMMENT 3241 ....they have hit a defender or defender shot; chain to handler sub
+COMMENT 3245
+COMMENT 3245 Mask out yellow from destination byte (Y->G, R->B)
+COMMENT 324B
+COMMENT 324B Loop over byte-columns
+COMMENT 324E
+COMMENT 324E Loop over rows
+COMMENT 3256
 COMMENT 325D </CCHUNK>
 
 LABEL 325D Sub_MovePlayerUp
