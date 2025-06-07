@@ -778,9 +778,9 @@ COMMENT 32B8 ....but if fraction is $FF=left...
 COMMENT 32BD ....use left-half mask instead
 LABEL 32BF LPS_L2
 COMMENT 32BF
-COMMENT 32BF Store to Bitmask field of to-be-populated struct
+COMMENT 32BF Store to Bitmask field of being-populated struct
 COMMENT 32C1
-COMMENT 32C1 Draw shot
+COMMENT 32C1 Draw bottom pixel of shot; rest will be drawn as it starts moving
 COMMENT 32C5
 COMMENT 32C5 Store to ScreenLoc field of being-populated struct
 COMMENT 32C7
