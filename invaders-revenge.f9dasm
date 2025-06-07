@@ -800,7 +800,32 @@ COMMENT 32E9 </CCHUNK>
 LABEL 32E9 Sub_MovePlayerShotsDown
 COMMENT 32E9 <CCHUNK>
 COMMENT 32E9 %%AUTOTITLE
+COMMENT 32ED
+COMMENT 32ED B = shot->Bitmask; X = shot->ScreenLoc
 LABEL 32ED MPSD_loop
+COMMENT 32F1
+COMMENT 32F1 If this shot not active, move on to next
+COMMENT 32F3
+COMMENT 32F3 Erase both possible shot pixels from rows two above and one above
+COMMENT 32F3 current shot location
+COMMENT 3303
+COMMENT 3303 Compute potential new shot location, two rows down
+COMMENT 3306
+COMMENT 3306 If shot has reached bottom of screen...
+COMMENT 3309 ....it is finished with
+COMMENT 330B
+COMMENT 330B A = current screen byte of four pixels
+COMMENT 330D
+COMMENT 330D Convert drawing bitmask into red/blue detection bitmask
+COMMENT 3310
+COMMENT 3310 If screen byte contains red/blue at any relevant position...
+COMMENT 3312 ....the player shot has hit a defender (or base or shot)
+COMMENT 3314
+COMMENT 3314 Draw shot pixel into new bottom row and row above it
+COMMENT 3320
+COMMENT 3320 Update shot->ScreenLoc
+COMMENT 3322
+COMMENT 3322 Loop while more shots might be active
 LABEL 3322 MPSD_next
 LABEL 3329 MPSD_ClearShot
 COMMENT 3329
