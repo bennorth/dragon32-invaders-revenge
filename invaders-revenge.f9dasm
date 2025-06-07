@@ -606,10 +606,11 @@ LABEL 318E Sub_MovePlayerRight
 COMMENT 318E <CCHUNK>
 COMMENT 318E %%AUTOTITLE
 COMMENT 318E Move the player right one half-byte, i.e., two pixels.  The condition for
-COMMENT 318E no update (whole + fraction == $1E) can in theory happen in two ways:
-COMMENT 318E (whole, fraction) == ($1E, $00) or ($1F, $FF).  But the former will always
-COMMENT 318E happen before the latter can become true, so the rightmost the player can
-COMMENT 318E be is at ($1E, $00), i.e., right-justified with centre byte in column $1E.
+COMMENT 318E no update to whole (whole + fraction == $1E) can in theory happen in two
+COMMENT 318E ways: (whole, fraction) == ($1E, $00) or ($1F, $FF).  But the former will
+COMMENT 318E always happen before the latter can become true, so the rightmost the
+COMMENT 318E player can be is at ($1E, $00), i.e., right-justified with centre byte in
+COMMENT 318E column $1E.
 COMMENT 318E
 COMMENT 318E If player already at right-end limit of travel...
 COMMENT 3196 ....do not move (see comment above for detail)
@@ -627,10 +628,10 @@ LABEL 31A9 Sub_MovePlayerLeft
 COMMENT 31A9 <CCHUNK>
 COMMENT 31A9 %%AUTOTITLE
 COMMENT 31A9 Move the player left one half-byte, i.e., two pixels.  The condition for no
-COMMENT 31A9 update (whole + fraction == $00) can in theory happen in two ways: if
-COMMENT 31A9 (whole, fraction) == ($01, $FF) or ($00, $00).  But the former will always
-COMMENT 31A9 happen before the latter can become true, so the leftmost the player can be
-COMMENT 31A9 is at ($01, $FF), i.e., left-justified with centre byte in column $01.
+COMMENT 31A9 update to whole (whole + fraction == $00) can in theory happen in two ways:
+COMMENT 31A9 if (whole, fraction) == ($01, $FF) or ($00, $00).  But the former will
+COMMENT 31A9 always happen before the latter can become true, so the leftmost the player
+COMMENT 31A9 can be is at ($01, $FF), i.e., left-justified, centre byte in column $01.
 COMMENT 31A9
 COMMENT 31A9 If player already at left-end limit of travel...
 COMMENT 31AF ....do not move (see comment above for detail)
