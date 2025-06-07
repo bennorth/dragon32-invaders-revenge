@@ -609,7 +609,7 @@ COMMENT 318E Move the player right one half-byte, i.e., two pixels.  The conditi
 COMMENT 318E no update to whole (whole + fraction == $1E) can in theory happen in two
 COMMENT 318E ways: (whole, fraction) == ($1E, $00) or ($1F, $FF).  But the former will
 COMMENT 318E always happen before the latter can become true, so the rightmost the
-COMMENT 318E player can be is at ($1E, $00), i.e., right-justified with centre byte in
+COMMENT 318E player can be is at ($1E, $00), i.e., in right-position with centre byte in
 COMMENT 318E column $1E.
 COMMENT 318E
 COMMENT 318E If player already at right-end limit of travel...
@@ -631,7 +631,7 @@ COMMENT 31A9 Move the player left one half-byte, i.e., two pixels.  The conditio
 COMMENT 31A9 update to whole (whole + fraction == $00) can in theory happen in two ways:
 COMMENT 31A9 if (whole, fraction) == ($01, $FF) or ($00, $00).  But the former will
 COMMENT 31A9 always happen before the latter can become true, so the leftmost the player
-COMMENT 31A9 can be is at ($01, $FF), i.e., left-justified, centre byte in column $01.
+COMMENT 31A9 can be is at ($01, $FF), i.e., left-position, centre byte in column $01.
 COMMENT 31A9
 COMMENT 31A9 If player already at left-end limit of travel...
 COMMENT 31AF ....do not move (see comment above for detail)
@@ -641,14 +641,14 @@ COMMENT 31B7 ....we can leave byte-column and screen-pos as they are
 COMMENT 31B9 ....otherwise (new value $00=right), decrease byte-column and screen-pos
 COMMENT 31C0 </CCHUNK>
 
-LABEL 31C1 GFX_PlayerRightJust
+LABEL 31C1 GFX_PlayerRightPosn
 COMMENT 31C1 <DCHUNK>
 COMMENT 31C1 %%GFX 3
 COMMENT 31C1 %%RFD 3
 DATA 31C1-31D2
 COMMENT 31D3 </DCHUNK>
 
-LABEL 31D3 GFX_PlayerLeftJust
+LABEL 31D3 GFX_PlayerLeftPosn
 COMMENT 31D3 <DCHUNK>
 COMMENT 31D3 %%GFX 3
 COMMENT 31D3 %%RFD 3
@@ -659,7 +659,7 @@ LABEL 31EB Sub_RedrawPlayer
 COMMENT 31EB <CCHUNK>
 COMMENT 31EB %%AUTOTITLE
 COMMENT 31EB Erase the player using mask
-COMMENT 31EB ActivePlayer_X_fraction ? left-just : right-just
+COMMENT 31EB ActivePlayer_X_fraction ? left-posn : right-posn
 COMMENT 31EB and then draw the player using the same mask.
 COMMENT 31EB ???????????????? Have I got that right?  Seems odd.
 LABEL 31FA RP_L1
