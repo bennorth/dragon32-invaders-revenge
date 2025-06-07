@@ -84,7 +84,7 @@ Pointers into arrays stored just after that array, giving rise to code comparing
 
 When blitting, checks that destination is in range (within screen memory) which panic if fail.
 
-Use of colour checks for hit detection, e.g., `Sub_StepDefenderShotMovement`.
+Use of colour checks for hit detection, e.g., `Sub_StepDefenderShotMovement`.  Choice of colours for sprites is influenced by making it easier for the code to detect them.
 
 Use of `PULS PC,A` to save a byte over `PULS A / RTS`.
 
