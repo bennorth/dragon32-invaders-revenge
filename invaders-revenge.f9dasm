@@ -682,6 +682,11 @@ COMMENT 3231 </CCHUNK>
 LABEL 3232 Sub_ErasePlayerCheckHit
 COMMENT 3232 <CCHUNK>
 COMMENT 3232 %%AUTOTITLE
+COMMENT 3232 Mask out the player ship shape from the 6-high, 3-byte-wide section of
+COMMENT 3232 screen whose top-left byte is in `Var_s_ActivePlayer_Prev`.  The bitmask
+COMMENT 3232 should be pointed to by `U`.  If, while doing this, the mask overlaps with
+COMMENT 3232 a blue or red pixel, then the player ship has crashed into something, and
+COMMENT 3232 we jump to `HandlePlayerCrash`.
 COMMENT 3232
 COMMENT 3235
 COMMENT 3235 Prepare to loop over 6 rows of bitmask
