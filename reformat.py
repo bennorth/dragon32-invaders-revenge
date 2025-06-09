@@ -4,7 +4,7 @@ import io
 from dataclasses import dataclass
 from colored import Fore as CF, Back as CB, Style as CS
 from bs4 import BeautifulSoup
-from typing import Any
+from typing import Any, Set
 from PIL import Image
 from make_img import img_from_bytes
 from base64 import b64encode
@@ -20,19 +20,38 @@ DUMP_ADDR_style = CF.STEEL_BLUE_3
 DUMP_DATA_style = CF.SLATE_BLUE_3B
 
 
-def code_in_pre(soup, code_spans):
-    code = soup.new_tag("code")
+def code_in_pre(ctx, code_spans):
+    code = ctx.soup.new_tag("code")
     for span_cls, span_text in code_spans:
-        span = soup.new_tag("span")
+        span = ctx.soup.new_tag("span")
         span.attrs["class"] = span_cls
-        span.string = span_text
+        if span_cls == "asm-code-operand":
+            if span_text in ctx.labels_to_link:
+                a = ctx.soup.new_tag("a")
+                a.attrs["href"] = f"#LBL--{span_text}"
+                a.string = span_text
+                span.append(a)
+            elif span_text != "" and span_text[0] == "#" and span_text[1:] in ctx.labels_to_link:
+                a = ctx.soup.new_tag("a")
+                a.attrs["href"] = f"#LBL--{span_text[1:]}"
+                a.string = span_text
+                span.append(a)
+            else:
+                span.string = span_text
+        else:
+            span.string = span_text
         code.append(span)
-    pre = soup.new_tag("pre")
+    pre = ctx.soup.new_tag("pre")
     pre.append(code)
     return pre
 
 
 k_chunk_marker = re.compile("<(/?)(.)CHUNK>")
+
+@dataclass
+class HtmlOutputContext:
+    soup: Any
+    labels_to_link: Set[str]
 
 @dataclass
 class ListingChunk:
@@ -87,7 +106,7 @@ class ListingChunk:
                 code_bytes.append(int(byte_hex, 16))
         return code_bytes
 
-    def img_divs(self, soup):
+    def img_divs(self, ctx):
         m_n_bytes_per_row, img_layout = self.acquire_gfx_directive()
         if m_n_bytes_per_row is None:
             return []
@@ -111,7 +130,7 @@ class ListingChunk:
         im.save(png_bytesio, "PNG")
         png_bytes = png_bytesio.getvalue()
         png_b64 = b64encode(png_bytes).decode()
-        img = soup.new_tag("img")
+        img = ctx.soup.new_tag("img")
         img.attrs["class"] = "gfx-img"
         img.attrs["src"] = "data:image/png;base64," + png_b64
         return [img]
@@ -132,6 +151,13 @@ class ListingChunk:
             if isinstance(ln, CodeLine):
                 return ln
 
+    def first_label(self):
+        if self.kind == "P":
+            return # Pretend the prelude has no label
+        for ln in self.lines:
+            if hasattr(ln, "label") and ln.label is not None:
+                return ln.label
+
     def maybe_reformat_data(self):
         if (n_bytes_per_row := self.acquire_reformat_data_directive()) is None:
             return
@@ -142,7 +168,6 @@ class ListingChunk:
         for idx0 in range(0, len(cbytes), n_bytes_per_row):
             row_bytes = cbytes[idx0:idx0+n_bytes_per_row]
             row_chrs = [chr(b) for b in row_bytes]
-            hexs_dump = "'.....'"
             hexs = ",".join(f"${b:02X}" for b in row_bytes)
             hexs_dump = " ".join(f"{b:02X}" for b in row_bytes)
             chrs_dump = "".join(ch if (ord(ch) < 0x80 and ch.isprintable()) else "." for ch in row_chrs)
@@ -174,25 +199,28 @@ class ListingChunk:
 
         self.lines = all_new_lines
 
-    def html(self, soup):
+    def html(self, ctx):
         self.maybe_reformat_data()
-        div = soup.new_tag("div")
+        div = ctx.soup.new_tag("div")
+        if (id_label := self.first_label()) is not None:
+            div.attrs["id"] = f"LBL--{id_label}"
         class_suffix = {
+            "P": "prelude",
             "C": "code",
             "D": "data",
             "A": "directive",  # "Assembler directive"; "D" taken
             "U": "unused",
         }[self.kind]
         div.attrs["class"] = f"listing-chunk chunk-{class_suffix}"
-        for div1 in self.img_divs(soup):
+        for div1 in self.img_divs(ctx):
             div.append(div1)
         lines_nub = self.lines[:-3] if self.ends_with_org() else self.lines
         for line in lines_nub:
-            div.append(line.html(soup))
+            div.append(line.html(ctx))
         divs = [div]
         if self.ends_with_org():
             ch = ListingChunk("A", [self.lines[-2]])
-            divs.extend(ch.html(soup))
+            divs.extend(ch.html(ctx))
         return divs
 
 
@@ -225,9 +253,10 @@ class CommentLine:
     def pretty(self):
         return f"{'':{LABEL_WD}}{COMMENT_style}; {self.comment}{CS.reset}"
 
-    def html(self, soup):
+    def html(self, ctx):
         pre = code_in_pre(
-            soup, [
+            ctx,
+            [
                 ("asm-comment-intro", ";"),
                 ("asm-comment", self.comment),
             ]
@@ -261,8 +290,8 @@ class BlankLine(DoesNotMarkChunks):
     def pretty(self):
         return ""
 
-    def html(self, soup):
-        return code_in_pre(soup, [])
+    def html(self, ctx):
+        return code_in_pre(ctx, [])
 
 
 @dataclass
@@ -287,9 +316,9 @@ class DirectiveLine(DoesNotMarkChunks):
         full_instr = f"{INSTR_style}{self.instr:4} {OPERAND_style}{op:{INSTR_WD}}"
         return f"{LABEL_style}{(lbl):>{LABEL_WD}}  {full_instr}"
 
-    def html(self, soup):
+    def html(self, ctx):
         return code_in_pre(
-            soup,
+            ctx,
             [
                 ("asm-directive-label", self.label or ""),
                 ("asm-directive-instr", self.instr),
@@ -328,9 +357,9 @@ class CodeLine(DoesNotMarkChunks):
         dump = f"{DUMP_ADDR_style}{self.dump_addr}: {DUMP_DATA_style}{self.dump_data}"
         return f"{LABEL_style}{(lbl):>{LABEL_WD}}  {full_instr} {dump}"
 
-    def html(self, soup):
+    def html(self, ctx):
         return code_in_pre(
-            soup,
+            ctx,
             [
                 ("asm-code-label", self.label or ""),
                 ("asm-code-instr", self.instr),
@@ -356,9 +385,6 @@ html_template = open("rendered-asm/template.html", "rt").read()
 soup = BeautifulSoup(html_template, "html.parser")
 html_main = soup.body.main
 
-all_labels = []
-open_chunk = None
-
 listing_plines = [parsed(idx, line) for idx, line in enumerate(sys.stdin)]
 
 last_lbl = "UNKNOWN"
@@ -369,30 +395,43 @@ for pline in listing_plines[-1::-1]:
         pline.comment = last_lbl
         pline.special_kind = "h2"
 
+all_chunks = []
+open_chunk = ListingChunk("P", [])
 for pline in listing_plines:
-    if hasattr(pline, "label"):
-        lbl = pline.label
-        if lbl is not None:
-            all_labels.append(lbl)
-
     if (mchunk := ListingChunk.maybe_from_line(pline)) is not None:
         if open_chunk is not None:
             print("=========================", pline, file=sys.stderr)
             raise ValueError("bad chunk nesting")
         open_chunk = mchunk
     elif open_chunk is not None and open_chunk.line_closes(pline):
-        html_main.extend(open_chunk.html(soup))
+        all_chunks.append(open_chunk)
         open_chunk = None
     else:
         if open_chunk is not None:
             open_chunk.lines.append(pline)
         else:
-            html_main.append(pline.html(soup))
 
-    #print(pline.pretty())
+            print("----------------", pline, file=sys.stderr)
+            raise ValueError("line outside chunk")
+
+
+## Enough to give each chunk an ID?  Nearly.  Movement routines jump
+## to "local" labels in one special one.  Can maybe patch that by
+## hand.
 
 if open_chunk is not None:
-    html_main.extend(open_chunk.html(soup))
+    all_chunks.append(open_chunk)
+
+
+all_chunk_labels = set()
+for chunk in all_chunks:
+    if (chunk_lbl := chunk.first_label()) is not None:
+        all_chunk_labels.add(chunk_lbl)
+
+ctx = HtmlOutputContext(soup, all_chunk_labels)
+
+for chunk in all_chunks:
+    html_main.extend(chunk.html(ctx))
 
 
 # Not "prettify()" because that inserts unwanted spaces:
