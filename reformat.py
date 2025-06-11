@@ -3,7 +3,7 @@ import re
 import io
 from dataclasses import dataclass
 from colored import Fore as CF, Back as CB, Style as CS
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, NavigableString
 from typing import Any, Set
 from PIL import Image
 from make_img import img_from_bytes
@@ -34,8 +34,21 @@ def code_in_pre(ctx, code_spans):
             elif span_text != "" and span_text[0] == "#" and span_text[1:] in ctx.labels_to_link:
                 a = ctx.soup.new_tag("a")
                 a.attrs["href"] = f"#LBL--{span_text[1:]}"
-                a.string = span_text
+                a.string = span_text[1:]
+                span.append(NavigableString("#"))
                 span.append(a)
+            elif (
+                    len(span_text) >= 2
+                    and span_text[0] == "["
+                    and span_text[-1] == "]"
+                    and span_text[1:-1] in ctx.labels_to_link
+                ):
+                a = ctx.soup.new_tag("a")
+                a.attrs["href"] = f"#LBL--{span_text[1:-1]}"
+                a.string = span_text[1:-1]
+                span.append(NavigableString("["))
+                span.append(a)
+                span.append(NavigableString("]"))
             else:
                 span.string = span_text
         else:
