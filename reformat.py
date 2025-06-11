@@ -436,7 +436,22 @@ if open_chunk is not None:
     all_chunks.append(open_chunk)
 
 
-all_chunk_labels = set()
+all_chunk_labels = set(
+    [
+        "MPR_L1",
+        "MPR_L2",
+        "PlayerData_0_b_NLives",
+        "PlayerData_1_b_NLives",
+        "Arr_PlayerData_1",
+        "PlayerData_0_s_ScoreDisplay",
+        "PlayerData_1_s_ScoreDisplay",
+        "Arr_DefendersData_Loc",
+        "PlayerData_0_s_TopLifeShip",
+        "PlayerData_1_s_TopLifeShip",
+        "MPL_MovePlayerFromKeyboard"
+    ]
+)
+
 for chunk in all_chunks:
     if (chunk_lbl := chunk.first_label()) is not None:
         all_chunk_labels.add(chunk_lbl)
