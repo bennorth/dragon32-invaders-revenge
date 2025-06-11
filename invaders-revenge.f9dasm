@@ -167,8 +167,11 @@ COMMENT 2DB0
 COMMENT 2DB0 defender->KindAndVelocity = A (one of: $01, $41, $FF)
 LABEL 2DB0 IDP_L2
 COMMENT 2DB2
-COMMENT 2DB2 If R-to-L (necessarily normal)...
-COMMENT 2DB6 ....prepare to store $1F
+COMMENT 2DB2 Compute XColumn field — clear "special" bit, leaving $01 or $BF; if L-to-R
+COMMENT 2DB2 (KindAndVelocity is either $01 or $41), then $01 is the correct starting
+COMMENT 2DB2 value for XColumn
+COMMENT 2DB4 But if we got $BF...
+COMMENT 2DB6 ....then defender is R-to-L, so XColumn should be $1F
 COMMENT 2DB8
 COMMENT 2DB8 defender->XColumn = $01 (L-to-R) or $1F (R-to-L)
 LABEL 2DB8 IDP_L3
@@ -182,14 +185,17 @@ DEC 2DC2
 COMMENT 2DC3
 LABEL 2DC3 IDP_L5
 COMMENT 2DC9
-COMMENT 2DC9 Row contains blue; try next patrol-start location
+COMMENT 2DC9 Row contains blue; try next patrol-start location, by using the "cyclically
+COMMENT 2DC9 advance pointer" logic at the end of this subroutine as a subroutine in its
+COMMENT 2DC9 own right.
 COMMENT 2DCD
 LABEL 2DCD IDP_L6
 COMMENT 2DD0
-COMMENT 2DD0 Found suitable patrol-start location; store to defender->Location
+COMMENT 2DD0 Scan completed without finding blue; we have found a suitable patrol-start
+COMMENT 2DD0 location; store to defender->Location
 COMMENT 2DD6
-COMMENT 2DD6 Fall through to cyclically advance launch-location pointer...
-COMMENT 2DD6
+COMMENT 2DD6 Cyclically advance launch-location pointer; the CMPD operand is as it is
+COMMENT 2DD6 because the pointer lives just beyond the array into which it points
 LABEL 2DD6 Sub_CycleDefenderLaunchLocPtr
 CONST 2DDA
 LABEL 2DE5 CDLLP_L1
@@ -295,7 +301,7 @@ COMMENT 2EB2 %%AUTOTITLE
 COMMENT 2EB2 %%RFD 4
 COMMENT 2EB2 Array of 11 entries each of a four-byte structure:
 COMMENT 2EB2 ;;
-COMMENT 2EB2 .  byte - XColumn: $01 L-to-R; $1F R-to-L
+COMMENT 2EB2 .  byte - XColumn: initially $01 L-to-R; $1F R-to-L
 COMMENT 2EB2 .  byte - KindAndVelocity: $01 L-R normal; $FF R-L normal; $41 L-R special
 COMMENT 2EB2 .  word - Location
 COMMENT 2EB2 ;;
@@ -746,7 +752,7 @@ COMMENT 3286 State of up to five shots that the player has fired.  Each shot is
 COMMENT 3286 described by a 3-byte structure:
 COMMENT 3286 ;;
 COMMENT 3286 [0]   b: Bitmask (0x10 or 0x01)
-COMMENT 3286 [1:2] w: ScreenLoc --- location of bottom pixel of shot
+COMMENT 3286 [1:2] w: ScreenLoc — location of bottom pixel of shot
 COMMENT 3286 ;;
 COMMENT 3286 Bitmask is used for drawing using `OR`, which turns a pixel from green to
 COMMENT 3286 yellow.  It is also shifted left and then used (with `AND`) to detect when
@@ -780,9 +786,9 @@ COMMENT 32AF
 COMMENT 32AF Compute screen-loc 6 rows down, one byte to right of player's location,
 COMMENT 32AF i.e., under the centre byte-column of the three-wide ship image
 COMMENT 32B6
-COMMENT 32B6 Start by assuming right-half shot mask...
+COMMENT 32B6 Start by assuming right-posn shot mask...
 COMMENT 32B8 ....but if fraction is $FF=left...
-COMMENT 32BD ....use left-half mask instead
+COMMENT 32BD ....use left-posn mask instead
 LABEL 32BF LPS_L2
 COMMENT 32BF
 COMMENT 32BF Store to Bitmask field of being-populated struct
@@ -836,6 +842,12 @@ COMMENT 3322 Loop while more shots might be active
 LABEL 3322 MPSD_next
 LABEL 3329 MPSD_ClearShot
 COMMENT 3329
+COMMENT 3329 Mark this array entry as unused
+COMMENT 332D
+COMMENT 332D Erase both possible shot pixels from rows one above and two above
+COMMENT 332D current shot location
+COMMENT 333D
+COMMENT 333D If more potential shots, process next one
 COMMENT 333F </CCHUNK>
 COMMENT 3340 <CCHUNK>
 LABEL 3340 MPSD_HitSomething
@@ -863,7 +875,11 @@ COMMENT 3391
 COMMENT 3398
 COMMENT 3398 MovePhase = active_player->DefenderMovePeriod
 COMMENT 33A0
+COMMENT 33A0 Look for any yellow pixels in a sample of three bytes within the defender
+COMMENT 33A0 base bounding box (left byte six rows down; right byte six rows down; left
+COMMENT 33A0 byte two rows down)
 DEC 33A4
+COMMENT 33B2 If no yellow, move base as normal
 COMMENT 33B4
 COMMENT 33B4 Defender base hit; record its location...
 COMMENT 33BC ....and the fact that a base was just destroyed
@@ -880,23 +896,25 @@ COMMENT 33D9 Store screen-loc of to-be-spawned base
 COMMENT 33DC
 COMMENT 33DC Get ready to spawn from other side next time
 COMMENT 33DF
-COMMENT 33DF Erase an 8-wide, 9-high block of pixels (i.e., 2 bytes wide) with the
-COMMENT 33DF top-left byte pointed to by X.  Panic if this takes us beyond screen
-COMMENT 33DF memory.
+COMMENT 33DF Erase the defender base, by clearing an 8-wide, 9-high block of pixels
+COMMENT 33DF (i.e., 2 bytes wide) with the top-left byte pointed to by X; panic if this
+COMMENT 33DF takes us beyond screen memory
 DEC 33E0
 LABEL 33E1 MDBCH_L2
 COMMENT 33F2
 COMMENT 33F2 Adjust the base's location and byte-column to try to track the player's
-COMMENT 33F2 ship.  Move base left if player is strictly to the left of base, otherwise
-COMMENT 33F2 move base right.
+COMMENT 33F2 ship, by moving base left if player is strictly to the left of base,
+COMMENT 33F2 otherwise moving base right
 COMMENT 3402
-COMMENT 3402 Store new defender location; blt defender-base graphic to that location.
+COMMENT 3402 Store new defender location
+COMMENT 3405
+COMMENT 3405 Blt defender-base graphic to new location
 LABEL 3402 MDBCH_L3
 DEC 3409
 LABEL 340A MDBCH_L4
 LABEL 3418 MDBCH_exit
 COMMENT 3419
-COMMENT 3419 Part of above; move base right if player not to our left.
+COMMENT 3419 Part of above; move base right if player not to our left
 LABEL 3419 MDBCH_L5
 COMMENT 3420 </CCHUNK>
 COMMENT 3423 <CCHUNK>
@@ -913,18 +931,18 @@ COMMENT 3423 if state positive on entry, decrement it
 LABEL 3423 Sub_StepDefenderShotHitAnimation
 DEC 3430
 COMMENT 3433
-COMMENT 3433 State 5 --- draw red asterisk (bottom up), decr state, exit
+COMMENT 3433 State 5 — draw red asterisk (bottom up), decr state, exit
 DEC 3437
 LABEL 343E SDSHA_L1
 LABEL 3447 SDSHA_L2
 COMMENT 3450
-COMMENT 3450 State 0 --- launch new shot; move to state -1 (idle); exit
+COMMENT 3450 State 0 — launch new shot; move to state -1 (idle); exit
 LABEL 3450 SDSHA_L3
 COMMENT 345C
-COMMENT 345C State <0 or >0 but != 5 --- state was decr'd above; no further action; exit
+COMMENT 345C State <0 or >0 but != 5 — state was decr'd above; no further action; exit
 LABEL 345C SDSHA_exit
 COMMENT 345D
-COMMENT 345D State 1 --- erase shot / asterisk (bottom up); state was decr'd to 0 above
+COMMENT 345D State 1 — erase shot / asterisk (bottom up); state was decr'd to 0 above
 LABEL 345D SDSHA_L5
 DEC 3464
 CONST 3469
@@ -995,6 +1013,8 @@ COMMENT 34D0 Initiate the behaviour when a defender base shot hits the player or
 COMMENT 34D0 player shot: Draw the yellow asterisk explosion where the defender base
 COMMENT 34D0 shot is, play a low beep, and set the rest of the defender base shot hit
 COMMENT 34D0 animation in progress via `Var_b_DefenderShot_State`.
+COMMENT 34D0 ;;
+COMMENT 34D0 Argument: X = location of bottom left corner of explosion
 COMMENT 34D0
 DEC 34D4
 LABEL 34D8 IDSH_L1
@@ -1043,6 +1063,13 @@ COMMENT 355A </DCHUNK>
 LABEL 355E Sub_DrawOrErasePlayerExpln
 COMMENT 355E <CCHUNK>
 COMMENT 355E %%AUTOTITLE
+COMMENT 355E Either draw or erase the player explosion graphic, and (in either case)
+COMMENT 355E play a sound effect.
+COMMENT 355E ;;
+COMMENT 355E Arguments passed in static locations:
+COMMENT 355E .  Var_s_PlayerExplosion = top-left byte where to draw/erase
+COMMENT 355E .  Var_b_PlayerExplosion_Erase = whether draw (0) or erase (non-zero)
+COMMENT 355E
 DEC 356B
 CONST 3570
 LABEL 3577 DOEPE_L1
