@@ -82,7 +82,7 @@ s 31E9 ActivePlayer_Prev
 
 s 3420 DefenderShot
 b 3422 DefenderShot_State 0:launch shot, <0:NOP, 1:erase
-b 34BB DefenderShot_RowsRemaining
+b 34BB DefenderShot_Rows
 
 p 37B9 ActivePlayerData
 
@@ -90,9 +90,9 @@ w 34F6 SoundPeriodLimit
 w 34F8 SoundPeriodIncr
 w 34FA SoundPeriod
 
-b 355A DrawOrErasePlayerExpln_Rows
-b 355B DrawOrErasePlayerExpln_Erase
-s 355C DrawOrErasePlayerExpln
+b 355A DOEPE_Rows
+b 355B PlayerExplosion_Erase
+s 355C PlayerExplosion
 
 b 35A0 EraseTopLivesShip_Rows
 
