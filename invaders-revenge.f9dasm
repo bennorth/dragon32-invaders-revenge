@@ -196,11 +196,11 @@ COMMENT 2DD0 location; store to defender->Location
 COMMENT 2DD6
 COMMENT 2DD6 Cyclically advance launch-location pointer; the CMPD operand is as it is
 COMMENT 2DD6 because the pointer lives just beyond the array into which it points
-LABEL 2DD6 Sub_CycleDefenderLaunchLocPtr
+LABEL 2DD6 IDP_L7
 CONST 2DDA
-LABEL 2DE5 CDLLP_L1
+LABEL 2DE5 IDP_L8
 COMMENT 2DE9
-LABEL 2DE9 IDP_continue
+LABEL 2DE9 IDP_L9
 COMMENT 2DEF </CCHUNK>
 
 LABEL 2DEF Arr_Const_IDP_LaunchLocs
@@ -803,11 +803,11 @@ COMMENT 32D3
 COMMENT 32D3 Extend the beep for up to five calls, lowering the pitch
 LABEL 32D3 LPS_L3
 DEC 32D7
-LABEL 32E0 LPS_exit
+LABEL 32E0 LPS_L4
 COMMENT 32E1 </CCHUNK>
 COMMENT 32E2 <CCHUNK>
 COMMENT 32E2 Loop if within bound set by max n.shots
-LABEL 32E2 LPS_next
+LABEL 32E2 LPS_L5
 COMMENT 32E9 </CCHUNK>
 
 LABEL 32E9 Sub_MovePlayerShotsDown
@@ -815,7 +815,7 @@ COMMENT 32E9 <CCHUNK>
 COMMENT 32E9 %%AUTOTITLE
 COMMENT 32ED
 COMMENT 32ED B = shot->Bitmask; X = shot->ScreenLoc
-LABEL 32ED MPSD_loop
+LABEL 32ED MPSD_L1
 COMMENT 32F1
 COMMENT 32F1 If this shot not active, move on to next
 COMMENT 32F3
@@ -839,10 +839,10 @@ COMMENT 3320
 COMMENT 3320 Update shot->ScreenLoc
 COMMENT 3322
 COMMENT 3322 Loop while more shots might be active
-LABEL 3322 MPSD_next
-LABEL 3329 MPSD_ClearShot
+LABEL 3322 MPSD_L2
 COMMENT 3329
 COMMENT 3329 Mark this array entry as unused
+LABEL 3329 MPSD_L3
 COMMENT 332D
 COMMENT 332D Erase both possible shot pixels from rows one above and two above
 COMMENT 332D current shot location
@@ -850,11 +850,11 @@ COMMENT 333D
 COMMENT 333D If more potential shots, process next one
 COMMENT 333F </CCHUNK>
 COMMENT 3340 <CCHUNK>
-LABEL 3340 MPSD_HitSomething
+LABEL 3340 MPSD_L4
 DEC 3341
-LABEL 3351 MPSD_L1
+LABEL 3351 MPSD_L5
 COMMENT 3362
-LABEL 3362 MPSD_L2
+LABEL 3362 MPSD_L6
 COMMENT 3378 </CCHUNK>
 
 LABEL 3378 GFX_BlueDefenderBase
@@ -912,10 +912,10 @@ COMMENT 3405 Blt defender-base graphic to new location
 LABEL 3402 MDBCH_L3
 DEC 3409
 LABEL 340A MDBCH_L4
-LABEL 3418 MDBCH_exit
+LABEL 3418 MDBCH_L5
 COMMENT 3419
 COMMENT 3419 Part of above; move base right if player not to our left
-LABEL 3419 MDBCH_L5
+LABEL 3419 MDBCH_L6
 COMMENT 3420 </CCHUNK>
 COMMENT 3423 <CCHUNK>
 COMMENT 3423 %%AUTOTITLE
@@ -940,7 +940,7 @@ COMMENT 3450 State 0 — launch new shot; move to state -1 (idle); exit
 LABEL 3450 SDSHA_L3
 COMMENT 345C
 COMMENT 345C State <0 or >0 but != 5 — state was decr'd above; no further action; exit
-LABEL 345C SDSHA_exit
+LABEL 345C SDSHA_L4
 COMMENT 345D
 COMMENT 345D State 1 — erase shot / asterisk (bottom up); state was decr'd to 0 above
 LABEL 345D SDSHA_L5
@@ -978,10 +978,10 @@ COMMENT 34A6 and the shot can be there (special defender)
 COMMENT 34AA
 COMMENT 34AA Plot next pixel upwards of defender base shot by making it blue; exit
 LABEL 34AA SDSM_L2
-LABEL 34B0 SDSM_exit
+LABEL 34B0 SDSM_L3
 COMMENT 34B1
 COMMENT 34B1 Shot has reached double-stripe at the top of the play area; start a new one
-LABEL 34B1 SDSM_L3
+LABEL 34B1 SDSM_L4
 COMMENT 34BB </CCHUNK>
 
 LABEL 34BC GFX_RedAsterisk
