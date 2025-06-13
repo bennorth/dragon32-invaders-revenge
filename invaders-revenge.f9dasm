@@ -238,9 +238,9 @@ COMMENT 2E19 with a player's shot, and act accordingly if so — award points, a
 COMMENT 2E19 initiate an explosion and sound effect.
 COMMENT 2E19 ;;
 COMMENT 2E19 On entry, data about defender being processed in registers:
-COMMENT 2E19 .  B has struct[0] column idx
-COMMENT 2E19 .  A has loc increment (from struct[1], $01 L-R / $FF R-L)
-COMMENT 2E19 .  X has struct[2:3] location
+COMMENT 2E19 .  B has struct[0] = XColumn
+COMMENT 2E19 .  A has struct[1] = KindAndVelocity ($01 L-R / $FF R-L)
+COMMENT 2E19 .  X has struct[2:3] = Location
 COMMENT 2E19 .  U points to graphics data according to kind of defender
 COMMENT 2E19 .  Y points just past struct of defender to be moved
 COMMENT 2E19 .    (struct is one element of Arr_DefendersData)
