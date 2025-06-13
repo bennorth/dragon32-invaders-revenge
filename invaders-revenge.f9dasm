@@ -1172,8 +1172,9 @@ COMMENT 36C3 </DCHUNK>
 LABEL 36C4 Sub_DrawTwoStripes
 COMMENT 36C4 <CCHUNK>
 COMMENT 36C4 %%AUTOTITLE
-COMMENT 36C4 Draw the two horizontal red strips separating
-COMMENT 36C4 the status area (top) from the play area (bottom)
+COMMENT 36C4 Draw the two horizontal red strips separating the status area (top) from
+COMMENT 36C4 the play area (bottom).  The top stripe runs along y=37 and the bottom
+COMMENT 36C4 along y=39.
 COMMENT 36C4
 LABEL 36C9 DTS_L1
 COMMENT 36D4 </CCHUNK>
