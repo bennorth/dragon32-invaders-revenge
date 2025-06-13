@@ -832,12 +832,13 @@ COMMENT 3309 ....it is finished with
 COMMENT 330B
 COMMENT 330B A = current screen byte of four pixels
 COMMENT 330D
-COMMENT 330D Convert drawing bitmask into red/blue detection bitmask
+COMMENT 330D Convert drawing bitmask into red/blue detection bitmask (which will be
+COMMENT 330D either $20 for a left-posn shot or $02 for a right-posn one)
 COMMENT 3310
-COMMENT 3310 If screen byte contains red/blue at any relevant position...
-COMMENT 3312 ....the player shot has hit a defender (or base or shot)
+COMMENT 3310 If screen byte contains red/blue at the shot's position...
+COMMENT 3312 ....the shot has hit a defender (or base or shot); turn defender yellow
 COMMENT 3314
-COMMENT 3314 Draw shot pixel into new bottom row and row above it
+COMMENT 3314 ....else draw shot pixel into new bottom row and row above it
 COMMENT 3320
 COMMENT 3320 Update shot->ScreenLoc
 COMMENT 3322
@@ -853,11 +854,33 @@ COMMENT 333D
 COMMENT 333D If more potential shots, process next one
 COMMENT 333F </CCHUNK>
 COMMENT 3340 <CCHUNK>
+COMMENT 3340
+COMMENT 3340 Find the defender which the player's shot has hit, and turn it yellow.
+COMMENT 3340 Unclear why we process 8 rows, when the flying defenders are 7 rows high
+COMMENT 3340 and the base is 9 rows high.
+COMMENT 3340
+COMMENT 3347
+COMMENT 3347 Point one row higher, then test the byte one to the right of where we
+COMMENT 3347 originally found the collision; if there are no defender pixels there...
+COMMENT 334F ....point one byte (four pixels) to the left
+COMMENT 3351
+COMMENT 3351 We are now pointing somewhere in the left half of the defender; scan
+COMMENT 3351 upwards until the pixel above us has no blue or red (or until we are
+COMMENT 3351 pointing at the row below the bottom stripe of the double stripe); we will
+COMMENT 3351 then be pointing to the top-left byte of the defender
 LABEL 3340 MPSD_L4
 DEC 3341
 LABEL 3351 MPSD_L5
 COMMENT 3362
+COMMENT 3362 (Recall: bit patterns: 00=G, 01=Y, 10=B, 11=R); blue and red pixels become
+COMMENT 3362 yellow; green and yellow pixels become green; this works because any set
+COMMENT 3362 bits overflowing from one pixel into the one to its right get masked off
 LABEL 3362 MPSD_L6
+COMMENT 336C
+COMMENT 336C Process next row up; the "ANDA #$AA; BEQ" branch above will be taken
+COMMENT 336C because of the ANDing with $55 we just did
+COMMENT 3374
+COMMENT 3374 Clear this shot and process any others
 COMMENT 3378 </CCHUNK>
 
 LABEL 3378 GFX_BlueDefenderBase
