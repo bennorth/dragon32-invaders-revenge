@@ -210,6 +210,9 @@ COMMENT 2DEF Start points of patrols.  They are all pointers to the last byte of
 COMMENT 2DEF screen row, at various row indexes (see values as Loc_X_Y labels).  A
 COMMENT 2DEF right-to-left defender travels along that row; a left-to-right defender
 COMMENT 2DEF travels along the row below.
+COMMENT 2DEF ;;
+COMMENT 2DEF Reordering the launch rows from top to bottom gives:
+COMMENT 2DEF 40, 48, 57, 66, 75, 84, 93, 102, 117, 127, 137, 147, 157
 COMMENT 2DEF
 WORD 2DEF-2E08
 COMMENT 2E09 </DCHUNK>
