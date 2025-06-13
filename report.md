@@ -86,6 +86,8 @@ When blitting, checks that destination is in range (within screen memory) which 
 
 Use of colour checks for hit detection, e.g., `Sub_StepDefenderShotMovement`.  Choice of colours for sprites is influenced by making it easier for the code to detect them.
 
+Job of destroying defender split between `MovePlayerShotsDown` (which turns the defender yellow) and `MoveDefenderCheckHit` (which draws the explosion, calls "award points" routine, etc.).  This seems quite intricate and means jobs have to be done in a certain order; could it have been done by comparing coordinates?  The data structures aren't really set up to make that easy, though — would have to scan all defenders to see whether one is patrolling on that row.
+
 Use of `PULS PC,A` to save a byte over `PULS A / RTS`.
 
 Most (all?) sounds clear `Var_b_PostDrawDelay`, to try to keep the frame rate consistent whether there is a sound playing or not.  Sound effects therefore have to shorten at higher game speeds, but this could be called a feature because the game sounds more frantic as it speeds up.
