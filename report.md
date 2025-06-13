@@ -108,6 +108,8 @@ Code at `CLS_L2` is unclear; looks like the `BNE` will never be taken, because X
 
 Code for moving player: why do we store unchanged X?
 
+The sequence and loop of `StepDefenderShotHitAnimation` would be straightforward if it just ran straight through, but because it needs to do a bit per frame, needs to track state explicitly.
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
