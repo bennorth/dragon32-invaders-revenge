@@ -252,9 +252,18 @@ COMMENT 2E22 $E1 = lower byte of $1F × $FF
 COMMENT 2E28
 DEC 2E29
 COMMENT 2E2D
+COMMENT 2E2D Get two-byte sample within defender's bounding box — five rows down from
+COMMENT 2E2D top row (recall: 0=G, 1=Y, 2=B, 3=R) — in order to test whether the
+COMMENT 2E2D defender has been turned yellow from being hit by a player shot
+COMMENT 2E31
+COMMENT 2E31 If neither byte has any red or yellow pixels...
+COMMENT 2E37 ....skip down to "erase, move, redraw" logic
+COMMENT 2E39 ....or, if right-hand byte has any red...
 LABEL 2E39 MDCH_L01
+COMMENT 2E3B ....skip down to "erase, move, redraw"
 COMMENT 2E3D
-COMMENT 2E3D Defender intersects with some yellow; it got hit
+COMMENT 2E3D Defender is drawn in yellow; it got turned yellow because it got hit by
+COMMENT 2E3D player shot
 COMMENT 2E40
 COMMENT 2E40 Overwrite X value on stack with zero to signal this defender gone
 CONST 2E41
