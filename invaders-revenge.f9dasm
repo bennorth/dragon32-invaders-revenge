@@ -103,11 +103,18 @@ COMMENT 2D2D </PCHUNK>
 LABEL 2D2D Sub_InitWarmReset
 COMMENT 2D2D <CCHUNK>
 COMMENT 2D2D %%AUTOTITLE
+COMMENT 2D2D Turn off cassette motor; configure for warm reset at Sub_WarmReset; jump to
+COMMENT 2D2D next phase of boot.
+COMMENT 2D2D
 COMMENT 2D3E </CCHUNK>
 
 LABEL 2D3E Sub_WarmReset
 COMMENT 2D3E <CCHUNK>
 COMMENT 2D3E %%AUTOTITLE
+COMMENT 2D3E First instruction must be NOP to allow warm reset.  Clear screen and wipe
+COMMENT 2D3E most code and data.  (Not sure why not wipe everything.)  Then enter
+COMMENT 2D3E infinite loop.
+COMMENT 2D3E
 LABEL 2D45 WR_L1
 CONST 2D48
 LABEL 2D4C WR_L2
@@ -884,7 +891,6 @@ COMMENT 333D
 COMMENT 333D If more potential shots, process next one
 COMMENT 333F </CCHUNK>
 COMMENT 3340 <CCHUNK>
-COMMENT 3340
 COMMENT 3340 Find the defender which the player's shot has hit, and turn it yellow.
 COMMENT 3340 Unclear why we process 8 rows, when the flying defenders are 7 rows high
 COMMENT 3340 and the base is 9 rows high.
@@ -1072,6 +1078,8 @@ COMMENT 34D0 animation in progress via `Var_b_DefenderShot_State`.
 COMMENT 34D0 ;;
 COMMENT 34D0 Argument: X = location of bottom left corner of explosion
 COMMENT 34D0
+COMMENT 34D0 Write (with "OR") 5 rows of graphics data, bottom to top, ensuring we do
+COMMENT 34D0 not write too high on the screen
 DEC 34D4
 LABEL 34D8 IDSH_L1
 LABEL 34E5 IDSH_L2
@@ -1103,7 +1111,9 @@ CONST 3511
 LABEL 3513 LFPS_L1
 LABEL 351C LFPS_L2
 CONST 351D
+COMMENT 3530
 COMMENT 3530 Choose Colour Set 0 (green/yellow/blue/red)
+COMMENT 3538
 COMMENT 3539 </CCHUNK>
 
 LABEL 353A GFX_YellowExplodingPlayer
@@ -1126,6 +1136,30 @@ COMMENT 355E Arguments passed in static locations:
 COMMENT 355E .  Var_s_PlayerExplosion = top-left byte where to draw/erase
 COMMENT 355E .  Var_b_PlayerExplosion_Erase = whether draw (0) or erase (non-zero)
 COMMENT 355E
+COMMENT 355E Erase 4 pixels above X and 4 pixels to the left of that
+COMMENT 3567
+COMMENT 3567 Set up to work with the 8 rows of the explosion graphic
+COMMENT 356F
+COMMENT 356F Assume we are going to erase...
+COMMENT 3572 ....but if we are meant to be drawing...
+COMMENT 3577 ....get the next two graphics bytes instead
+COMMENT 3579
+COMMENT 3579 If we are too high up the screen...
+COMMENT 357C ....do not write anything
+COMMENT 357E
+COMMENT 357E Write left-hand two bytes of row (either $0000 or graphics bytes)
+COMMENT 3580
+COMMENT 3580 If we are meant to be drawing...
+COMMENT 3585 ....get next two graphics bytes
+COMMENT 3587
+COMMENT 3587 Write right-hand two bytes of row (either $0000 or graphics bytes)
+COMMENT 3589
+COMMENT 3589 Advance source and destination pointers (although we do not care where the
+COMMENT 3589 source pointer points if we are erasing)
+COMMENT 358E
+COMMENT 358E If that was the last row...
+COMMENT 3591 ....we are done with drawing/erasing
+COMMENT 3593 ....else loop, fetching next graphics bytes if drawing
 DEC 356B
 CONST 3570
 LABEL 3577 DOEPE_L1
@@ -1133,12 +1167,60 @@ LABEL 3579 DOEPE_L2
 LABEL 3587 DOEPE_L3
 LABEL 3589 DOEPE_L4
 LABEL 359A DOEPE_L5
+COMMENT 359A
+COMMENT 359A Play sound effect
 DEC 359B
+COMMENT 359F
 COMMENT 35A0 </CCHUNK>
 
 LABEL 35A1 Sub_HandlePlayerCrash
 COMMENT 35A1 <CCHUNK>
 COMMENT 35A1 %%AUTOTITLE
+COMMENT 35A3
+COMMENT 35A3 Cancel any in-progress shot sound
+COMMENT 35A8
+COMMENT 35A8 Record that the player ship is exploding (so other subroutines know not to
+COMMENT 35A8 do their normal work)
+COMMENT 35AB
+COMMENT 35AB If the player is in right-hand position...
+COMMENT 35B3 ....draw explosion one byte (4 pixels) to the right
+COMMENT 35B8
+COMMENT 35B8 Flash orange; draw explosion (one byte to left of player position, to
+COMMENT 35B8 account for width of explosion graphic)
+COMMENT 35C6
+COMMENT 35C6 Flash orange; redraw stripes in case they were damaged; play a further
+COMMENT 35C6 sound effect
+COMMENT 35D5
+COMMENT 35D5 Erase explosion
+COMMENT 35DB
+COMMENT 35DB active_player->NLives -= 1
+COMMENT 35E0
+COMMENT 35E0 If the active player now has no lives...
+COMMENT 35E2 ....note this fact for use when finishing explosion animation
+COMMENT 35E5
+COMMENT 35E5 If neither player has any lives...
+COMMENT 35EB ....nothing more to do
+COMMENT 35ED
+COMMENT 35ED If two-player mode...
+COMMENT 35F2 ....and it was Player One who just lost a life...
+COMMENT 35F6 ....set up for getting Player Two ready (if they are not out of lives)
+COMMENT 35F8
+COMMENT 35F8 If Player One has run out of lives...
+COMMENT 35FD ....try Player Two instead
+COMMENT 35FF ....else (i.e., Player One not out of lives) use Player One's start locn
+COMMENT 3604
+COMMENT 3604 Set up working variables with active player's data; set "active player" ptr
+COMMENT 3615
+COMMENT 3615 If two-player mode, flip which joystick will be read; I am not clear on
+COMMENT 3615 how the code keeps the same joystick if the same player is going to be
+COMMENT 3615 active again (e.g., if Player Two has earned an extra life)
+COMMENT 3618
+COMMENT 3618 Repair any damage to stripes
+COMMENT 361B
+COMMENT 361E
+COMMENT 361E If Player Two has run out of lives...
+COMMENT 3623 ....try Player One instead
+COMMENT 3625 ....else use Player Two's start locn; active-player pointer value now in U
 DEC 35A4
 LABEL 35B5 HPC_L1
 CONST 35CD
@@ -1149,10 +1231,6 @@ LABEL 3615 HPC_L5
 LABEL 361E HPC_L6
 COMMENT 362C </CCHUNK>
 
-COMMENT 35F8
-COMMENT 3604
-COMMENT 3615
-COMMENT 361E
 LABEL 362C Sub_EraseTopLivesShip
 COMMENT 362C <CCHUNK>
 COMMENT 362C %%AUTOTITLE
