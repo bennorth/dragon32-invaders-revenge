@@ -1932,20 +1932,21 @@ COMMENT 48B3 %%AUTOTITLE
 CHAR 48B3-4A3F
 COMMENT 4A40 </DCHUNK>
 
-LABEL 4A40 Sub_AskWhetherInstructions
+LABEL 4A40 Sub_MaybeShowInstructions
 COMMENT 4A40 <CCHUNK>
 COMMENT 4A40 %%AUTOTITLE
 COMMENT 4A40
-LABEL 4A49 AWI_L1
+COMMENT 4A49
+COMMENT 4A49 Loop until the player types "Y" or "N", and act accordingly
+LABEL 4A49 MSI_L1
 CHAR 4A4D
 CHAR 4A51
-COMMENT 4A56 </CCHUNK>
-
-LABEL 4A56 Sub_ShowInstructionTexts
-COMMENT 4A56 <CCHUNK>
-COMMENT 4A56 %%AUTOTITLE
+LABEL 4A56 MSI_L2
 COMMENT 4A56
-LABEL 4A8F SIT_L1
+COMMENT 4A56 Show the instructions, waiting for a keypress between each page
+LABEL 4A8F MSI_L3
+COMMENT 4A8F
+COMMENT 4A8F Move on to next phase of set-up
 
 ******************************************************************************
 
