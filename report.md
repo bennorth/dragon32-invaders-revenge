@@ -112,6 +112,8 @@ Code for moving player: why do we store unchanged X?
 
 The sequence and loop of `StepDefenderShotHitAnimation` would be straightforward if it just ran straight through, but because it needs to do a bit per frame, needs to track state explicitly.
 
+The "colour whole defender yellow" logic doesn't always get the whole base, because of the narrow bit at the top.  (Discovered via GDB not code inspection.)  But both the defender base and the patrolling defender hit checks look at bytes from both halves of the image, so it works.
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
