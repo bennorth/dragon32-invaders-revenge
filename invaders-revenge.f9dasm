@@ -1451,7 +1451,7 @@ COMMENT 3947 Initialise for fresh game
 COMMENT 394A
 COMMENT 394A Init active player's X-coord-whole to 1
 COMMENT 394F
-COMMENT 394F Set Player 1 as active player
+COMMENT 394F Set Player One as active player
 COMMENT 3955
 COMMENT 3955 Init both players' NextSpeedUpScore to 3
 CONST 3956
@@ -1465,16 +1465,16 @@ CONST 396C
 COMMENT 3973
 COMMENT 3973 Init all defenders' locations to $0B3F = (124, 41)
 COMMENT 397B
-COMMENT 397B Init player lives: 0 for Player 2; 3 for Player 1
+COMMENT 397B Init player lives: 0 for Player Two; 3 for Player One
 COMMENT 3983
 COMMENT 3983 If two-player mode...
-COMMENT 3988 ....init Player 2 to 3 lives too
+COMMENT 3988 ....init Player Two to 3 lives too
 COMMENT 398B ....and draw their "spare lives" ships
 COMMENT 39A6
-COMMENT 39A6 Draw Player 1's "spare lives" ships
+COMMENT 39A6 Draw Player One's "spare lives" ships
 LABEL 39A6 M1A_L1
 COMMENT 39B8
-COMMENT 39B8 Set up for main play loop with Player 1's ship
+COMMENT 39B8 Set up for main play loop with Player One's ship
 COMMENT 39C4
 COMMENT 39C4 Chain to next init phase
 COMMENT 39C7 </CCHUNK>
