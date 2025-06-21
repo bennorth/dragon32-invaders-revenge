@@ -246,8 +246,8 @@ COMMENT 2E19 .  Y points just past struct of defender to be moved
 COMMENT 2E19 .    (struct is one element of Arr_DefendersData)
 COMMENT 2E19
 COMMENT 2E1B
-COMMENT 2E1B First call where this defender appears?  If so, skip
-COMMENT 2E1B "hit check and erase" tasks.
+COMMENT 2E1B First call where this defender appears?  If so, skip "hit check and erase"
+COMMENT 2E1B tasks.
 COMMENT 2E22 $E1 = lower byte of $1F × $FF
 COMMENT 2E28
 DEC 2E29
@@ -1156,9 +1156,8 @@ COMMENT 361E
 LABEL 362C Sub_EraseTopLivesShip
 COMMENT 362C <CCHUNK>
 COMMENT 362C %%AUTOTITLE
-COMMENT 362C Erase top lives display ship graphic and update
-COMMENT 362C top-lives-display-ship location.  U points to
-COMMENT 362C player-data structure.
+COMMENT 362C Erase top lives display ship graphic and update top-lives-display-ship
+COMMENT 362C location.  U points to player-data structure.
 COMMENT 362C
 DEC 362F
 DEC 3631
