@@ -525,6 +525,11 @@ COMMENT 30A3 %%AUTOTITLE
 COMMENT 30A3 Configure the desired graphics mode, play an introductory sound effect,
 COMMENT 30A3 then chain to the subroutine which asks the player to choose settings.
 COMMENT 30A3
+COMMENT 30A3 Set registers for graphics mode
+COMMENT 30B1
+COMMENT 30B1 Play sound effect
+COMMENT 30C6
+COMMENT 30C6 Chain to next init phase
 DEC 30B2
 LABEL 30B6 SGM_L1
 DEC 30C3
@@ -678,11 +683,22 @@ COMMENT 31E5 </DCHUNK>
 LABEL 31EB Sub_RedrawPlayer
 COMMENT 31EB <CCHUNK>
 COMMENT 31EB %%AUTOTITLE
-COMMENT 31EB Erase the player using mask
-COMMENT 31EB ActivePlayer_X_fraction ? left-posn : right-posn
-COMMENT 31EB and then draw the player using the same mask.
-COMMENT 31EB ???????????????? Have I got that right?  Seems odd.
+COMMENT 31EB Erase the player (checking for collision with blue/red) from previous
+COMMENT 31EB location, and then redraw at current location, taking account of fractional
+COMMENT 31EB position (i.e., whether at "left" or "right" position within byte).
+COMMENT 31EB
+COMMENT 31EB If the player is mid-explosion...
+COMMENT 31EE ....skip all this
+COMMENT 31F2
+COMMENT 31F2 Prepare for erase and hit check; if player is in "left" position...
+COMMENT 31F5 ....use "left position" ship graphic for hit-detect mask
+COMMENT 31F7 ....else use "right position" ship graphic
+COMMENT 31FA
 LABEL 31FA RP_L1
+COMMENT 31FD
+COMMENT 31FD Prepare for drawing; assume "right position" ship graphic
+COMMENT 3200 But if player is in "left" position...
+COMMENT 3205 ....use "left position" ship graphic
 COMMENT 3208
 COMMENT 3208 If both players have zero lives...
 LABEL 3208 RP_L2
@@ -694,19 +710,24 @@ LABEL 3218 RP_L3
 DEC 3219
 LABEL 321A RP_L4
 COMMENT 322B
-LABEL 322B RP_exit
+LABEL 322B RP_L5
 COMMENT 322C
-LABEL 322C RP_L5
+LABEL 322C RP_L6
 COMMENT 3231 </CCHUNK>
 
 LABEL 3232 Sub_ErasePlayerCheckHit
 COMMENT 3232 <CCHUNK>
 COMMENT 3232 %%AUTOTITLE
-COMMENT 3232 Mask out the player ship shape from the 6-high, 3-byte-wide section of
-COMMENT 3232 screen whose top-left byte is in `Var_s_ActivePlayer_Prev`.  The bitmask
-COMMENT 3232 should be pointed to by `U`.  If, while doing this, the mask overlaps with
-COMMENT 3232 a blue or red pixel, then the player ship has crashed into something, and
-COMMENT 3232 we jump to `HandlePlayerCrash`.
+COMMENT 3232 Erase yellow from a 6-high, 3-byte-wide section of screen whose top-left
+COMMENT 3232 byte is in `Var_s_ActivePlayer_Prev`.  While doing so, use the bitmask
+COMMENT 3232 pointed to by `U` for hit-detection against red or blue pixels.  If a red
+COMMENT 3232 or blue pixel is found, then this means that the player ship has crashed
+COMMENT 3232 into something, and we jump to `HandlePlayerCrash`.
+COMMENT 3232 ;;
+COMMENT 3232 I'm not fully clear on the choice of mask, because we use the mask
+COMMENT 3232 corresponding to the _current_ ship position but the display-RAM address
+COMMENT 3232 for the _previous_ ship position.  Maybe this doesn't matter; the fact that
+COMMENT 3232 defenders are byte-aligned might be relevant.
 COMMENT 3232
 COMMENT 3235
 COMMENT 3235 Prepare to loop over 6 rows of bitmask
@@ -1444,7 +1465,18 @@ CONST 396C
 COMMENT 3973
 COMMENT 3973 Init all defenders' locations to $0B3F = (124, 41)
 COMMENT 397B
+COMMENT 397B Init player lives: 0 for Player 2; 3 for Player 1
+COMMENT 3983
+COMMENT 3983 If two-player mode...
+COMMENT 3988 ....init Player 2 to 3 lives too
+COMMENT 398B ....and draw their "spare lives" ships
+COMMENT 39A6
+COMMENT 39A6 Draw Player 1's "spare lives" ships
 LABEL 39A6 M1A_L1
+COMMENT 39B8
+COMMENT 39B8 Set up for main play loop with Player 1's ship
+COMMENT 39C4
+COMMENT 39C4 Chain to next init phase
 COMMENT 39C7 </CCHUNK>
 
 LABEL 39C7 Sub_EraseThenDrawPlayer
@@ -1754,10 +1786,27 @@ LABEL 3DA6 Sub_QueryShotsSpeed
 COMMENT 3DA6 <CCHUNK>
 COMMENT 3DA6 %%AUTOTITLE
 COMMENT 3DA6
-COMMENT 3DD4
-COMMENT 3DD4 High-pitched beep
+COMMENT 3DA6 Write "SELECT SHOTS" and read player response
+COMMENT 3DB5
+COMMENT 3DB5 If player pressed return...
+COMMENT 3DB7 ....leave settings as previously (or default)
+COMMENT 3DB9
+COMMENT 3DB9 If player pressed "R"...
+COMMENT 3DBB ....restart at "how many players?" question
+COMMENT 3DBF
+COMMENT 3DBF Compute upper bound on valid initial segment of shots array:
+COMMENT 3DBF .  ShotPtrLimit = (ShotPtrLimit for 5 shots) - 3 × (5 - nShots)
+COMMENT 3DBF where the 3 is sizeof(PlayerShot struct) in `Arr_PlayerShots`
+COMMENT 3DCF
+COMMENT 3DCF Play quite long high-pitched beep
+COMMENT 3DD9
+COMMENT 3DD9 Write "SELECT SPEED" and read player response
+COMMENT 3DDF
+COMMENT 3DDF If player pressed return...
+COMMENT 3DE1 ....leave setting as previously (or default)
 COMMENT 3DE3
-COMMENT 3DE3 Speed=S=1..5 from user; compute 20-2S = 18,16,14,12,10
+COMMENT 3DE3 Compute delay value from chosen speed:
+COMMENT 3DE3 .  Init_PostDrawDelay = 20 - 2 × (speed) = 18,16,14,12,10
 DEC 3DE6
 COMMENT 3DEA
 COMMENT 3DEA Fall through...
@@ -1766,12 +1815,17 @@ COMMENT 3DEA </CCHUNK>
 DEC 3DC0
 DEC 3DD0
 DEC 3DD5
-LABEL 3DEA Sub_InitPostDrawDelay
+LABEL 3DEA Sub_PreMainPlayLoop
 COMMENT 3DEA <CCHUNK>
 COMMENT 3DEA %%AUTOTITLE
+COMMENT 3DEA Play sound effect; set up screen and score displays.
 COMMENT 3DEA
+COMMENT 3DEA The value of $80 (-128) passed (in A) to `FallingPitchBeep` has the same
+COMMENT 3DEA effect as A=0 would have; not sure why $80 used
 DEC 3DEB
 DEC 3DF0
+COMMENT 3DF4
+COMMENT 3DFA
 COMMENT 3DFD </CCHUNK>
 
 LABEL 3DFD Sub_PromptedReadKbd_1_5_R
@@ -1780,11 +1834,32 @@ COMMENT 3DFD %%AUTOTITLE
 COMMENT 3DFD Read Ret, "R", or 1–5 from kbd
 COMMENT 3DFD Return $0D(Ret), $52(R), or $01–$05
 COMMENT 3DFD
+COMMENT 3DFD Write first part of message (as passed in, pointed to be U) to screen
+COMMENT 3E03
+COMMENT 3E03 Write message suffix " [1-5]"
+COMMENT 3E09
+COMMENT 3E09 Prepare to loop, polling keyboard, until either we get a valid input,
+COMMENT 3E09 or until we time out
 CONST 3E0A
 CONST 3E0D
+COMMENT 3E0F
+COMMENT 3E17
+COMMENT 3E17 Inner loop finished; if we should time out...
+COMMENT 3E19 ....reset game parameters to default and proceed with play
+COMMENT 3E1D
+COMMENT 3E1D If there was no keypress...
+COMMENT 3E1E ....loop
+COMMENT 3E20
+COMMENT 3E20 If keypress was "return"...
+COMMENT 3E24 ....or "R"...
+COMMENT 3E26 ....return that keycode to caller
+COMMENT 3E28
+COMMENT 3E28 If keypress was NOT a digit key from "1" up to "5", loop
+COMMENT 3E30
+COMMENT 3E30 Map keypress "1" to "5" to value $01 to $05 and return it
 LABEL 3E0F PRK_L1
 LABEL 3E1D PRK_L2
-LABEL 3E32 PRK_exit
+LABEL 3E32 PRK_L3
 COMMENT 408D </CCHUNK>
 
 LABEL 408D Sub_InitialEntryPoint
