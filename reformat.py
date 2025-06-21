@@ -26,14 +26,18 @@ def code_in_pre(ctx, code_spans):
         span = ctx.soup.new_tag("span")
         span.attrs["class"] = span_cls
         if span_cls == "asm-code-operand":
-            if span_text in ctx.labels_to_link:
+            if (tgt_lbl := ctx.chunk_from_label.get(span_text)) is not None:
                 a = ctx.soup.new_tag("a")
-                a.attrs["href"] = f"#LBL--{span_text}"
+                a.attrs["href"] = f"#LBL--{tgt_lbl}"
                 a.string = span_text
                 span.append(a)
-            elif span_text != "" and span_text[0] == "#" and span_text[1:] in ctx.labels_to_link:
+            elif (
+                    span_text != ""
+                    and span_text[0] == "#"
+                    and (tgt_lbl := ctx.chunk_from_label.get(span_text[1:])) is not None
+            ):
                 a = ctx.soup.new_tag("a")
-                a.attrs["href"] = f"#LBL--{span_text[1:]}"
+                a.attrs["href"] = f"#LBL--{tgt_lbl}"
                 a.string = span_text[1:]
                 span.append(NavigableString("#"))
                 span.append(a)
@@ -41,10 +45,10 @@ def code_in_pre(ctx, code_spans):
                     len(span_text) >= 2
                     and span_text[0] == "["
                     and span_text[-1] == "]"
-                    and span_text[1:-1] in ctx.labels_to_link
+                    and (tgt_lbl := ctx.chunk_from_label.get(span_text[1:-1])) is not None
                 ):
                 a = ctx.soup.new_tag("a")
-                a.attrs["href"] = f"#LBL--{span_text[1:-1]}"
+                a.attrs["href"] = f"#LBL--{tgt_lbl}"
                 a.string = span_text[1:-1]
                 span.append(NavigableString("["))
                 span.append(a)
@@ -64,7 +68,7 @@ k_chunk_marker = re.compile("<(/?)(.)CHUNK>")
 @dataclass
 class HtmlOutputContext:
     soup: Any
-    labels_to_link: Set[str]
+    chunk_from_label: dict
 
 @dataclass
 class ListingChunk:
@@ -170,6 +174,18 @@ class ListingChunk:
         for ln in self.lines:
             if hasattr(ln, "label") and ln.label is not None:
                 return ln.label
+
+    def populate_label_lut(self, chunk_from_label):
+        if (self_label := self.first_label()) is not None:
+            for ln in self.lines:
+                if (ln_lbl := getattr(ln, "label", None)) is not None:
+                    if ln_lbl in chunk_from_label:
+                        raise ValueError(
+                            f'duplicate label "{ln_lbl}"'
+                            f' in chunks "{self_label}"'
+                            f' and "{chunk_from_label[ln_lbl]}"'
+                        )
+                    chunk_from_label[ln_lbl] = self_label
 
     def maybe_reformat_data(self):
         if (n_bytes_per_row := self.acquire_reformat_data_directive()) is None:
@@ -456,7 +472,11 @@ for chunk in all_chunks:
     if (chunk_lbl := chunk.first_label()) is not None:
         all_chunk_labels.add(chunk_lbl)
 
-ctx = HtmlOutputContext(soup, all_chunk_labels)
+chunk_from_label = {}
+for chunk in all_chunks:
+    chunk.populate_label_lut(chunk_from_label)
+
+ctx = HtmlOutputContext(soup, chunk_from_label)
 
 for chunk in all_chunks:
     html_main.extend(chunk.html(ctx))
