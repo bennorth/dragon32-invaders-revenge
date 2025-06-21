@@ -114,6 +114,8 @@ The sequence and loop of `StepDefenderShotHitAnimation` would be straightforward
 
 The "colour whole defender yellow" logic doesn't always get the whole base, because of the narrow bit at the top.  (Discovered via GDB not code inspection.)  But both the defender base and the patrolling defender hit checks look at bytes from both halves of the image, so it works.
 
+Control flow of timeout when prompting for shots and speed.  Code leaks 2 bytes of stack every time this happens, because it does a JMP to the reset routine.  (By inspection and then tested under GDB.)
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
