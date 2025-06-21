@@ -68,6 +68,8 @@ Then ran in emulator [LINK XROAR], captured, analysed, re-synthesised.  Decided 
 
 # Misc remarks
 
+Investigating mostly by looking at code.  But some by hooking up GDB.  Pausing the whole emulator means that updates to graphics memory don't always get reflected straight away, so temporarily disabled some subroutines to be able to see effects of others.  TODO: Notes on how to compile and run extended GDB from 6809.org.uk branch.
+
 Interspersing of data and code.  Even sometimes a variable right in the middle of the subroutine it's part of: `Var_b_ShotSoundProgress` in the middle of `Sub_LaunchPlayerShot`.
 
 Inventive use of system stack here and there.  Search for ",S".
