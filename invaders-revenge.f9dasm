@@ -325,8 +325,8 @@ COMMENT 2EB2 .  byte - XColumn: initially $01 L-to-R; $1F R-to-L
 COMMENT 2EB2 .  byte - KindAndVelocity: $01 L-R normal; $FF R-L normal; $41 L-R special
 COMMENT 2EB2 .  word - Location
 COMMENT 2EB2 ;;
-COMMENT 2EB2 Initialised by code in Main_1a with both byte values $01 and all word
-COMMENT 2EB2 values $0B3F.  So all structs are init'd to { $01, $01, (124, 41) }.
+COMMENT 2EB2 Initialised by code in InitForNewGame with both byte values $01 and all
+COMMENT 2EB2 word values $0B3F.  So all structs are init'd to { $01, $01, (124, 41) }.
 COMMENT 2EB2
 HEX 2EB2-2EDD
 LABEL 2EB4 Arr_DefendersData_Loc
@@ -1518,7 +1518,7 @@ COMMENT 38E2 %%AUTOTITLE
 CHAR 38E2-3902
 COMMENT 3903 </DCHUNK>
 
-LABEL 3903 Main_1
+LABEL 3903 Sub_ShowIntroTextQueryNPlayers
 COMMENT 3903 <CCHUNK>
 COMMENT 3903 %%AUTOTITLE
 CONST 391E
@@ -1528,7 +1528,7 @@ CHAR 3937
 CHAR 393B
 COMMENT 3947 </CCHUNK>
 
-LABEL 3947 Main_1a
+LABEL 3947 Sub_InitForNewGame
 COMMENT 3947 <CCHUNK>
 COMMENT 3947 %%AUTOTITLE
 COMMENT 3947 Initialise for fresh game
