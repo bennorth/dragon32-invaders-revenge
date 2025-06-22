@@ -536,7 +536,7 @@ COMMENT 30A3 Set registers for graphics mode
 COMMENT 30B1
 COMMENT 30B1 Play sound effect
 COMMENT 30C6
-COMMENT 30C6 Chain to next init phase
+COMMENT 30C6 Chain to next phase of boot
 DEC 30B2
 LABEL 30B6 SGM_L1
 DEC 30C3
@@ -1553,7 +1553,7 @@ LABEL 39A6 M1A_L1
 COMMENT 39B8
 COMMENT 39B8 Set up for main play loop with Player One's ship
 COMMENT 39C4
-COMMENT 39C4 Chain to next init phase
+COMMENT 39C4 Chain to next phase of boot
 COMMENT 39C7 </CCHUNK>
 
 LABEL 39C7 Sub_EraseThenDrawPlayer
@@ -2098,7 +2098,7 @@ COMMENT 4A56
 COMMENT 4A56 Show the instructions, waiting for a keypress between each page
 LABEL 4A8F MSI_L3
 COMMENT 4A8F
-COMMENT 4A8F Move on to next phase of set-up
+COMMENT 4A8F Move on to next phase of boot
 
 ******************************************************************************
 
