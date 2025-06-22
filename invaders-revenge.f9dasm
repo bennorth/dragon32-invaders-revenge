@@ -1526,12 +1526,13 @@ LABEL 3926 M1_L1
 LABEL 3932 M1_L2
 CHAR 3937
 CHAR 393B
+COMMENT 3947
+COMMENT 3947 Fall through...
 COMMENT 3947 </CCHUNK>
 
 LABEL 3947 Sub_InitForNewGame
 COMMENT 3947 <CCHUNK>
 COMMENT 3947 %%AUTOTITLE
-COMMENT 3947 Initialise for fresh game
 COMMENT 394A
 COMMENT 394A Init active player's X-coord-whole to 1
 COMMENT 394F
@@ -1552,7 +1553,8 @@ COMMENT 397B
 COMMENT 397B Init player lives: 0 for Player Two; 3 for Player One
 COMMENT 3983
 COMMENT 3983 If two-player mode...
-COMMENT 3988 ....init Player Two to 3 lives too
+COMMENT 3986 ....skip to rest of Player One setup
+COMMENT 3988 ....else, init Player Two to 3 lives too
 COMMENT 398B ....and draw their "spare lives" ships
 COMMENT 39A6
 COMMENT 39A6 Draw Player One's "spare lives" ships
