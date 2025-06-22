@@ -288,6 +288,7 @@ LABEL 2E5A MDCH_L03
 COMMENT 2E5D
 COMMENT 2E5D Tasks arising from destroyed defender
 LABEL 2E5D MDCH_L04
+COMMENT 2E66
 COMMENT 2E68
 COMMENT 2E68 Erase an 8-wide, 7-high block of pixels (i.e., 2 bytes wide), with the
 COMMENT 2E68 top-left byte pointed to by X; this erases the defender
@@ -397,6 +398,8 @@ COMMENT 2F58 Decrease half-period complement, thereby increasing half-period
 COMMENT 2F5B
 COMMENT 2F5B Keep going if half-period complement is at least (in unsigned sense) $80
 COMMENT 2F5D
+COMMENT 2F5D Playing the sound takes time; no need to explicitly delay
+COMMENT 2F60
 COMMENT 2F63 </CCHUNK>
 
 LABEL 2F64 GFX_BlueYellowSparks
@@ -428,6 +431,8 @@ LABEL 2F91 ISDE_L3
 LABEL 2F97 ISDE_L4
 LABEL 2F9A ISDE_L5
 COMMENT 2FA8
+COMMENT 2FA8 Playing the sound takes time; no need to explicitly delay
+COMMENT 2FAB
 COMMENT 2FAE </CCHUNK>
 
 LABEL 2FAE GFX_Text_SHOTS
@@ -1111,6 +1116,8 @@ CONST 3511
 LABEL 3513 LFPS_L1
 LABEL 351C LFPS_L2
 CONST 351D
+COMMENT 352D
+COMMENT 352D Playing the sound takes time; no need to explicitly delay
 COMMENT 3530
 COMMENT 3530 Choose Colour Set 0 (green/yellow/blue/red)
 COMMENT 3538
@@ -1742,6 +1749,9 @@ DEC 3B99
 COMMENT 3BA2
 LABEL 3BA2 PSS_reset_exit
 CONST 3BA4
+COMMENT 3BAA
+COMMENT 3BAA Playing the sound takes time; no need to explicitly delay
+COMMENT 3BAD
 LABEL 3BB3 PSS_exit
 COMMENT 3BB4 </CCHUNK>
 
@@ -1771,6 +1781,9 @@ COMMENT 3BC7
 LABEL 3BC7 FPB_L1
 COMMENT 3BCA
 LABEL 3BCA FPB_L2
+COMMENT 3BD6
+COMMENT 3BD6 Playing the sound takes time; no need to explicitly delay
+COMMENT 3BD9
 LABEL 3BD6 FPB_reset_exit
 COMMENT 3BDE </CCHUNK>
 
@@ -1827,6 +1840,8 @@ COMMENT 3D27
 COMMENT 3D27 If explosion over...
 COMMENT 3D2A ....set up for next one
 COMMENT 3D2C
+COMMENT 3D2C That work has taken time; no need to explicitly delay
+COMMENT 3D2F
 LABEL 3D2F SPE_L3
 COMMENT 3D36
 LABEL 3D36 SPE_L4
@@ -1849,6 +1864,8 @@ LABEL 3D79 PES_L1
 LABEL 3D7E PES_L2
 LABEL 3D88 PES_L3
 COMMENT 3D94
+COMMENT 3D94 Playing the sound takes time; no need to explicitly delay
+COMMENT 3D97
 LABEL 3D94 PES_exit
 COMMENT 3D98 </CCHUNK>
 
