@@ -194,7 +194,7 @@ LABEL 2DC3 IDP_L5
 COMMENT 2DC9
 COMMENT 2DC9 Row contains blue; try next patrol-start location, by using the "cyclically
 COMMENT 2DC9 advance pointer" logic at the end of this subroutine as a subroutine in its
-COMMENT 2DC9 own right.
+COMMENT 2DC9 own right
 COMMENT 2DCD
 LABEL 2DCD IDP_L6
 COMMENT 2DD0
@@ -254,7 +254,7 @@ COMMENT 2E19 .    (struct is one element of Arr_DefendersData)
 COMMENT 2E19
 COMMENT 2E1B
 COMMENT 2E1B First call where this defender appears?  If so, skip "hit check and erase"
-COMMENT 2E1B tasks.
+COMMENT 2E1B tasks
 COMMENT 2E22 $E1 = lower byte of $1F × $FF
 COMMENT 2E28
 DEC 2E29
@@ -1593,10 +1593,10 @@ COMMENT 39E4 defender-loc = location of top-left byte of defender
 COMMENT 39E4
 DEC 39EC
 COMMENT 39ED
-COMMENT 39ED Search for free slot (one whose defender-loc is $0000).
+COMMENT 39ED Search for free slot (one whose defender-loc is $0000)
 LABEL 39ED IDE_L1
 COMMENT 39F8
-COMMENT 39F8 Found a free slot; populate as described above.
+COMMENT 39F8 Found a free slot; populate as described above
 DEC 39FB
 DEC 3A04
 COMMENT 3A0A
@@ -1645,12 +1645,12 @@ COMMENT 3A72 A = defender-kind (1: normal(blue), 10: special(red), 12: base)
 LABEL 3A72 SDE_L03
 DEC 3A75
 COMMENT 3A78
-COMMENT 3A78 The defender base is being destroyed.
+COMMENT 3A78 The defender base is being destroyed
 DEC 3A79
 COMMENT 3A91
-COMMENT 3A91 A defender ship is being destroyed (A=1: normal/blue, A=10: special/red).
+COMMENT 3A91 A defender ship is being destroyed (A=1: normal/blue, A=10: special/red)
 LABEL 3A91 SDE_L04
-COMMENT 3A94 If special(red), advance U to special-ship-explosion GFX.
+COMMENT 3A94 If special(red), advance U to special-ship-explosion GFX
 COMMENT 3A97
 LABEL 3A97 SDE_L05
 LABEL 3AA7 SDE_L06
