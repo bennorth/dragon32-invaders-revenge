@@ -114,6 +114,3 @@ b 3D5E PlayerExplnSound_HalfPeriod
 
 b 3D5F
 b 384E
-
-w 40FC
-w 40FE
