@@ -6,10 +6,10 @@ w 372C HighScore Highest score yet, units of 100
 b 3645 TwoPlayerMode
 b 41D5 TwoPlayerModeDup
 
-b 41D0 R_Player_last_joy_X
-b 41D1 R_Player_last_joy_Y
-b 41D3 L_Player_last_joy_X
-b 41D4 L_Player_last_joy_Y
+b 41D0 PlayerOneLastJoyX
+b 41D1 PlayerOneLastJoyY
+b 41D3 PlayerTwoLastJoyX
+b 41D4 PlayerTwoLastJoyY
 
 p 3295 ShotPtrLimit
 b 3297 ShotInProgress
@@ -44,7 +44,7 @@ B 338C Init_BaseFirePeriod
 
 b 2EE1 SDM_NRemaining
 
-b 41D2 ActivePlayerIdx
+b 41D2 ActiveJoystickIdx
 
 b 2F63 ISDE_Rows
 B 2F72 ISDE_InitPeriod
