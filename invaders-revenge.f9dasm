@@ -1942,13 +1942,19 @@ COMMENT 408D </CCHUNK>
 LABEL 408D Sub_InitialEntryPoint
 COMMENT 408D <CCHUNK>
 COMMENT 408D %%AUTOTITLE
+COMMENT 408F
+COMMENT 408F Display "joysticks?" question
 COMMENT 4094
+COMMENT 4094 Loop, reading key until either "N", in which case jump to next phase of
+COMMENT 4094 boot, or "Y", in which case set up for joysticks
 LABEL 4094 IEP_L1
 CHAR 4098
 CHAR 409C
 COMMENT 40A1
-COMMENT 40A1 Overwrite code in the keyboard-checking subroutine.
-COMMENT 40A1 The bytes here, 7E 41 00, are "JMP 4100"
+COMMENT 40A1 Init joystick state (last-read values, and which joystick to read)
+COMMENT 40A7
+COMMENT 40A7 Overwrite code in keyboard-checking subroutine; bytes written are 7E 41 00,
+COMMENT 40A7 which is "JMP $4100"
 LABEL 40A1 IEP_L2
 CONST 40AF
 CONST 40B2
@@ -1959,12 +1965,14 @@ COMMENT 40B7 </CCHUNK>
 LABEL 40B7 Sub_AwaitKeyPress
 COMMENT 40B7 <CCHUNK>
 COMMENT 40B7 %%AUTOTITLE
+COMMENT 40B7 Loop until a key is pressed.
 COMMENT 40B7
 COMMENT 40BD </CCHUNK>
 
 LABEL 40BD Sub_ResetScreen
 COMMENT 40BD <CCHUNK>
 COMMENT 40BD %%AUTOTITLE
+COMMENT 40BD Reset text cursor to top-left; fill the text screen memory with spaces
 COMMENT 40BD
 CONST 40C3
 LABEL 40C5 RS_L1
@@ -1973,6 +1981,9 @@ COMMENT 40CD </CCHUNK>
 LABEL 40CD Sub_TextOutTilNulCvtPct
 COMMENT 40CD <CCHUNK>
 COMMENT 40CD %%AUTOTITLE
+COMMENT 40CD Use the ROM routine to write a string (pointed to by X) to the text
+COMMENT 40CD display.  Any "%" characters in the input are converted to newlines.
+COMMENT 40CD Output stops at the first $00 byte of the input.
 COMMENT 40CD
 LABEL 40D7 TOTNCP_L1
 LABEL 40DC TOTNCP_L2
@@ -1988,10 +1999,24 @@ LABEL 4100 Sub_MovePlayerByActiveJoystick
 COMMENT 4100 <CCHUNK>
 COMMENT 4100 %%AUTOTITLE
 COMMENT 4100
+COMMENT 4100 Use ROM routines to prepare PIAs then read all joystick axes
+COMMENT 4106
+COMMENT 4106 Enable sound again and set DAC output to known value
+COMMENT 4113
+COMMENT 4113 If the left joystick is active...
+COMMENT 4116 ....read that instead
+COMMENT 4118
+COMMENT 4118 Move player left/right according to right joystick X value
 COMMENT 4122
+COMMENT 4122 Move player up/down according to right joystick Y value
 LABEL 4122 CJ_L1
 COMMENT 412C
 LABEL 412C CJ_L2
+COMMENT 412F
+COMMENT 412F If right joystick fire button not down...
+COMMENT 4136 ....chain to appropriate point in main play loop
+COMMENT 413A ....else (fire button IS down) launch player shot
+COMMENT 413D ....and chain to appropriate point in main play loop
 COMMENT 4140
 LABEL 4140 CJ_L3
 COMMENT 4148
@@ -2006,6 +2031,9 @@ LABEL 4160 Sub_MaybeUpdateActivePlayer
 COMMENT 4160 <CCHUNK>
 COMMENT 4160 %%AUTOTITLE
 COMMENT 4160
+COMMENT 4160 If we are in two-player mode...
+COMMENT 4165 ....toggle ActiveJoystickIdx between 0 and 1
+COMMENT 416D
 LABEL 416D MUAP_L1
 COMMENT 4173 </CCHUNK>
 
@@ -2013,6 +2041,8 @@ LABEL 4173 Sub_InitTwoPlayerState
 COMMENT 4173 <CCHUNK>
 COMMENT 4173 %%AUTOTITLE
 COMMENT 4173
+COMMENT 4173 I don't know why there are two variables representing this information;
+COMMENT 4173 maybe there was a plan to allow two players to share a joystick?
 COMMENT 4179
 COMMENT 4179 Fall through...
 COMMENT 4179 </CCHUNK>
@@ -2021,12 +2051,18 @@ LABEL 4179 Sub_InitLastJoystickValues
 COMMENT 4179 <CCHUNK>
 COMMENT 4179 %%AUTOTITLE
 COMMENT 4179
+COMMENT 4179 Act as though right joystick was most recently at top-left
+COMMENT 417F
+COMMENT 417F Act as though left joystick was most recently at top-right
+COMMENT 4187
 COMMENT 4188 </CCHUNK>
 
 LABEL 4188 Sub_MovePlayerByLeftJoystick
 COMMENT 4188 <CCHUNK>
 COMMENT 4188 %%AUTOTITLE
-COMMENT 4188
+COMMENT 4188 Move the active player according to the position of the left joystick, and
+COMMENT 4188 launch a player shot if the left fire button is down.  Analogous to the
+COMMENT 4188 code in MovePlayerByActiveJoystick.
 COMMENT 4192
 LABEL 4192 CLJ_L1
 COMMENT 419E
@@ -2088,6 +2124,7 @@ LABEL 4A40 Sub_MaybeShowInstructions
 COMMENT 4A40 <CCHUNK>
 COMMENT 4A40 %%AUTOTITLE
 COMMENT 4A40
+COMMENT 4A40 Clear screen and write "instructions?" text
 COMMENT 4A49
 COMMENT 4A49 Loop until the player types "Y" or "N", and act accordingly
 LABEL 4A49 MSI_L1

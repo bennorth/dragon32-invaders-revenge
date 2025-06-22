@@ -116,9 +116,15 @@ The "colour whole defender yellow" logic doesn't always get the whole base, beca
 
 Control flow of timeout when prompting for shots and speed.  Code leaks 2 bytes of stack every time this happens, because it does a JMP to the reset routine.  (By inspection and then tested under GDB.)
 
+Why separate state tracking which joystick to read?  Is it not the case that Player One always uses the right joystick and Player Two always the left?  Was there some intent that a two-player game should be possible even if there was only one joystick plugged in?  Might explain the redundant `TwoPlayerMode` and `TwoPlayerModeDup` variables.
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
+
+* [Dragon 32 ROM disassembly](https://github.com/prime6809/DragonRom)
+
+* [Inside the Dragon](https://archive.worldofdragon.org/browse/downloads/Books/InsideTheDragon%20-%20Smeed%20and%20Sommerville%20%281983%29.pdf)
 
 # TODO
 
