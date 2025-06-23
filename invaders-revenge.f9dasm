@@ -1632,31 +1632,57 @@ COMMENT 3A3C or the shooting base).  Erase defender if its animation has finishe
 COMMENT 3A3C Leave appropriate value in `PlaySoundSlice_InitHalfPeriod` to get
 COMMENT 3A3C desired sound effect.
 COMMENT 3A3C
+COMMENT 3A3C Only step the animations every other call; if not in such a call...
+COMMENT 3A3F ....do nothing further
+COMMENT 3A41 ....else proceed, resetting phase for next call
+COMMENT 3A46
+COMMENT 3A46 Prepare to loop over array of explosions
 DEC 3A42
 DEC 3A4B
 COMMENT 3A4F
+COMMENT 3A4F While explosions remain, advance Y to just past struct to work with
 LABEL 3A4F SDE_L01
 COMMENT 3A56
-COMMENT 3A56 X = defender-loc
+COMMENT 3A56 X = defender-loc; if inactive...
 LABEL 3A56 SDE_L02
+COMMENT 3A58 ....skip remainder of processing
+
 COMMENT 3A5A
 COMMENT 3A5A B = animation-frames-remaining
+COMMENT 3A5F
+COMMENT 3A5F If no more frames...
+COMMENT 3A61 ....jump to "erase" logic
+COMMENT 3A63
+COMMENT 3A63 Prepare to blt seven rows of yellow normal defender explosion...
+COMMENT 3A6B ....but every other frame...
+COMMENT 3A6F ....use the red (with yellow eyes) explosion instead
 DEC 3A64
 COMMENT 3A72
 COMMENT 3A72 A = defender-kind (1: normal(blue), 10: special(red), 12: base)
 LABEL 3A72 SDE_L03
+COMMENT 3A74
+COMMENT 3A74 If this explosion is for the defender base...
 DEC 3A75
-COMMENT 3A78
-COMMENT 3A78 The defender base is being destroyed
+COMMENT 3A78 ....we need nine rows, and TODO WHAT IS THAT CALCULATION?
 DEC 3A79
+COMMENT 3A86
+COMMENT 3A86 Assume we want the yellow-base-with-red-sparks graphic...
+COMMENT 3A89 ....but if this is the last frame...
+COMMENT 3A8C ....use the red-base-with-yellow-sparks one instead
 COMMENT 3A91
-COMMENT 3A91 A defender ship is being destroyed (A=1: normal/blue, A=10: special/red)
+COMMENT 3A91 Defender ship is being destroyed (A=1: normal/blue, A=10: special/red)
 LABEL 3A91 SDE_L04
-COMMENT 3A94 If special(red), advance U to special-ship-explosion GFX
+COMMENT 3A92 If it is a special defender...
+COMMENT 3A94 ....advance U to appropriate one of two special-ship-explosion graphics
 COMMENT 3A97
+COMMENT 3A97 Blt the relevant number of rows of pairs of bytes (8 pixels), checking that
+COMMENT 3A97 we do not go outside bounds of the play area section of display memory
 LABEL 3A97 SDE_L05
 LABEL 3AA7 SDE_L06
+COMMENT 3AAF
+COMMENT 3AAF Loop round for next (potential) explosion
 COMMENT 3AB1
+COMMENT 3AB1 TODO: Looks like computing sound parameter from frame counter?
 LABEL 3AB1 SDE_L07
 DEC 3AB7
 DEC 3ABC
@@ -1664,16 +1690,24 @@ COMMENT 3AC1
 LABEL 3AC1 SDE_L08
 DEC 3AC2
 LABEL 3ACA SDE_L09
-COMMENT 3ACB
 LABEL 3ACB SDE_L10
+COMMENT 3ACB
+COMMENT 3ACB Prepare to erase explosion; assume a patrolling defender (7 rows)...
+COMMENT 3ACD ....but if the defender base is exploding...
+COMMENT 3AD3 ....we need to erase 9 rows instead
 DEC 3ACC
 DEC 3ACE
 DEC 3AD4
 LABEL 3AD5 SDE_L11
+COMMENT 3AD5
+COMMENT 3AD5 Erase relevant number of rows, checking we do not go outside bounds of the
+COMMENT 3AD5 play area section of display memory
 CONST 3AD9
 LABEL 3ADB SDE_L12
 LABEL 3AE2 SDE_L13
 LABEL 3AF1 SDE_L14
+COMMENT 3AF1
+COMMENT 3AF1 Mark this explosion as finished and loop back for next
 COMMENT 3AF8 </CCHUNK>
 
 LABEL 3AF9 GFX_YellowNormalDefender
