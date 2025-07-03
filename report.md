@@ -118,6 +118,8 @@ Control flow of timeout when prompting for shots and speed.  Code leaks 2 bytes 
 
 Why separate state tracking which joystick to read?  Is it not the case that Player One always uses the right joystick and Player Two always the left?  Was there some intent that a two-player game should be possible even if there was only one joystick plugged in?  Might explain the redundant `TwoPlayerMode` and `TwoPlayerModeDup` variables.
 
+Looks like although there is space reserved for up to ten simultaneous defender explosions, only the first nine are ever processed: `Var_b_StepDefenderExplns_Explns` initialised to 10 in `Sub_StepDefenderExplns`, then decremented and checked against zero at *start* of loop.
+
 # Refs
 
 * [Undocumented 6809 opcodes](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours)
