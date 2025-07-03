@@ -1650,7 +1650,8 @@ LABEL 3A56 SDE_L02
 COMMENT 3A58 ....skip remainder of processing
 
 COMMENT 3A5A
-COMMENT 3A5A B = animation-frames-remaining
+COMMENT 3A5A B = animation-frames-remaining (recall this starts at 7 for patrolling
+COMMENT 3A5A defenders and 24 for the defender base)
 COMMENT 3A5F
 COMMENT 3A5F If no more frames...
 COMMENT 3A61 ....jump to "erase" logic
@@ -1665,7 +1666,8 @@ LABEL 3A72 SDE_L03
 COMMENT 3A74
 COMMENT 3A74 If this explosion is for the defender base...
 DEC 3A75
-COMMENT 3A78 ....we need nine rows, and TODO WHAT IS THAT CALCULATION?
+COMMENT 3A78 ....we need nine rows
+COMMENT 3A7D ....and a sound param precursor of (60 - frames-remaining) AND $F6
 DEC 3A79
 COMMENT 3A86
 COMMENT 3A86 Assume we want the yellow-base-with-red-sparks graphic...
@@ -1684,7 +1686,12 @@ LABEL 3AA7 SDE_L06
 COMMENT 3AAF
 COMMENT 3AAF Loop round for next (potential) explosion
 COMMENT 3AB1
-COMMENT 3AB1 TODO: Looks like computing sound parameter from frame counter?
+COMMENT 3AB1 Compute sound parameter from frame counter according to below expression; I
+COMMENT 3AB1 did not get to the bottom of what effect this has on the sound
+COMMENT 3AB1 ;;
+COMMENT 3AB1 PSS_IHP = FRMS == 0 ? 0
+COMMENT 3AB1 .          : FRMS > 4 ? 2 × FRMS + 3
+COMMENT 3AB1 .          ? (FRMS + 8) × 2
 LABEL 3AB1 SDE_L07
 DEC 3AB7
 DEC 3ABC
