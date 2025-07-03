@@ -20,13 +20,19 @@ DUMP_ADDR_style = CF.STEEL_BLUE_3
 DUMP_DATA_style = CF.SLATE_BLUE_3B
 
 
+def label_as_target(ctx, lbl):
+    if lbl not in ctx.labels_to_link:
+        return None
+    return ctx.chunk_from_label.get(lbl)
+
+
 def code_in_pre(ctx, code_spans):
     code = ctx.soup.new_tag("code")
     for span_cls, span_text in code_spans:
         span = ctx.soup.new_tag("span")
         span.attrs["class"] = span_cls
         if span_cls == "asm-code-operand":
-            if (tgt_lbl := ctx.chunk_from_label.get(span_text)) is not None:
+            if (tgt_lbl := label_as_target(ctx, span_text)) is not None:
                 a = ctx.soup.new_tag("a")
                 a.attrs["href"] = f"#LBL--{tgt_lbl}"
                 a.string = span_text
@@ -34,7 +40,7 @@ def code_in_pre(ctx, code_spans):
             elif (
                     span_text != ""
                     and span_text[0] == "#"
-                    and (tgt_lbl := ctx.chunk_from_label.get(span_text[1:])) is not None
+                    and (tgt_lbl := label_as_target(ctx, span_text[1:])) is not None
             ):
                 a = ctx.soup.new_tag("a")
                 a.attrs["href"] = f"#LBL--{tgt_lbl}"
@@ -45,7 +51,7 @@ def code_in_pre(ctx, code_spans):
                     len(span_text) >= 2
                     and span_text[0] == "["
                     and span_text[-1] == "]"
-                    and (tgt_lbl := ctx.chunk_from_label.get(span_text[1:-1])) is not None
+                    and (tgt_lbl := label_as_target(ctx, span_text[1:-1])) is not None
                 ):
                 a = ctx.soup.new_tag("a")
                 a.attrs["href"] = f"#LBL--{tgt_lbl}"
@@ -68,6 +74,7 @@ k_chunk_marker = re.compile("<(/?)(.)CHUNK>")
 @dataclass
 class HtmlOutputContext:
     soup: Any
+    labels_to_link: set
     chunk_from_label: dict
 
 @dataclass
@@ -476,7 +483,7 @@ chunk_from_label = {}
 for chunk in all_chunks:
     chunk.populate_label_lut(chunk_from_label)
 
-ctx = HtmlOutputContext(soup, chunk_from_label)
+ctx = HtmlOutputContext(soup, all_chunk_labels, chunk_from_label)
 
 for chunk in all_chunks:
     html_main.extend(chunk.html(ctx))
