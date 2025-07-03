@@ -232,7 +232,7 @@ COMMENT 2E0D pointed to by Y as unused (by setting its location field to zero), 
 COMMENT 2E0D launch a new patrol.  (The search for an available array slot is therefore
 COMMENT 2E0D guaranteed to succeed because of the slot we just marked as free.)
 COMMENT 2E0D ;;
-COMMENT 2E0D This could be considered part of `Sub_MoveDefenderCheckHit`; its only use
+COMMENT 2E0D This could be considered part of Sub_MoveDefenderCheckHit; its only use
 COMMENT 2E0D is being tail-called from there.
 COMMENT 2E0D
 COMMENT 2E19 </CCHUNK>
@@ -589,7 +589,7 @@ COMMENT 30E9
 COMMENT 30E9 If key "P" pressed...
 COMMENT 30F3 ....enter flashing PAUSE loop
 COMMENT 30F7
-COMMENT 30F7 Three bytes at `MPL_MovePlayerFromKeyboard` are overwritten by "JMP $4100"
+COMMENT 30F7 Three bytes at MPL_MovePlayerFromKeyboard are overwritten by "JMP $4100"
 COMMENT 30F7 if joysticks are enabled.
 COMMENT 30F7
 COMMENT 30F7 If key "right arrow" pressed...
@@ -619,7 +619,7 @@ COMMENT 314A
 LABEL 314A MPL_L6
 COMMENT 315F
 COMMENT 315F If a delay is required...
-COMMENT 3164 ....do so, for time proportional to `Var_b_PostDrawDelay`
+COMMENT 3164 ....do so, for time proportional to Var_b_PostDrawDelay
 LABEL 3164 MPL_L7
 COMMENT 316A
 LABEL 316A MPL_L8
@@ -731,10 +731,10 @@ LABEL 3232 Sub_ErasePlayerCheckHit
 COMMENT 3232 <CCHUNK>
 COMMENT 3232 %%AUTOTITLE
 COMMENT 3232 Erase yellow from a 6-high, 3-byte-wide section of screen whose top-left
-COMMENT 3232 byte is in `Var_s_ActivePlayer_Prev`.  While doing so, use the bitmask
-COMMENT 3232 pointed to by `U` for hit-detection against red or blue pixels.  If a red
+COMMENT 3232 byte is in Var_s_ActivePlayer_Prev.  While doing so, use the bitmask
+COMMENT 3232 pointed to by U for hit-detection against red or blue pixels.  If a red
 COMMENT 3232 or blue pixel is found, then this means that the player ship has crashed
-COMMENT 3232 into something, and we jump to `HandlePlayerCrash`.
+COMMENT 3232 into something, and we jump to HandlePlayerCrash.
 COMMENT 3232 ;;
 COMMENT 3232 I'm not fully clear on the choice of mask, because we use the mask
 COMMENT 3232 corresponding to the _current_ ship position but the display-RAM address
@@ -799,11 +799,11 @@ COMMENT 3286 ;;
 COMMENT 3286 [0]   b: Bitmask (0x10 or 0x01)
 COMMENT 3286 [1:2] w: ScreenLoc — location of bottom pixel of shot
 COMMENT 3286 ;;
-COMMENT 3286 Bitmask is used for drawing using `OR`, which turns a pixel from green to
-COMMENT 3286 yellow.  It is also shifted left and then used (with `AND`) to detect when
+COMMENT 3286 Bitmask is used for drawing using OR, which turns a pixel from green to
+COMMENT 3286 yellow.  It is also shifted left and then used (with AND) to detect when
 COMMENT 3286 the shot overlaps with some blue or red.
 COMMENT 3286 ;;
-COMMENT 3286 (Cleared as part of `Sub_ResetShotExplnData`.)
+COMMENT 3286 (Cleared as part of Sub_ResetShotExplnData.)
 COMMENT 3286
 DATA 3286-3294
 COMMENT 3295 </DCHUNK>
@@ -990,7 +990,7 @@ COMMENT 3423 When a defender base shot has hit something, wait three frames then
 COMMENT 3423 red asterisk small explosion graphic, and leave it there for a duration of
 COMMENT 3423 four frames before erasing it; on the next frame, launch a new shot and
 COMMENT 3423 become idle.  Progression through this sequence is tracked by the variable
-COMMENT 3423 `Var_B_DefenderShot_State`, which `Sub_InitDefenderShotHit` sets to `8`; in
+COMMENT 3423 Var_B_DefenderShot_State, which Sub_InitDefenderShotHit sets to 8; in
 COMMENT 3423 turn, that subroutine is called when a hit is detected.
 COMMENT 3423
 COMMENT 3423 Choose behaviour according to state on entry to sub: 0 vs -1 vs 5 vs other;
@@ -1079,7 +1079,7 @@ COMMENT 34D0 %%AUTOTITLE
 COMMENT 34D0 Initiate the behaviour when a defender base shot hits the player or a
 COMMENT 34D0 player shot: Draw the yellow asterisk explosion where the defender base
 COMMENT 34D0 shot is, play a low beep, and set the rest of the defender base shot hit
-COMMENT 34D0 animation in progress via `Var_b_DefenderShot_State`.
+COMMENT 34D0 animation in progress via Var_b_DefenderShot_State.
 COMMENT 34D0 ;;
 COMMENT 34D0 Argument: X = location of bottom left corner of explosion
 COMMENT 34D0
@@ -1097,7 +1097,7 @@ LABEL 34FC Sub_FlashColourSets
 COMMENT 34FC <CCHUNK>
 COMMENT 34FC %%AUTOTITLE
 COMMENT 34FC Briefly flash the screen by selecting Colour Set 1 (buff, cyan, magenta,
-COMMENT 34FC orange), and then falling through into `Sub_LongFallingPitchSound`, which
+COMMENT 34FC orange), and then falling through into Sub_LongFallingPitchSound, which
 COMMENT 34FC will at its end revert to Colour Set 0 (green, yellow, blue, red).
 COMMENT 34FC
 CONST 3505
@@ -1395,7 +1395,7 @@ COMMENT 37BB points, award an extra life (up to the maximum of the life in play 
 COMMENT 37BB three spares).
 COMMENT 37BB ;;
 COMMENT 37BB If the new points move the score over the next threshold where we should
-COMMENT 37BB increase the overall game speed, do so (`Sub_MaybeIncreaseDifficulty`)
+COMMENT 37BB increase the overall game speed, do so (Sub_MaybeIncreaseDifficulty)
 COMMENT 37BB
 COMMENT 37BE
 COMMENT 37BE active_player->Score[Hundreds/Thousands] += A with BCD
@@ -1424,7 +1424,7 @@ LABEL 37FC AP_L1
 COMMENT 37FE
 COMMENT 37FE Prepare to display new score: X = active_player->Loc_ScoreDisplay
 COMMENT 3804
-COMMENT 3804 Fall through into `Sub_DisplayPlayerScore`...
+COMMENT 3804 Fall through into Sub_DisplayPlayerScore...
 COMMENT 3804 </CCHUNK>
 
 LABEL 3804 Sub_DisplayPlayerScore
@@ -1578,7 +1578,7 @@ COMMENT 39D5 <CCHUNK>
 COMMENT 39D5 %%AUTOTITLE
 COMMENT 39D5 Write the contents of D to X and then every fourth
 COMMENT 39D5 location after that (so X, X+4, X+8, ...) as long
-COMMENT 39D5 as the locations stay within the `Arr_DefendersData`
+COMMENT 39D5 as the locations stay within the Arr_DefendersData
 COMMENT 39D5 array of structures.
 COMMENT 39D5
 COMMENT 39DF </CCHUNK>
@@ -1629,7 +1629,7 @@ COMMENT 3A3C <CCHUNK>
 COMMENT 3A3C %%AUTOTITLE
 COMMENT 3A3C Advance any animations of exploding defenders (normal/special patrolling,
 COMMENT 3A3C or the shooting base).  Erase defender if its animation has finished.
-COMMENT 3A3C Leave appropriate value in `PlaySoundSlice_InitHalfPeriod` to get
+COMMENT 3A3C Leave appropriate value in PlaySoundSlice_InitHalfPeriod to get
 COMMENT 3A3C desired sound effect.
 COMMENT 3A3C
 COMMENT 3A3C Only step the animations every other call; if not in such a call...
@@ -1926,7 +1926,7 @@ COMMENT 3DBB ....restart at "how many players?" question
 COMMENT 3DBF
 COMMENT 3DBF Compute upper bound on valid initial segment of shots array:
 COMMENT 3DBF .  ShotPtrLimit = (ShotPtrLimit for 5 shots) - 3 × (5 - nShots)
-COMMENT 3DBF where the 3 is sizeof(PlayerShot struct) in `Arr_PlayerShots`
+COMMENT 3DBF where the 3 is sizeof(PlayerShot struct) in Arr_PlayerShots
 COMMENT 3DCF
 COMMENT 3DCF Play quite long high-pitched beep
 COMMENT 3DD9
@@ -1950,7 +1950,7 @@ COMMENT 3DEA <CCHUNK>
 COMMENT 3DEA %%AUTOTITLE
 COMMENT 3DEA Play sound effect; set up screen and score displays.
 COMMENT 3DEA
-COMMENT 3DEA The value of $80 (-128) passed (in A) to `FallingPitchBeep` has the same
+COMMENT 3DEA The value of $80 (-128) passed (in A) to FallingPitchBeep has the same
 COMMENT 3DEA effect as A=0 would have; not sure why $80 used
 DEC 3DEB
 DEC 3DF0
