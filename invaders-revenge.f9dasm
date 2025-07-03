@@ -1576,10 +1576,9 @@ COMMENT 39D5 </CCHUNK>
 LABEL 39D5 Sub_WriteDefendersDataWords
 COMMENT 39D5 <CCHUNK>
 COMMENT 39D5 %%AUTOTITLE
-COMMENT 39D5 Write the contents of D to X and then every fourth
-COMMENT 39D5 location after that (so X, X+4, X+8, ...) as long
-COMMENT 39D5 as the locations stay within the Arr_DefendersData
-COMMENT 39D5 array of structures.
+COMMENT 39D5 Write the contents of D to X and then every fourth location after that (so
+COMMENT 39D5 X, X+4, X+8, ...) as long as the locations stay within the
+COMMENT 39D5 Arr_DefendersData array of structures.
 COMMENT 39D5
 COMMENT 39DF </CCHUNK>
 
