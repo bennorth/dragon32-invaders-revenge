@@ -1296,9 +1296,23 @@ COMMENT 36D4 </CCHUNK>
 
 COMMENT 36D4 <CCHUNK>
 COMMENT 36D4 %%AUTOTITLE
-LABEL 36D4 Sub_GraphicsInit
+LABEL 36D4 Sub_GraphicsContentsInit
+COMMENT 36D4 Set up the fixed parts of the display, and the starting contents for the
+COMMENT 36D4 various score displays.  Also reset high-score.
 COMMENT 36D4
+COMMENT 36D4 Ensure entire screen will be cleared shortly
+COMMENT 36DA
+COMMENT 36DA Reset high-score to zero
 CONST 36DB
+COMMENT 36E0
+COMMENT 36E0 Clear screen and draw stripes
+COMMENT 36E5
+COMMENT 36E5 Initialise Player One score display
+COMMENT 36EF
+COMMENT 36EF Initialise high-score display
+COMMENT 36F9
+COMMENT 36F9 Initialise Player Two score display
+COMMENT 3703
 COMMENT 3704 </CCHUNK>
 
 LABEL 3704 Sub_BltFiveRows
