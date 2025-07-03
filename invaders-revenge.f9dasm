@@ -1482,17 +1482,16 @@ COMMENT 383D </CCHUNK>
 LABEL 383D Sub_TwoDigitsOut
 COMMENT 383D <CCHUNK>
 COMMENT 383D %%AUTOTITLE
-COMMENT 383D Write BCD number in A to screen with the units
-COMMENT 383D at location X.  X is left two less than
-COMMENT 383D on entry to this routine.
+COMMENT 383D Write BCD number in A to screen with the units at location X.  X is left
+COMMENT 383D two less than on entry to this routine.
 COMMENT 383D
 COMMENT 384E </CCHUNK>
 
 LABEL 384F Sub_DigitOut
 COMMENT 384F <CCHUNK>
 COMMENT 384F %%AUTOTITLE
-COMMENT 384F Write digit given by A to screen starting at location X.
-COMMENT 384F X is left one less than on entry to this routine.
+COMMENT 384F Write digit given by A to screen starting at location X.  X is left one
+COMMENT 384F less than on entry to this routine.
 COMMENT 384F
 DEC 3850
 DEC 3858
