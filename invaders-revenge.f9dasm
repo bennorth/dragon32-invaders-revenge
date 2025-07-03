@@ -176,8 +176,8 @@ LABEL 2DB0 IDP_L2
 COMMENT 2DB2
 COMMENT 2DB2 Compute XColumn field — clear "special" bit, leaving $01 or $BF; if L-to-R
 COMMENT 2DB2 (KindAndVelocity is either $01 or $41), then $01 is the correct starting
-COMMENT 2DB2 value for XColumn
-COMMENT 2DB4 But if we got $BF...
+COMMENT 2DB2 value for XColumn...
+COMMENT 2DB4 ....but if we got $BF...
 COMMENT 2DB6 ....then defender is R-to-L, so XColumn should be $1F
 COMMENT 2DB8
 COMMENT 2DB8 defender->XColumn = $01 (L-to-R) or $1F (R-to-L)
@@ -485,7 +485,7 @@ COMMENT 3025
 COMMENT 3029 If B has wrapped round, switch text colour
 COMMENT 302B
 COMMENT 302F If no key pressed, loop
-COMMENT 3031 If "p" key pressed...
+COMMENT 3031 ....or if "p" key pressed...
 COMMENT 3033 ....loop
 COMMENT 3035
 COMMENT 3035 Exit pause: clear text from screen and resume play loop
@@ -946,6 +946,7 @@ COMMENT 33A0 Look for any yellow pixels in a sample of three bytes within the de
 COMMENT 33A0 base bounding box (left byte six rows down; right byte six rows down; left
 COMMENT 33A0 byte two rows down)
 DEC 33A4
+COMMENT 33B2
 COMMENT 33B2 If no yellow, move base as normal
 COMMENT 33B4
 COMMENT 33B4 Defender base hit; record its location...
