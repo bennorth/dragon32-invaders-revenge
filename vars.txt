@@ -57,7 +57,7 @@ w 3B68
 b 3B6C PlaySoundSlice_InitHalfPeriod
 
 b 3B6A
-b 3B6B StepDefenderExplns_Frames
+b 3B6B SDE_SoundSliceParamPrecursor
 b 3AF8 StepDefenderExplns_EraseRows
 
 b 338F DefenderBase_X_bytes
