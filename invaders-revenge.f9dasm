@@ -1632,14 +1632,17 @@ COMMENT 3A3C Leave appropriate value in PlaySoundSlice_InitHalfPeriod to get
 COMMENT 3A3C desired sound effect.
 COMMENT 3A3C
 COMMENT 3A3C Only step the animations every other call; if not in such a call...
-COMMENT 3A3F ....do nothing further
+COMMENT 3A3F ....leave screen alone, and attend just to sound effects
 COMMENT 3A41 ....else proceed, resetting phase for next call
 COMMENT 3A46
 COMMENT 3A46 Prepare to loop over array of explosions
 DEC 3A42
 DEC 3A4B
 COMMENT 3A4F
-COMMENT 3A4F While explosions remain, advance Y to just past struct to work with
+COMMENT 3A4F If no more explosions remain to be processed...
+COMMENT 3A52 ....attend to sound effects
+COMMENT 3A54 ....else (there are explosions still to process), advance Y to just past
+COMMENT 3A54 next explosion struct to work with
 LABEL 3A4F SDE_L01
 COMMENT 3A56
 COMMENT 3A56 X = defender-loc; if inactive...
