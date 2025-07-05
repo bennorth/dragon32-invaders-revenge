@@ -16,7 +16,7 @@ for line in map(str.strip, open("vars.txt", "rt")):
 
     qual = "Var" if kind in "bwsp" else "Const"
 
-    name = f"{qual}_{kind}_" + (str(next_id()) if len(pieces) < 3 else pieces[2])
+    name = f"{qual}_{kind}_" + (f"Unused_{next_id()}" if len(pieces) < 3 else pieces[2])
     comment = None if len(pieces) < 4 else pieces[3]
 
     print(f"COMMENT {addr} <DCHUNK>")
