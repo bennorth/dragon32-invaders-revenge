@@ -196,19 +196,20 @@ COMMENT 2DBA Search for patrol start location in unoccupied row
 LABEL 2DBA IDP_L4
 COMMENT 2DBE
 COMMENT 2DBE Scan every other byte of row two rows down for evidence of existing
-COMMENT 2DBE defender (any blue pixel)
+COMMENT 2DBE defender (any blue or red pixel)
 DEC 2DC2
 COMMENT 2DC3
 LABEL 2DC3 IDP_L5
 COMMENT 2DC9
-COMMENT 2DC9 Row contains blue; try next patrol-start location, by using the "cyclically
-COMMENT 2DC9 advance pointer" logic at the end of this subroutine as a subroutine in its
-COMMENT 2DC9 own right
+COMMENT 2DC9 Row contains blue or red; try next patrol-start location, by using the
+COMMENT 2DC9 "cyclically advance pointer" logic at the end of this subroutine as a
+COMMENT 2DC9 subroutine in its own right
 COMMENT 2DCD
+COMMENT 2DCD Keep looking for blue or red
 LABEL 2DCD IDP_L6
 COMMENT 2DD0
-COMMENT 2DD0 Scan completed without finding blue; we have found a suitable patrol-start
-COMMENT 2DD0 location; store to defender->Location
+COMMENT 2DD0 Scan completed without finding blue or red; we have found a suitable
+COMMENT 2DD0 patrol-start location; store to defender->Location
 COMMENT 2DD6
 COMMENT 2DD6 Cyclically advance launch-location pointer; the CMPD operand is as it is
 COMMENT 2DD6 because the pointer lives just beyond the array into which it points
