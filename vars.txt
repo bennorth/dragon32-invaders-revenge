@@ -64,7 +64,7 @@ b 338F DefenderBase_X_bytes
 s 338A DefenderBase
 b 338D MDBCH_MovePhase
 b 338E
-b 39DF LastDefenderDestroyedKind 1=normal, 10=red, 12=base
+b 39DF LastDefenderDestroyedKind 1=normal, 10=special, 12=base
 s 39E0 LastDestroyedDefender
 w 39E2
 b 3390 DefenderBase_SpawnSide Edge to spawn next defender base ($00=right, $FF=left)

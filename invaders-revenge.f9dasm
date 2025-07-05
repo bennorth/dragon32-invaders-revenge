@@ -1636,6 +1636,9 @@ COMMENT 3868 </CCHUNK>
 LABEL 3868 Sub_TextOutTilPctCvtHash
 COMMENT 3868 <CCHUNK>
 COMMENT 3868 %%AUTOTITLE
+COMMENT 3868 Write text to the text-mode screen, until a percent character is read.
+COMMENT 3868 Hash characters are converted to carriage returns.  Characters are written
+COMMENT 3868 using the ROM routine.
 COMMENT 3868
 CHAR 386B
 CHAR 386F
@@ -1670,6 +1673,23 @@ COMMENT 3903 </DCHUNK>
 LABEL 3903 Sub_ShowIntroTextQueryNPlayers
 COMMENT 3903 <CCHUNK>
 COMMENT 3903 %%AUTOTITLE
+COMMENT 3903 Clear the text-mode screen, write the introductory message, and play a long
+COMMENT 3903 sound effect.  Ask how many players and note answer, then fall through to
+COMMENT 3903 next stage of boot.
+COMMENT 3903
+COMMENT 3903 Set up and clear text-mode screen.
+COMMENT 390B
+COMMENT 390B Write introductory message
+COMMENT 391D
+COMMENT 391D Play intro sound effect
+COMMENT 3926
+COMMENT 3926 Write "how many players" question
+COMMENT 3932
+COMMENT 3932 Loop, reading a key, until "2" or "1"
+COMMENT 393E
+COMMENT 393E Convert key code into number 0 or 1...
+COMMENT 3941 ....and use to set state for one- or two-player mode
+COMMENT 3944
 CONST 391E
 LABEL 3926 M1_L1
 LABEL 3932 M1_L2
@@ -1682,6 +1702,11 @@ COMMENT 3947 </CCHUNK>
 LABEL 3947 Sub_InitForNewGame
 COMMENT 3947 <CCHUNK>
 COMMENT 3947 %%AUTOTITLE
+COMMENT 3947 Set up various pieces of state ready for a new game, as follows.  Set up
+COMMENT 3947 player data (next speed-up score, defender base move period, defender move
+COMMENT 3947 period, number of lives).  Set up defenders (L-R normal, row 41).  Set up
+COMMENT 3947 "active player" variables.  Draw stack/s of "spare lives" ships.
+COMMENT 3947
 COMMENT 394A
 COMMENT 394A Init active player's X-coord-whole to 1
 COMMENT 394F
@@ -1690,7 +1715,7 @@ COMMENT 3955
 COMMENT 3955 Init both players' NextSpeedUpScore to 3
 CONST 3956
 COMMENT 395D
-COMMENT 395D Init both players' BaseFirePeriod to 13
+COMMENT 395D Init both players' BaseMovePeriod to 13
 COMMENT 3964
 COMMENT 3964 Init both players' DefenderMovePeriod to 13
 COMMENT 396B
@@ -1725,21 +1750,24 @@ COMMENT 39D5 </CCHUNK>
 LABEL 39D5 Sub_WriteDefendersDataWords
 COMMENT 39D5 <CCHUNK>
 COMMENT 39D5 %%AUTOTITLE
-COMMENT 39D5 Write the contents of D to X and then every fourth location after that (so
-COMMENT 39D5 X, X+4, X+8, ...) as long as the locations stay within the
-COMMENT 39D5 Arr_DefendersData array of structures.
+COMMENT 39D5 Write D to X and then every fourth address after that (so X, X+4, X+8, ...)
+COMMENT 39D5 as long as the address is within the Arr_DefendersData array of structures.
 COMMENT 39D5
 COMMENT 39DF </CCHUNK>
 
 LABEL 39E4 Sub_InitDefenderExplosion
 COMMENT 39E4 <CCHUNK>
 COMMENT 39E4 %%AUTOTITLE
-COMMENT 39E4 Find a free slot in the Arr_DefenderExplosions array; a slot is "free" if
-COMMENT 39E4 its Location slot is $0000.  Populated values are then:
+COMMENT 39E4 Find a free slot in the Arr_DefenderExplosions array and populate it.  A
+COMMENT 39E4 slot is "free" if its Location slot is $0000.  Populated values are then:
 COMMENT 39E4 ;;
-COMMENT 39E4 DefenderKind = 1: normal(blue) ship; 10: special(red) ship; 12: base
-COMMENT 39E4 AnimationFramesRemaining = 7: ship; 24: base
-COMMENT 39E4 Location = location of top-left byte of defender
+COMMENT 39E4 .  DefenderKind = 1: normal(blue) ship; 10: special(red) ship; 12: base
+COMMENT 39E4 .  AnimationFramesRemaining = 7: ship; 24: base
+COMMENT 39E4 .  Location = location of top-left byte of defender
+COMMENT 39E4 ;;
+COMMENT 39E4 Arguments in static variables:
+COMMENT 39E4 .  Var_s_LastDestroyedDefender = Location
+COMMENT 39E4 .  Var_b_LastDefenderDestroyedKind = kind (1, 10, 12 as above)
 COMMENT 39E4
 DEC 39EC
 COMMENT 39ED
@@ -1750,6 +1778,7 @@ COMMENT 39F8 Found a free slot; populate as described above
 DEC 39FB
 DEC 3A04
 COMMENT 3A0A
+COMMENT 3A0A Unclear why we reset Var_s_LastDestroyedDefender
 LABEL 3A0A IDE_L2
 CONST 3A0B
 COMMENT 3A11 </CCHUNK>
@@ -1958,12 +1987,12 @@ COMMENT 3BB4 means of half-period, so larger values of A give lower initial pitc
 COMMENT 3BB4 pitch then falls until duration used up.
 COMMENT 3BB4 ;;
 COMMENT 3BB4 Called with values of A:
-COMMENT 3BB4 25 (SetGraphicsMode)
-COMMENT 3BB4 1 up to 5 (LaunchPlayerShot, as long as SPC held down)
-COMMENT 3BB4 8 (InitDefenderShotHit)
-COMMENT 3BB4 2 (DrawOrErasePlayerExpln)
-COMMENT 3BB4 1 (QueryShotsSpeed)
-COMMENT 3BB4 128 (InitPostDrawDelay)
+COMMENT 3BB4 .  25 (SetGraphicsMode)
+COMMENT 3BB4 .  1 up to 5 (LaunchPlayerShot, as long as SPC held down)
+COMMENT 3BB4 .  8 (InitDefenderShotHit)
+COMMENT 3BB4 .  2 (DrawOrErasePlayerExpln)
+COMMENT 3BB4 .  1 (QueryShotsSpeed)
+COMMENT 3BB4 .  128 (InitPostDrawDelay)
 COMMENT 3BB4
 COMMENT 3BBB
 COMMENT 3BBB Compute approx (128)×(PostDrawDelay - 4) into Y
@@ -2178,8 +2207,17 @@ COMMENT 3DFD </CCHUNK>
 LABEL 3DFD Sub_PromptedReadKbd_1_5_R
 COMMENT 3DFD <CCHUNK>
 COMMENT 3DFD %%AUTOTITLE
-COMMENT 3DFD Read Ret, "R", or 1–5 from kbd
-COMMENT 3DFD Return $0D(Ret), $52(R), or $01–$05
+COMMENT 3DFD Write a question to the screen, then loop until timeout or until one of
+COMMENT 3DFD "Return", "R", or "1"–"5" keys is pressed by user.  Return (in A):
+COMMENT 3DFD ;;
+COMMENT 3DFD .  $0D if "Return" pressed
+COMMENT 3DFD .  $52 if "R" pressed
+COMMENT 3DFD .  $01–$05 if "1"–"5" pressed
+COMMENT 3DFD ;;
+COMMENT 3DFD If timeout, do not return; instead jump to Sub_ResetShotsSpeed.
+COMMENT 3DFD ;;
+COMMENT 3DFD Argument:
+COMMENT 3DFD .  U → graphical text characters to print as question
 COMMENT 3DFD
 COMMENT 3DFD Write first part of message (as passed in, pointed to by U) to screen
 COMMENT 3E03
@@ -2212,7 +2250,9 @@ COMMENT 408D </CCHUNK>
 LABEL 408D Sub_InitialEntryPoint
 COMMENT 408D <CCHUNK>
 COMMENT 408D %%AUTOTITLE
-COMMENT 408D Startup location for whole program.
+COMMENT 408D Startup location for whole program.  Ask whether joysticks should be used,
+COMMENT 408D set state (and maybe self-modify code) accordingly, then chain to next
+COMMENT 408D stage of boot.
 COMMENT 408D
 COMMENT 408F
 COMMENT 408F Display "joysticks?" question
@@ -2244,7 +2284,7 @@ COMMENT 40BD </CCHUNK>
 LABEL 40BD Sub_ResetScreen
 COMMENT 40BD <CCHUNK>
 COMMENT 40BD %%AUTOTITLE
-COMMENT 40BD Reset text cursor to top-left; fill the text screen memory with spaces
+COMMENT 40BD Reset text cursor to top-left; fill the text screen memory with spaces.
 COMMENT 40BD
 CONST 40C3
 LABEL 40C5 RS_L1
@@ -2313,7 +2353,10 @@ COMMENT 4160 %%AUTOTITLE
 COMMENT 4160 If required, switch which is the "active" joystick.  Also erase the
 COMMENT 4160 just-lost spare life ship.  (It seems odd that these two things are
 COMMENT 4160 coupled.  Perhaps there was originally the intent to allow a "two players
-COMMENT 4160 but sharing one joystick" mode.)  U should point to active player struct.
+COMMENT 4160 but sharing one joystick" mode.)
+COMMENT 4160 ;;
+COMMENT 4160 Argument:
+COMMENT 4160 .  U → active player struct (for erasing top lives ship)
 COMMENT 4160
 COMMENT 4160 If we are in two-player mode...
 COMMENT 4165 ....toggle ActiveJoystickIdx between 0 and 1
@@ -2348,6 +2391,7 @@ COMMENT 4188 %%AUTOTITLE
 COMMENT 4188 Move the active player according to the position of the left joystick, and
 COMMENT 4188 launch a player shot if the left fire button is down.  Analogous to the
 COMMENT 4188 code in MovePlayerByActiveJoystick.
+COMMENT 4188
 COMMENT 4192
 LABEL 4192 CLJ_L1
 COMMENT 419E
@@ -2408,6 +2452,8 @@ COMMENT 4A40 </DCHUNK>
 LABEL 4A40 Sub_MaybeShowInstructions
 COMMENT 4A40 <CCHUNK>
 COMMENT 4A40 %%AUTOTITLE
+COMMENT 4A40 Ask the user whether they want instructions.  If so, show the instructions
+COMMENT 4A40 one page at a time.
 COMMENT 4A40
 COMMENT 4A40 Clear screen and write "instructions?" text
 COMMENT 4A49
@@ -2418,6 +2464,12 @@ CHAR 4A51
 LABEL 4A56 MSI_L2
 COMMENT 4A56
 COMMENT 4A56 Show the instructions, waiting for a keypress between each page
+COMMENT 4A59
+COMMENT 4A62
+COMMENT 4A6B
+COMMENT 4A74
+COMMENT 4A7D
+COMMENT 4A86
 LABEL 4A8F MSI_L3
 COMMENT 4A8F
 COMMENT 4A8F Move on to next phase of boot
