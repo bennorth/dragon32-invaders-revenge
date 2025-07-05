@@ -2203,7 +2203,7 @@ COMMENT 4158
 LABEL 4158 MPBAJ_L6
 COMMENT 4160 </CCHUNK>
 
-LABEL 4160 Sub_MaybeUpdateActivePlayer
+LABEL 4160 Sub_MaybeUpdateActiveJoystick
 COMMENT 4160 <CCHUNK>
 COMMENT 4160 %%AUTOTITLE
 COMMENT 4160 If required, switch which is the "active" joystick.  Also erase the
@@ -2214,7 +2214,7 @@ COMMENT 4160
 COMMENT 4160 If we are in two-player mode...
 COMMENT 4165 ....toggle ActiveJoystickIdx between 0 and 1
 COMMENT 416D
-LABEL 416D MUAP_L1
+LABEL 416D MUAJ_L1
 COMMENT 4173 </CCHUNK>
 
 LABEL 4173 Sub_InitTwoPlayerState
