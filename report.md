@@ -114,11 +114,13 @@ The sequence and loop of `StepDefenderShotHitAnimation` would be straightforward
 
 The "colour whole defender yellow" logic doesn't always get the whole base, because of the narrow bit at the top.  (Discovered via GDB not code inspection.)  But both the defender base and the patrolling defender hit checks look at bytes from both halves of the image, so it works.
 
-Control flow of timeout when prompting for shots and speed.  Code leaks 2 bytes of stack every time this happens, because it does a JMP to the reset routine.  (By inspection and then tested under GDB.)
+Control flow of timeout when prompting for shots and speed.  Code leaks 2 bytes of stack every time this happens, because it does a JMP to the reset routine.  (By inspection and then tested under GDB.)  But cf care taken on this point in `Sub_EndOfGame`.
 
 Why separate state tracking which joystick to read?  Is it not the case that Player One always uses the right joystick and Player Two always the left?  Was there some intent that a two-player game should be possible even if there was only one joystick plugged in?  Might explain the redundant `TwoPlayerMode` and `TwoPlayerModeDup` variables.
 
 Looks like although there is space reserved for up to ten simultaneous defender explosions, only the first nine are ever processed: `Var_b_StepDefenderExplns_Explns` initialised to 10 in `Sub_StepDefenderExplns`, then decremented and checked against zero at *start* of loop.
+
+Testing whether score has gone to next multiple of 10,000 falls out easily from the BCD representation of the score.
 
 # Refs
 
