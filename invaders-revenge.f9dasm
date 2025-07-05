@@ -114,8 +114,8 @@ LABEL 2D3E Sub_WarmReset
 COMMENT 2D3E <CCHUNK>
 COMMENT 2D3E %%AUTOTITLE
 COMMENT 2D3E First instruction must be NOP to allow warm reset.  Clear screen and wipe
-COMMENT 2D3E most code and data.  (Not sure why not wipe everything.)  Then enter
-COMMENT 2D3E infinite loop.
+COMMENT 2D3E most code and data.  (I don't know why it wipes everything; to make it
+COMMENT 2D3E harder to cheat?)  Then enter infinite loop.
 COMMENT 2D3E
 LABEL 2D45 WR_L1
 CONST 2D48
@@ -174,7 +174,8 @@ COMMENT 2D95
 COMMENT 2D95 Search for free slot (one with Location == 0) within Arr_DefendersData
 LABEL 2D95 IDP_L1
 COMMENT 2D9B
-COMMENT 2D9B A = $01 or $FF; negate for next time
+COMMENT 2D9B Found a free slot (Y points just past it); get velocity of new patrol:
+COMMENT 2D9B A = $01 or $FF; negate for next time so patrols alternate direction
 COMMENT 2DA1
 COMMENT 2DA1 phase += 1; if phase == 17...
 DEC 2DA5
@@ -217,6 +218,7 @@ LABEL 2DD6 IDP_L7
 CONST 2DDA
 LABEL 2DE5 IDP_L8
 COMMENT 2DE9
+COMMENT 2DE9 Continue search for free slot
 LABEL 2DE9 IDP_L9
 COMMENT 2DEF </CCHUNK>
 
@@ -251,22 +253,30 @@ LABEL 2E19 Sub_MoveDefenderCheckHit
 COMMENT 2E19 <CCHUNK>
 COMMENT 2E19 %%AUTOTITLE
 COMMENT 2E19 Move one defender one step.  Check whether it collides with the player or
-COMMENT 2E19 with a player's shot, and act accordingly if so — award points, and
-COMMENT 2E19 initiate an explosion and sound effect.
+COMMENT 2E19 with a player's shot.  If so, award points, and initiate an explosion and
+COMMENT 2E19 sound effect.
 COMMENT 2E19 ;;
 COMMENT 2E19 On entry, data about defender being processed in registers:
+COMMENT 2E19 ;;
 COMMENT 2E19 .  B has struct[0] = XColumn
-COMMENT 2E19 .  A has struct[1] = KindAndVelocity ($01 L-R / $FF R-L)
+COMMENT 2E19 .  A has velocity ($01 L-R, $FF R-L)
 COMMENT 2E19 .  X has struct[2:3] = Location
 COMMENT 2E19 .  U points to graphics data according to kind of defender
 COMMENT 2E19 .  Y points just past struct of defender to be moved
 COMMENT 2E19 .    (struct is one element of Arr_DefendersData)
 COMMENT 2E19
 COMMENT 2E1B
-COMMENT 2E1B First call where this defender appears?  If so, skip "hit check and erase"
-COMMENT 2E1B tasks
-COMMENT 2E22 $E1 = lower byte of $1F × $FF
+COMMENT 2E1B Determine whether this defender has just started its patrol; the product of
+COMMENT 2E1B its XColumn and velocity will tell us this: the only product with low byte
+COMMENT 2E1B $01 is $01 × $01, and the only product with low byte $E1 is $1F × $FF
+COMMENT 2E1C
+COMMENT 2E1C If L-to-R defender at far left...
+COMMENT 2E1E ....skip hit check and erase
+COMMENT 2E22
+COMMENT 2E22 If R-to-L defender at far right...
+COMMENT 2E24 ....skip hit check and erase
 COMMENT 2E28
+COMMENT 2E28 Prepare for "erase" loop
 DEC 2E29
 COMMENT 2E2D
 COMMENT 2E2D Get two-byte sample within defender's bounding box — five rows down from
@@ -331,9 +341,9 @@ COMMENT 2EB2 %%AUTOTITLE
 COMMENT 2EB2 %%RFD 4
 COMMENT 2EB2 Array of 11 entries each of a four-byte structure:
 COMMENT 2EB2 ;;
-COMMENT 2EB2 .  byte - XColumn: initially $01 L-to-R; $1F R-to-L
-COMMENT 2EB2 .  byte - KindAndVelocity: $01 L-R normal; $FF R-L normal; $41 L-R special
-COMMENT 2EB2 .  word - Location
+COMMENT 2EB2 [0]   b XColumn: initially $01 L-to-R; $1F R-to-L
+COMMENT 2EB2 [1]   b KindAndVelocity: $01 L-R normal; $FF R-L normal; $41 L-R special
+COMMENT 2EB2 [2:3] w Location
 COMMENT 2EB2 ;;
 COMMENT 2EB2 Initialised by code in InitForNewGame with both byte values $01 and all
 COMMENT 2EB2 word values $0B3F.  So all structs are init'd to { $01, $01, (124, 41) }.
@@ -357,8 +367,8 @@ COMMENT 2EF8
 COMMENT 2EF8 Prepare to blt normal defender gfx; might be overridden below
 LABEL 2EF8 SDM_L1
 COMMENT 2EFB
-COMMENT 2EFB B = defender->direction
-COMMENT 2EFD A = defender->velocity_and_kind
+COMMENT 2EFB B = defender->XColumn
+COMMENT 2EFD A = defender->KindAndVelocity
 COMMENT 2EFF
 COMMENT 2EFF R-to-L normal defender?
 COMMENT 2F03
@@ -806,8 +816,8 @@ COMMENT 3286 %%RFD 3
 COMMENT 3286 State of up to five shots that the player has fired.  Each shot is
 COMMENT 3286 described by a 3-byte structure:
 COMMENT 3286 ;;
-COMMENT 3286 [0]   b: Bitmask (0x10 or 0x01)
-COMMENT 3286 [1:2] w: ScreenLoc — location of bottom pixel of shot
+COMMENT 3286 [0]   b Bitmask (0x10 or 0x01)
+COMMENT 3286 [1:2] w ScreenLoc — location of bottom pixel of shot
 COMMENT 3286 ;;
 COMMENT 3286 Bitmask is used for drawing using OR, which turns a pixel from green to
 COMMENT 3286 yellow.  It is also shifted left and then used (with AND) to detect when
@@ -950,7 +960,7 @@ COMMENT 3391 appropriate actions (starting new base patrol, initiating explosion
 COMMENT 3391 sound effect) if so.
 COMMENT 3391
 COMMENT 3398
-COMMENT 3398 MovePhase = active_player->DefenderMovePeriod
+COMMENT 3398 MovePhase = active_player->BaseMovePeriod
 COMMENT 33A0
 COMMENT 33A0 Look for any yellow pixels in a sample of three bytes within the defender
 COMMENT 33A0 base bounding box (left byte six rows down; right byte six rows down; left
@@ -1374,6 +1384,17 @@ COMMENT 37A1 </CCHUNK>
 LABEL 37A1 Arr_PlayerData
 COMMENT 37A1 <DCHUNK>
 COMMENT 37A1 %%AUTOTITLE
+COMMENT 37A1 Array of two 12-byte structures, one per player.
+COMMENT 37A1
+COMMENT 37A1 [0]    b BaseMovePeriod — how often defender base moves
+COMMENT 37A1 [1]    b DefenderMovePeriod — how often patrolling defenders move
+COMMENT 37A1 [2]    b NLives
+COMMENT 37A1 [3:4]  s TopLivesShip — location of current top spare lives ship
+COMMENT 37A1 [5:6]  w Score — in units of 100 points
+COMMENT 37A1 [7:8]  w NextSpeedUpScore — score (in 100s) for next speed-up
+COMMENT 37A1 [9:10] s ScoreDisplay — location where score is drawn
+COMMENT 37A1 [11]   b XPositionFraction — $00 right posn; $FF left posn
+COMMENT 37A1
 HEX 37A1-37AC
 LABEL 37A2 PlayerData_0_b_DefenderMovePeriod
 LABEL 37A3 PlayerData_0_b_NLives
@@ -1609,16 +1630,16 @@ COMMENT 39DF </CCHUNK>
 LABEL 39E4 Sub_InitDefenderExplosion
 COMMENT 39E4 <CCHUNK>
 COMMENT 39E4 %%AUTOTITLE
-COMMENT 39E4 Find a free slot in the /Arr_DefenderExplosions/ array; a slot is "free" if
-COMMENT 39E4 its /defender-loc/ slot is $0000.  Populated values are then:
+COMMENT 39E4 Find a free slot in the Arr_DefenderExplosions array; a slot is "free" if
+COMMENT 39E4 its Location slot is $0000.  Populated values are then:
 COMMENT 39E4 ;;
-COMMENT 39E4 defender-kind = 1: normal(blue) ship; 10: special(red) ship; 12: base
-COMMENT 39E4 animation-frames-remaining = 7: ship; 24: base
-COMMENT 39E4 defender-loc = location of top-left byte of defender
+COMMENT 39E4 DefenderKind = 1: normal(blue) ship; 10: special(red) ship; 12: base
+COMMENT 39E4 AnimationFramesRemaining = 7: ship; 24: base
+COMMENT 39E4 Location = location of top-left byte of defender
 COMMENT 39E4
 DEC 39EC
 COMMENT 39ED
-COMMENT 39ED Search for free slot (one whose defender-loc is $0000)
+COMMENT 39ED Search for free slot (one whose Location is $0000)
 LABEL 39ED IDE_L1
 COMMENT 39F8
 COMMENT 39F8 Found a free slot; populate as described above
@@ -1636,11 +1657,11 @@ COMMENT 3A14 %%AUTOTITLE
 COMMENT 3A14 Data to track defender explosions (ship or base).  Up to ten explosions
 COMMENT 3A14 can be happening at once.  Data here is 10 structs of 4 bytes each:
 COMMENT 3A14 ;;
-COMMENT 3A14 { b defender-kind,
-COMMENT 3A14 .  b animation-frames-remaining,
-COMMENT 3A14 .  w defender-loc }
+COMMENT 3A14 [0]   b DefenderKind
+COMMENT 3A14 [1]   b AnimationFramesRemaining
+COMMENT 3A14 [2:3] w Location
 COMMENT 3A14 ;;
-COMMENT 3A14 Slot is free if defender-loc == $0000.
+COMMENT 3A14 Slot is free if Location == $0000.
 COMMENT 3A14 ;;
 COMMENT 3A14 Reset (all bytes cleared to $00) as part of Sub_ResetShotExplnData.
 COMMENT 3A14
@@ -1669,13 +1690,13 @@ COMMENT 3A54 ....else (there are explosions still to process), advance Y to just
 COMMENT 3A54 next explosion struct to work with
 LABEL 3A4F SDE_L01
 COMMENT 3A56
-COMMENT 3A56 X = defender-loc; if inactive...
+COMMENT 3A56 X = explosion->Location; if inactive...
 LABEL 3A56 SDE_L02
 COMMENT 3A58 ....skip remainder of processing
 
 COMMENT 3A5A
-COMMENT 3A5A B = animation-frames-remaining (recall this starts at 7 for patrolling
-COMMENT 3A5A defenders and 24 for the defender base)
+COMMENT 3A5A B = explosion->AnimationFramesRemaining (recall this starts at 7 for
+COMMENT 3A5A patrolling defenders and 24 for the defender base)
 COMMENT 3A5F
 COMMENT 3A5F If no more frames...
 COMMENT 3A61 ....jump to "erase" logic
@@ -1685,7 +1706,7 @@ COMMENT 3A6B ....but every other frame...
 COMMENT 3A6F ....use the red (with yellow eyes) explosion instead
 DEC 3A64
 COMMENT 3A72
-COMMENT 3A72 A = defender-kind (1: normal(blue), 10: special(red), 12: base)
+COMMENT 3A72 A = explosion->DefenderKind (1: normal(blue), 10: special(red), 12: base)
 LABEL 3A72 SDE_L03
 COMMENT 3A74
 COMMENT 3A74 If this explosion is for the defender base...
@@ -1795,12 +1816,12 @@ LABEL 3B6D Sub_PlaySoundSlice
 COMMENT 3B6D <CCHUNK>
 COMMENT 3B6D %%AUTOTITLE
 COMMENT 3B6D Play a fragment of sound to take time proportional to PostDrawDelay.  The
-COMMENT 3B6D initial half-period is set by ///B = PlaySoundSlice_InitHalfPeriod + 2///.
+COMMENT 3B6D initial half-period is set by B = PlaySoundSlice_InitHalfPeriod + 2.
 COMMENT 3B6D If B<17, this half-period is used for the whole sound-slice.  If B>=17, the
 COMMENT 3B6D half-period increases by 1 per three half-cycles.
 COMMENT 3B6D ;;
 COMMENT 3B6D (If PlaySoundSlice_InitHalfPeriod or PostDrawDelay is zero, do nothing.)
-COMMENT 3B6D ----------------------------------------------------------------------------
+COMMENT 3B6D
 COMMENT 3B77
 COMMENT 3B77 Compute approx (64)×(PostDrawDelay) into Y
 COMMENT 3B7D
@@ -1839,7 +1860,7 @@ COMMENT 3BB4 8 (InitDefenderShotHit)
 COMMENT 3BB4 2 (DrawOrErasePlayerExpln)
 COMMENT 3BB4 1 (QueryShotsSpeed)
 COMMENT 3BB4 128 (InitPostDrawDelay)
-COMMENT 3BB4 ----------------------------------------------------------------------------
+COMMENT 3BB4
 COMMENT 3BBB
 COMMENT 3BBB Compute approx (128)×(PostDrawDelay - 4) into Y
 DEC 3BBF
@@ -1873,12 +1894,13 @@ LABEL 3BFD Arr_PlayerExplnFragments
 COMMENT 3BFD <DCHUNK>
 COMMENT 3BFD %%AUTOTITLE
 COMMENT 3BFD %%RFD 6
-COMMENT 3BFD Tiny scattering explosion fragments
-COMMENT 3BFD Array of data, 198 (= 33 x 6) bytes long?
-COMMENT 3BFD [ word(init-loc-offset-from-destruction),
-COMMENT 3BFD   word(current-loc),
-COMMENT 3BFD   byte(loc-change-per-frame),
-COMMENT 3BFD   byte(bitmask-for-'or'ing) ]
+COMMENT 3BFD Array of 33 structs, each of 6 bytes, representing the tiny scattering
+COMMENT 3BFD explosion fragments when the player ship is hit.
+COMMENT 3BFD ;;
+COMMENT 3BFD [0:1] w InitLocationOffset
+COMMENT 3BFD [2:3] s Location
+COMMENT 3BFD [4]   b Velocity
+COMMENT 3BFD [5]   b DrawBitmask
 COMMENT 3BFD
 DATA 3BFD-3CC2
 COMMENT 3CC3 </DCHUNK>
@@ -1886,38 +1908,81 @@ COMMENT 3CC3 </DCHUNK>
 LABEL 3CC8 Sub_StepPlayerExpln
 COMMENT 3CC8 <CCHUNK>
 COMMENT 3CC8 %%AUTOTITLE
+COMMENT 3CC8 If required, initiate or step the explosion animation and sound effect for
+COMMENT 3CC8 when the player ship is hit.  There is an overall flag
+COMMENT 3CC8 Var_b_PlayerExplnUnderway, and even when this is true, the graphics are
+COMMENT 3CC8 only updated every other call.  (Although the sound effect is processed on
+COMMENT 3CC8 every call.)  Keep track of how far through the process we are in the
+COMMENT 3CC8 Var_b_SPE_ActionPhase variable, which starts as 12 and counts down.  If it
+COMMENT 3CC8 is 12 on entry, initialise the fragments.  Otherwise, if >1 on entry, move
+COMMENT 3CC8 the fragments.  Otherwise (if 1 on entry), just erase the fragments, and
+COMMENT 3CC8 reset everything ready for the next time an explosion is needed.
 COMMENT 3CC8
+COMMENT 3CC8 If there is no explosion underway...
+COMMENT 3CCB ....there is nothing for us to do
+COMMENT 3CCF
+COMMENT 3CCF If this is a non-graphics-update call...
+COMMENT 3CD2 ....just attend to sound effect
+COMMENT 3CD4
+COMMENT 3CD4 Check for first call of this explosion...
+COMMENT 3CD9 ....if not...
+COMMENT 3CDC ....skip the initialisation
 DEC 3CD8
 COMMENT 3CDE
-COMMENT 3CDE Initialise explosion fragments locations:
-COMMENT 3CDE frag[2:3] = frag[0:1] + LocPlayer
+COMMENT 3CDE Initialise fragment locations:
+COMMENT 3CDE frag->Location = frag->InitLocationOffset + PlayerLocation
 LABEL 3CE5 SPE_L1
 COMMENT 3CF3
 COMMENT 3CF3 Move each explosion fragment
 LABEL 3CF3 SPE_L2
 COMMENT 3CF7
+COMMENT 3CF7 X = frag->Location
+COMMENT 3CF9
+COMMENT 3CF9 A = frag->Velocity; B = frag->DrawBitmask
+COMMENT 3CFB
+COMMENT 3CFB If fragment is off the screen...
+COMMENT 3CFE ....skip to next fragment
 LABEL 3CF7 SPE_L3
 COMMENT 3D00
 COMMENT 3D00 Erase all previous yellow bits
 COMMENT 3D06
-COMMENT 3D06 If still animating...
+COMMENT 3D06 If animation is finishing...
+COMMENT 3D09 ....do not redraw
 COMMENT 3D0B
-COMMENT 3D0B ....and new loc within bounds, draw new fragment
+COMMENT 3D0B B = frag->DrawBitmask
+COMMENT 3D0D
+COMMENT 3D0D Compute new location: X = frag->Location + frag->Velocity
+COMMENT 3D0F
+COMMENT 3D0F If new location of fragment is off bottom of screen...
+COMMENT 3D12 ....skip to next fragment
+COMMENT 3D14
+COMMENT 3D14 If new location of fragment is off top of play area...
+COMMENT 3D17 ....skip to next fragment
+COMMENT 3D19
+COMMENT 3D19 Update frag->Location and draw yellow pixel/s
 COMMENT 3D1F
+COMMENT 3D1F Loop for next fragment
 LABEL 3D1F SPE_L4
 COMMENT 3D27
 COMMENT 3D27 If explosion over...
 COMMENT 3D2A ....set up for next one
 COMMENT 3D2C
-COMMENT 3D2C That work has taken time; no need to explicitly delay
+COMMENT 3D2C The sound we're about to play will take time; do not explicitly delay
 COMMENT 3D2F
+COMMENT 3D2F Play fragment of sound effect
 LABEL 3D2F SPE_L5
 COMMENT 3D36
+COMMENT 3D36 Reset state for next explosion
 LABEL 3D36 SPE_L6
 DEC 3D39
 DEC 3D3A
-COMMENT 3D43
+COMMENT 3D3E
+COMMENT 3D3E If that was the last life the player had...
+COMMENT 3D43 ....play game-over sound for this player
 CONST 3D47
+COMMENT 3D4F
+COMMENT 3D4F If neither player has any lives left...
+COMMENT 3D55 ....that's the end of the whole game
 COMMENT 3D59
 LABEL 3D59 SPE_L7
 COMMENT 3D5A </CCHUNK>
@@ -1926,6 +1991,16 @@ LABEL 3D60 Sub_PlayerExplnSound
 COMMENT 3D60 <CCHUNK>
 COMMENT 3D60 %%AUTOTITLE
 COMMENT 3D60
+COMMENT 3D60 Play repeated rising-tone chirps for a duration based on PostDrawDelay,
+COMMENT 3D60 with a starting period based on how far through the player explosion
+COMMENT 3D60 animation we are.  This information is provided in A on entry, 0 <= A < 12,
+COMMENT 3D60 counting down every other call.
+COMMENT 3D60
+COMMENT 3D60 Compute HalfPeriod = (4 × A) + 56; unclear why "+56" is expressed as "-$C8"
+COMMENT 3D67
+COMMENT 3D67 Compute duration, X = min($02FF, ((128 × PostDrawDelay) + $015D))
+COMMENT 3D7B
+COMMENT 3D7B Play chirps for duration
 CONST 3D6E
 CONST 3D72
 CONST 3D77
@@ -1941,6 +2016,9 @@ COMMENT 3D98 </CCHUNK>
 LABEL 3D98 Sub_ResetShotsSpeed
 COMMENT 3D98 <CCHUNK>
 COMMENT 3D98 %%AUTOTITLE
+COMMENT 3D98 Set the number of shots and the speed to their default values.  However,
+COMMENT 3D98 the opcode is inavlid — there is no "store immediate X" instruction.  I
+COMMENT 3D98 didn't get to the bottom of this.
 COMMENT 3D98
 DEC 3D9F
 COMMENT 3DA6 </CCHUNK>
@@ -1948,6 +2026,8 @@ COMMENT 3DA6 </CCHUNK>
 LABEL 3DA6 Sub_QueryShotsSpeed
 COMMENT 3DA6 <CCHUNK>
 COMMENT 3DA6 %%AUTOTITLE
+COMMENT 3DA6 Ask the player for their preferences of number of shots, and speed of
+COMMENT 3DA6 defender movement.
 COMMENT 3DA6
 COMMENT 3DA6 Write "SELECT SHOTS" and read player response
 COMMENT 3DB5
@@ -2028,6 +2108,8 @@ COMMENT 408D </CCHUNK>
 LABEL 408D Sub_InitialEntryPoint
 COMMENT 408D <CCHUNK>
 COMMENT 408D %%AUTOTITLE
+COMMENT 408D Startup location for whole program.
+COMMENT 408D
 COMMENT 408F
 COMMENT 408F Display "joysticks?" question
 COMMENT 4094
@@ -2090,6 +2172,8 @@ COMMENT 4100 </UCHUNK>
 LABEL 4100 Sub_MovePlayerByActiveJoystick
 COMMENT 4100 <CCHUNK>
 COMMENT 4100 %%AUTOTITLE
+COMMENT 4100 Read the "active" joystick (identified by ActiveJoystickIdx) and move the
+COMMENT 4100 active player if required.
 COMMENT 4100
 COMMENT 4100 Use ROM routines to prepare PIAs then read all joystick axes
 COMMENT 4106
@@ -2122,6 +2206,10 @@ COMMENT 4160 </CCHUNK>
 LABEL 4160 Sub_MaybeUpdateActivePlayer
 COMMENT 4160 <CCHUNK>
 COMMENT 4160 %%AUTOTITLE
+COMMENT 4160 If required, switch which is the "active" joystick.  Also erase the
+COMMENT 4160 just-lost spare life ship.  (It seems odd that these two things are
+COMMENT 4160 coupled.  Perhaps there was originally the intent to allow a "two players
+COMMENT 4160 but sharing one joystick" mode.)  U should point to active player struct.
 COMMENT 4160
 COMMENT 4160 If we are in two-player mode...
 COMMENT 4165 ....toggle ActiveJoystickIdx between 0 and 1
@@ -2132,6 +2220,7 @@ COMMENT 4173 </CCHUNK>
 LABEL 4173 Sub_InitTwoPlayerState
 COMMENT 4173 <CCHUNK>
 COMMENT 4173 %%AUTOTITLE
+COMMENT 4173 Note whether we are playing a two-player game.  A = 0 (no) or 1 (yes).
 COMMENT 4173
 COMMENT 4173 I don't know why there are two variables representing this information;
 COMMENT 4173 maybe there was a plan to allow two players to share a joystick?
