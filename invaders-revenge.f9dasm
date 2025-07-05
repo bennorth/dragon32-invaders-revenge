@@ -1385,7 +1385,7 @@ COMMENT 36F9 Initialise Player Two score display
 COMMENT 3703
 COMMENT 3704 </CCHUNK>
 
-LABEL 3704 Sub_BltFiveRows
+LABEL 3704 Sub_DrawTextCharCells
 COMMENT 3704 <CCHUNK>
 COMMENT 3704 %%AUTOTITLE
 COMMENT 3704 Draw text, with the source bitmap data organised in runs of five bytes.
@@ -1399,9 +1399,9 @@ COMMENT 3704 .  U = source graphics data
 COMMENT 3704 .  X = location of top-left of destination
 COMMENT 3704
 DEC 3705
-LABEL 3706 BFR_L1
-LABEL 370D BFR_L2
+LABEL 3706 DTCC_L1
 COMMENT 370D
+LABEL 370D DTCC_L2
 COMMENT 3715
 COMMENT 371B </CCHUNK>
 
