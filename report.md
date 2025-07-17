@@ -14,6 +14,10 @@ Wanted to try the special-purpose disassembler (IDA) but the free version does n
 
 Only afterwards discovered Cutter / Rizen, which do support 6809, and which might be worth exploring next time I do something like this.
 
+Used f9dasm, which allows a separate file of annotations and other directives.  Combined with the disassembly.  Then post-processed with a collection of ad-hoc Python scripts to break the disassembly into "chunks" for nicer rendering as HTML.  A "chunk" is usually a subroutine or a piece of data.
+
+Highly iterative.  Start tracing execution from the entry-point address.  Pick out subroutines and blocks of data.  Deducing the data structures and semantics of variables was the most important and helpful task.  Did not always understand a particular variable correctly first time.  Pick out bits of code which write to video memory.
+
 # Graphics
 
 Find sections of the binary corresponding to graphics by finding references to those addresses in bits of code which blt to screen memory.  Decode with knowledge of D32 graphics hardware (6847 VDG chip) into PNGs.  Turn green (background) into transparent.
@@ -64,7 +68,9 @@ Got some sense of shape of sound effects from code, but too difficult to complet
 * Sounds are square waves and have to be generated with gaps which occur while the game does other things.
 * Length of individual chirps shortens as game speeds up, as it has to.
 
-Then ran in emulator [LINK XROAR], captured, analysed, re-synthesised.  Decided this was OK and in same spirit as re-doing the sprites at the higher resolution.  Sound cleaner and softer; not sure whether this is an improvement.
+Then ran in emulator [LINK XROAR], captured, analysed, re-synthesised.  Decided this was OK and in same spirit as re-doing the sprites at the higher resolution.  Sound cleaner and softer; not sure whether this is an improvement.  TODO: Include playable sound fragments in write-up.
+
+TODO: Synthesise at a few different speeds to match the speed-up of the game.  Incorporate logic in Pytch version to play appropriate clips based on game speed.
 
 # Misc remarks
 
