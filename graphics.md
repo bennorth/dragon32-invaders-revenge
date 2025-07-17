@@ -41,9 +41,9 @@ Yellow including when exploding.  Non-exploding is 9×6 in D32 version;
 32×10 in Pytch version.  Only one graphic needed for Pytch.  Exploding
 is 14×8 in D32; 50×16 in Pytch.
 
-✓ $31C1 9×6 Player (right-justified in byte grid)
+✓ $31C1 9×6 Player (in more rightwards position in byte grid)
 
-✓ $31D3 9×6 Player (left-justified in byte grid)
+✓ $31D3 9×6 Player (in more leftwards position in byte grid)
 
 ✓ $353A 14×8 Yellow exploding player
 
@@ -114,3 +114,7 @@ $36B4 "7"
 $36B9 "8"
 
 $36BE "9"
+
+Only made Pytch versions of the digits.  The other pieces of text are
+for questions that the Pytch version doesn't ask.  (How many shots
+allowed at once?  What speed do the defenders move?)
