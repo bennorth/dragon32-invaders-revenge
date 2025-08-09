@@ -74,7 +74,7 @@ Got some sense of shape of sound effects from code, but too difficult to complet
 
 Then ran in emulator [LINK XROAR], captured, analysed, re-synthesised.  Decided this was OK and in same spirit as re-doing the sprites at the higher resolution.  Sound cleaner and softer; not sure whether this is an improvement.  TODO: Include playable sound fragments in write-up.
 
-TODO: Synthesise at a few different speeds to match the speed-up of the game.  Incorporate logic in Pytch version to play appropriate clips based on game speed.
+Synthesise at a few different speeds to match the speed-up of the game.  Incorporate logic in Pytch version to play appropriate clips based on game speed.
 
 # Misc remarks
 
