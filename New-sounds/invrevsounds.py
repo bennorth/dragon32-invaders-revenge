@@ -349,26 +349,27 @@ if __name__ == "__main__":
 
     end_of_game = SoundEffect([Chirp(0.063853e-3, 31.29e-6, 75)])
 
-    player_shot.write_wav(
-        out_fname("player-shot"),
-        std_chirp_duration
-    )
-    defender_base_hit.write_wav(
-        out_fname("defender-base-hit"),
-        std_chirp_duration
-    )
-    normal_defender_hit.write_wav(
-        out_fname("normal-defender-hit"),
-        std_chirp_duration
-    )
-    special_defender_hit.write_wav(
-        out_fname("special-defender-hit"),
-        std_chirp_duration
-    )
-    shot_hit.write_wav(
-        out_fname("shot-hit"),
-        std_chirp_duration
-    )
+    for duration_idx, duration_factor in enumerate([16/16, 13/16, 10/16]):
+        player_shot.write_wav(
+            out_fname(f"player-shot-{duration_idx}"),
+            duration_factor * std_chirp_duration
+        )
+        defender_base_hit.write_wav(
+            out_fname(f"defender-base-hit-{duration_idx}"),
+            duration_factor * std_chirp_duration
+        )
+        normal_defender_hit.write_wav(
+            out_fname(f"normal-defender-hit-{duration_idx}"),
+            duration_factor * std_chirp_duration
+        )
+        special_defender_hit.write_wav(
+            out_fname(f"special-defender-hit-{duration_idx}"),
+            duration_factor * std_chirp_duration
+        )
+        shot_hit.write_wav(
+            out_fname(f"shot-hit-{duration_idx}"),
+            duration_factor * std_chirp_duration
+        )
 
     player_hit.write_wav(
         out_fname("player-hit"),
