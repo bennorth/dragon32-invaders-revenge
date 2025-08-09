@@ -8,6 +8,10 @@ Replicate behaviour quite closely, so need to understand game logic.
 
 Replicate graphics and sounds.
 
+To some extent, an intellectual exercise for its own sake.
+
+Bit of nostalgia.
+
 # Rev.eng process
 
 Wanted to try the special-purpose disassembler (IDA) but the free version does not support 6809.  Used disassembler which allows separate annotation file.
@@ -54,7 +58,7 @@ Layouts of structs.
 
 # Seemingly unused bits of binary
 
-Handful of seemingly unused graphics, variables.  Both "completely unreferred-to" but also "written but never read".  And large run of nonsense data.
+Handful of seemingly unused graphics, variables.  Both "completely unreferred-to" but also "written but never read".  And large run of nonsense data; perhaps the process of creating the binary was not fully automated, and it was easiest to work with the memory in blocks.
 
 # Invalid opcodes
 
@@ -98,7 +102,7 @@ Job of destroying defender split between `MovePlayerShotsDown` (which turns the 
 
 Use of `PULS PC,A` to save a byte over `PULS A / RTS`.
 
-Most (all?) sounds clear `Var_b_PostDrawDelay`, to try to keep the frame rate consistent whether there is a sound playing or not.  Sound effects therefore have to shorten at higher game speeds, but this could be called a feature because the game sounds more frantic as it speeds up.
+Most (all?) sounds clear `Var_b_PostDrawDelay`, to try to keep the frame rate consistent whether there is a sound playing or not.  Sound effects therefore have to shorten at higher game speeds, but this could be called a feature because the game sounds more frantic as it speeds up.  "Frame rate" of game kept consistent by either playing a sound or running a do-nothing loop (but not both).  Presumably some calculations or experiments or both went into the computations of sound duration based on `Var_b_PostDrawDelay`.
 
 Use of BCD and dedicated instructions (`DAA`) to store and work with score.
 
