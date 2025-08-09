@@ -349,8 +349,12 @@ if __name__ == "__main__":
 
     end_of_game = SoundEffect([Chirp(0.063853e-3, 31.29e-6, 75)])
 
-    player_hit.write_wav(
-        out_fname("player-hit"),
+    player_shot.write_wav(
+        out_fname("player-shot"),
+        std_chirp_duration
+    )
+    defender_base_hit.write_wav(
+        out_fname("defender-base-hit"),
         std_chirp_duration
     )
     normal_defender_hit.write_wav(
@@ -361,21 +365,20 @@ if __name__ == "__main__":
         out_fname("special-defender-hit"),
         std_chirp_duration
     )
-    player_shot.write_wav(
-        out_fname("player-shot"),
+    shot_hit.write_wav(
+        out_fname("shot-hit"),
         std_chirp_duration
     )
-    defender_base_hit.write_wav(
-        out_fname("defender-base-hit"),
+
+    player_hit.write_wav(
+        out_fname("player-hit"),
         std_chirp_duration
     )
     end_of_game.write_wav(
         out_fname("end-of-game"),
         std_chirp_duration
     )
-    shot_hit.write_wav(
-        out_fname("shot-hit"),
-        std_chirp_duration
-    )
+
+    # The "start of game" sound is more fiddly and done separately.
 
     print("done")
