@@ -1,9 +1,20 @@
-main {
+@import url(//fonts.googleapis.com/css?family=Libre+Baskerville:400,400italic,700);
+
+article {
     margin: 2rem;
+    font-family: "Libre Baskerville", Baskerville, Georgia, serif;
+    ul, p { line-height: 1.5; }
+    ul code { font-size: 1rem; }
+
+    h1 { font-size: 2rem; }
+}
+
+main {
     font-family: "Menlo", "Monaco", "Ubuntu Mono", "Consolas", "source-code-pro", monospace;
 }
 
 main {
+    margin-top: 2rem;
     --column-0-width: 18rem;
     --column-1-width: 2.75rem;
     pre {
