@@ -97,3 +97,4 @@ No joysticks.  One-player only.  No high-score tracking.  Play game once then st
 # Links
 
 * [*Cobra*: A game my Dad and I wrote on the Dragon 32.](https://redfrontdoor.org/blog/?p=453)
+* [Interview with the game's author, Ken Kalish](https://www.lcurtisboyle.com/nitros9/interview.html)
