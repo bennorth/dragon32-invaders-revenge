@@ -39,10 +39,18 @@ Code and data are shown with different background colours.  Subroutines are cros
 Various features of the code struck me as interesting:
 
 * **Interleaved code and data.**  The lump of machine code is not neatly divided into data and code.  Code is interspersed with data, sometimes even a variable appearing in the middle of the code for the subroutine it is used in.
-* **Inventive use of the system stack.**  I saw a few nice examples of manipulating values stored on the system stack, for example overwriting a saved value, and multiplying by three.
+* **Fine-grained movement for the player ship.**  The defenders move horizontally by four pixels at a time, allowing simpler code because four pixels are stored in one byte of video memory.  The fact that the defenders move in four-pixel steps is part of the style of the game.  But the player can move at two-pixel resolution, and has two different bitmaps (["right position"](disassembly.html#LBL--GFX_PlayerRightPosn) and ["left position"](disassembly.html#LBL--GFX_PlayerLeftPosn)) to support this.
+* **Inventive use of the system stack.**  I saw a few nice examples of manipulating values stored on the system stack, for example overwriting a saved value, multiplying by three, and saving a `RTS` opcode by pulling the program counter in the same instruction as restoring a saved register.
 * **Seemingly unused variables.**  There are a few locations which are written to but, as far as I could tell, never read from, so their purpose is unclear to me.
 * **Fall-through code.**  In a few places, one subroutine "falls through" into another.  Another way of thinking of this is that some routines have multiple entry points.
-* **Collision detection via colours.**  RESUME HERE.
+* **Collision detection via colours.**  For some code, the "source of truth" is the video display memory.  The code looks for the presence of, say, a defender, by looking for pixels which are either blue or red.  I suspect the choice of this colour scheme was influenced by the fact that the two-bit codes for blue and red are `10` and `11` respectively, allowing a simple logical-and test for defender-coloured pixels.
+* **Split responsibility for destroying defenders.**  As far as I can tell, the job of destroying a defender when a player's shot hits it is split between the [subroutine which moves the shots](disassembly.html#LBL--Sub_MovePlayerShotsDown), and [the subroutine which moves the defenders](disassembly.html#LBL--Sub_MoveDefenderCheckHit).  This all seems quite intricate but I expect is the best fit for the data structures used and the time constraints the code works under.
+* **Timekeeping with delays or sounds.**  Each update usually ends with a do-nothing delay loop, which gets shorter as the player gets more points.  But when a sound effect is playing, bit-banging the audio output serves the dual purpose of creating the delay, so the do-nothing loop is skipped.  The sound effects have to match the dynamic delay, so the sound effects get more frantic as the game speeds up — this counts as a feature I think.
+* **Score stored in BCD.**  The player's score is stored in units of 100 points, as a four-digit BCD (16-bit) value.  The code uses the special 6809 instructions (**TODO** list them) for arithmetic with BCD values.  The logic for awarding an extra life each 10,000 points falls out in a pleasingly simple way from this representation.
+* **Differing basic block layout.**  Code which in a high-level language would be an `if/else` is coded in different layouts in different places.  Sometimes one of the blocks is 'inline', and other times both the `if` and the `else` arms are separate and jumped to and from.
+* **Iteration over arrays.**  Sometimes this is done by counting how many entries remain to be processed, and other times by comparing the record pointer with the "one past the end" value.
+* **Iteration and sequencing split over updates.**  The [code which animates the result of a defender shot hitting something](**TODO**) does not have particularly complex logic, but has to carefully track progress through the logic with an explicit state value, because it has to do a bit of work each time it is called.
+* **Partially-written single joystick mode?**  There is some duplicated state for recording whether the game is in one- or two-player mode.  Different variables are used in the logic for player state vs the logic for selecting which joystick to read.  I wonder whether there were plans to allow two players to play a two-player game where only one joystick was used.
 
 ## Methods used while reverse-engineering
 
@@ -77,7 +85,12 @@ Screen dimensions differ.  Overall layout of upper score/display area and lower 
 
 Keep things integer, so sprites had to be different sizes.  Redraw by hand with reference to originals.  Try to keep look/feel of images but had to make some changes.  Sometimes use higher resolution.  Impose symmetry; not sure whether this was the right thing to do, though.
 
-_One example of scaled up old vs new comparison._
+<figure>
+<div style="background-color:#1dae15;display:grid;grid-template-columns:1fr 1fr;align-items:center;">
+<div style="margin:2.5rem;"><img src="d32-player-ship.png" width="100%"></div>
+<div style="margin:2.5rem;"><img src="pytch-player-ship.png" width="100%"></div></div>
+<caption><p style="margin:0.5rem;">Dragon 32 and Pytch graphics for the player's ship.</p></caption>
+</figure>
 
 ## Sounds
 
@@ -96,5 +109,5 @@ No joysticks.  One-player only.  No high-score tracking.  Play game once then st
 
 # Links
 
-* [*Cobra*: A game my Dad and I wrote on the Dragon 32.](https://redfrontdoor.org/blog/?p=453)
 * [Interview with the game's author, Ken Kalish](https://www.lcurtisboyle.com/nitros9/interview.html)
+* [*Cobra*: A game my Dad and I wrote on the Dragon 32.](https://redfrontdoor.org/blog/?p=453)
