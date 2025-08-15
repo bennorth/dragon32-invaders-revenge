@@ -17,6 +17,8 @@ cp -u \
    docs-sources/styling.css \
    docs-sources/cassette-inlay.jpg \
    docs-sources/screenshot-1.png \
+   docs-sources/d32-player-ship.png \
+   docs-sources/pytch-player-ship.png \
    docs
 
 cp -u \
