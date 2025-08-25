@@ -38,6 +38,7 @@ Code and data are shown with different background colours.  Subroutines are cros
 
 Various features of the code struck me as interesting:
 
+* **No pseudo-random numbers.**  Although the behaviour of the defenders seems random, there are not even any pseudo-random numbers involved.  The random-looking behaviour emerges from the deterministic logic for starting new defender patrols.
 * **Interleaved code and data.**  The lump of machine code is not neatly divided into data and code.  Code is interspersed with data, sometimes even a variable appearing in the middle of the code for the subroutine it is used in.
 * **Fine-grained movement for the player ship.**  The defenders move horizontally by four pixels at a time, allowing simpler code because four pixels are stored in one byte of video memory.  The fact that the defenders move in four-pixel steps is part of the style of the game.  But the player can move at two-pixel resolution, and has two different bitmaps (["right position"](disassembly.html#LBL--GFX_PlayerRightPosn) and ["left position"](disassembly.html#LBL--GFX_PlayerLeftPosn)) to support this.
 * **Inventive use of the system stack.**  I saw a few nice examples of manipulating values stored on the system stack, for example overwriting a saved value, multiplying by three, and saving a `RTS` opcode by pulling the program counter in the same instruction as restoring a saved register.
