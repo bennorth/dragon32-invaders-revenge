@@ -124,12 +124,13 @@ With the understanding of the game logic gained from the reverse engineering, I 
 
 ## Differences
 
-The Pytch port is not a perfect re-creation.  The main differences are:
+The Pytch port is not a perfect re-creation.  The main differences in the Pytch version are:
 
 * The player has to use the keyboard; there is no joystick support — although see below.
 * The game is one-player only.
 * The game does not track the high-score.
 * The game plays once and then stops.  You have to click Pytch's "play" button to have another game.
+* There is a sound effect when you gain an extra ship at multiples of 10,000 points.
 
 ## Hardware controller
 
