@@ -1,7 +1,7 @@
 ---
 title: The Dragon 32 game _Invader's Revenge_
 author: "[Ben North](https://github.com/bennorth)"
-date: August 2025
+date: September 2025
 ---
 
 # Overview
