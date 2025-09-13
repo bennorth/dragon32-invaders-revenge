@@ -143,7 +143,11 @@ The Pytch port is not a perfect re-creation.  The main differences in the Pytch 
 
 We have an experimental version of Pytch which can interface with hardware via the GPIO pins on a Raspberry Pi.  In this version, you *can* play Invader's Revenge with an arcade-style joystick and fire button.
 
-**TODO: Photo.**
+<figure>
+<div style="display:grid;">
+<div style="margin:1rem;"><img src="Pytch-hw-invaders-revenge.jpg" width="100%"></div></div>
+<caption><p style="margin:0.5rem;">Hardware-enhanced Pytch version of <i>Invader's Revenge</i> running on a Raspberry Pi&nbsp;5.</p></caption>
+</figure>
 
 
 # Conclusions
