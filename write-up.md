@@ -27,13 +27,56 @@ _EMBED PYTCH VERSION.  And link for "demo", which allows "see inside"._
 
 # Annotated disassembly
 
-Using a combination of existing tools and various bits of ad-hoc Python code, I produced what I hope is a reasonably readable disassembly of the game's code and data.
+The starting point was a raw binary dump of the game, 7525 bytes long.  Using a combination of existing tools and various bits of ad-hoc Python code, I produced what I hope is a reasonably readable disassembly of the game's code and data.
+
+<style>
+pre.asm-snippet {
+width: 26em;
+margin: 1em auto;
+padding: 12px;
+background-color: #F9F2AA;
+span.comment {
+    color: #005740;
+    font-style: italic;
+    font-weight: bold;
+}
+span.instr {
+    color: #944000
+}
+span.identifier {
+    color: blue;
+}
+}
+</style>
+<a href="disassembly.html"><figure>
+<div style="background-color: #f8f8f8; margin:1rem; font-size: 2rem; font-family: 'Menlo', 'Monaco', 'Ubuntu Mono', 'Consolas', 'source-code-pro', 'monospace'"><p style="text-align:center;margin:0rem 1rem;">E4&nbsp;84&nbsp;10&nbsp;26&nbsp;03&nbsp;5C E6&nbsp;84&nbsp;C4&nbsp;AA&nbsp;E7&nbsp;80</p></div>
+<p style="font-size:3rem;">↧</p>
+<div>
+<pre class="asm-snippet" style="text-align:left;">
+<span class="comment">; Turn next mask byte into red/blue</span>
+<span class="comment">; detect mask</span>
+  <span class="instr">LDB</span>  ,U+
+  <span class="instr">ASLB</span>
+
+<span class="comment">; If the player overlaps with something</span>
+<span class="comment">; red or blue...</span>
+  <span class="instr">ANDB</span> ,X
+<span class="comment">; ...they have hit a defender or defender</span>
+<span class="comment">; shot; chain to handler</span>
+  <span class="instr">LBNE</span>  <span class="identifier">Sub_HandlePlayerCrash</span>
+
+<span class="comment">; Mask out yellow from destination byte</span>
+  <span class="instr">LDB</span>  ,X
+  <span class="instr">ANDB</span> #$AA
+  <span class="instr">STB</span>  ,X+
+</pre>
+</figure></a>
 
 ## Result
 
 Code and data are shown with different background colours.  Subroutines are cross-linked, to make them clickable at call sites.  Chunks of data which represent graphics are rendered.
 
-* [Disassembly](disassembly.html).
+* [Disassembly — about 3.5k lines of 6809 assembly language](disassembly.html).
 
 ## Observations
 
