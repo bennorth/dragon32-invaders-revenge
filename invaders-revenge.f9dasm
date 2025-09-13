@@ -887,7 +887,6 @@ COMMENT 32E9 (patrol or base), turning that defender yellow and marking the shot
 COMMENT 32E9 "inactive" if so.  Erase shot once it reaches the bottom, marking that
 COMMENT 32E9 array slot "inactive" if so.
 COMMENT 32E9
-COMMENT 302B If no key pressed...
 CCOMMENT 32ED
 COMMENT 32ED B = shot->Bitmask; X = shot->ScreenLoc
 LABEL 32ED MPSD_L1
