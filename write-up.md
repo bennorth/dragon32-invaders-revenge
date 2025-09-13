@@ -116,7 +116,14 @@ Running the game under the XRoar emulator, I captured the sound effects.  Analys
 
 Example of captured vs re-synthesised sound effect:
 
-_One example of audio players for captured vs re-synthesised sounds.  Use howler.js maybe._
+<figure>
+<p style="margin:1rem;">
+<button id="sample-btn-1" style="margin:1rem 3rem;"><div><p><img style="margin: 1rem 0.5rem;" src="sound-wave.png"></p><p style="font-size:3rem;">▶</p><p>Captured original</p></div></button>
+<button id="sample-btn-2" style="margin:1rem 3rem;"><div><p><img style="margin: 1rem 0.5rem;" src="sound-wave.png"></p><p style="font-size:3rem;">▶</p><p>Re-synthesised</p></div></button>
+</p>
+</figure>
+<script src="howler.core.min.js"></script>
+<script src="sound-samples.js"></script>
 
 ## Code
 
