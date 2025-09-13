@@ -6,7 +6,7 @@ date: September 2025
 
 # Overview
 
-In my increasingly-distant youth, my family had a Dragon 32 home computer, which I spent many hours with.  For a lot of this time, I was writing programs of various kinds, with the built-in Basic and then also assembly language.  But, unsurprisingly, I also played games, including one called *Invader's Revenge*, written by Kenneth Kalish.  You controlled a yellow ship, and had to shoot enemy ships while not crashing into anything or being shot by the enemy base.  Good fun.
+In my increasingly-distant youth, my family had a Dragon 32 home computer, which I spent many hours with.  For a lot of this time, I was writing programs of various kinds, with the built-in Basic and then also assembly language.  But, unsurprisingly, I also played games, including one called *Invader's Revenge*, written by Kenneth Kalish.  You control a yellow ship, and have to shoot enemy "defender" ships while not crashing into anything or being shot by the enemy base.  Good fun.
 
 <figure>
 <div style="display:grid;grid-template-columns:7fr 5fr;align-items:center;">
