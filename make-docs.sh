@@ -24,8 +24,11 @@ cp -u \
    docs-sources/sound-samples.js \
    docs-sources/sound-wave.png \
    New-sounds/samples/defender-base-hit-0.wav \
-   docs-sources/synth-defender-base-hit-0.wav \
    docs
+
+cp -u \
+   New-sounds/synthesised-output/defender-base-hit-0.wav \
+   docs/synth-defender-base-hit-0.wav
 
 cp -u \
    rendered-asm/out.html \
