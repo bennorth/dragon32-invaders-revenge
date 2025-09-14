@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Ben North" />
+  <title>The Dragon 32 game Invader’s Revenge</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="styling.css" />
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">The Dragon 32 game <em>Invader’s Revenge</em></h1>
+<p class="author"><a href="https://github.com/bennorth">Ben
+North</a></p>
+<p class="date">September 2025</p>
+</header>
+<h1 id="overview">Overview</h1>
+<p>In my increasingly-distant youth, my family had a Dragon 32 home
+computer, which I spent many hours with. For a lot of this time, I was
+writing programs of various kinds, with the built-in Basic and then also
+assembly language. But, unsurprisingly, I also played games, including
+one called <em>Invader’s Revenge</em>, written by Kenneth Kalish. You
+control a yellow ship, and have to shoot enemy “defender” ships while
+not crashing into anything or being shot by the enemy base. Good
+fun.</p>
+<figure>
+<div
+style="display:grid;grid-template-columns:7fr 5fr;align-items:center;">
+<div style="margin:1rem;">
+<img src="screenshot-1.png" width="100%">
+</div>
+<div style="margin:1rem;">
+<img src="cassette-inlay.jpg" width="100%">
+</div>
+</div>
+<caption>
+<p style="margin:0.5rem;">
+Screenshot and cassette inlay for <i>Invader’s Revenge</i>.
+</p>
+<p style="font-size:0.9rem;">
+<i>Cassette inlay image from
+<a href="https://archive.worldofdragon.org/">The Dragon Archive</a></i>.
+</p>
+</caption>
+</figure>
+<p>In my current job, I am developing and researching <a
+href="https://pytch.org/">Pytch</a>, a free online educational coding
+platform which helps people learn Python by writing “Scratch-like”
+programs. I thought a port of <em>Invader’s Revenge</em> could be a good
+example of what can be made in Pytch.</p>
+<p>I could probably have achieved this by taking screenshots and working
+out the game logic just by observations, but thought it would be a more
+interesting exercise to reverse engineer the original machine code. This
+would also allow a dose of nostalgia for the Dragon and working in
+assembly language, albeit someone else’s.</p>
+<h1 id="pytch-version">Pytch version</h1>
+<p>This is the result. You can play it below, or “see inside” by <a
+href="https://pytch.org/app/suggested-demo/user-ben/invaders-revenge-20250914">opening
+the project within the Pytch IDE</a>.</p>
+<figure>
+<div
+style="margin:1rem auto;position:relative;width:90%;height:0px;padding-bottom:75%;">
+<iframe style="border:none;position:absolute;top:0px;height:100%;left:0px;width:100%;" src="https://pytch.org//app/play-demo/user-ben/invaders-revenge-20250914">
+</iframe>
+</div>
+<caption>
+<p>
+Use arrow keys to move and space to fire!
+</p>
+</caption>
+</figure>
+<h1 id="annotated-disassembly">Annotated disassembly</h1>
+<p>The starting point was a 7525-byte raw binary dump of the game from
+its cassette audio. (I do own this cassette, but got the image from the
+web to save time.) Using a combination of existing tools and various
+bits of ad-hoc Python code, I produced what I hope is a reasonably
+readable disassembly of the game’s code and data.</p>
+<style>
+pre.asm-snippet {
+width: 26em;
+margin: 1em auto;
+padding: 12px;
+background-color: #F9F2AA;
+span.comment {
+    color: #005740;
+    font-style: italic;
+    font-weight: bold;
+}
+span.instr {
+    color: #944000
+}
+span.identifier {
+    color: blue;
+}
+}
+</style>
+<a href="disassembly.html">
+<figure>
+<div
+style="background-color: #f8f8f8; margin:1rem; font-size: 2rem; font-family: &#39;Menlo&#39;, &#39;Monaco&#39;, &#39;Ubuntu Mono&#39;, &#39;Consolas&#39;, &#39;source-code-pro&#39;, &#39;monospace&#39;">
+<p style="text-align:center;margin:0rem 1rem;">
+E4 84 10 26 03 5C E6 84 C4 AA E7 80
+</p>
+</div>
+<p style="font-size:3rem;">
+↧
+</p>
+<div>
+<pre class="asm-snippet" style="text-align:left;">
+<span class="comment">; Turn next mask byte into red/blue</span>
+<span class="comment">; detect mask</span>
+  <span class="instr">LDB</span>  ,U+
+  <span class="instr">ASLB</span>
+
+<span class="comment">; If the player overlaps with something</span>
+<span class="comment">; red or blue...</span>
+  <span class="instr">ANDB</span> ,X
+<span class="comment">; ...they have hit a defender or defender</span>
+<span class="comment">; shot; chain to handler</span>
+  <span class="instr">LBNE</span>  <span class="identifier">Sub_HandlePlayerCrash</span>
+
+<span class="comment">; Mask out yellow from destination byte</span>
+  <span class="instr">LDB</span>  ,X
+  <span class="instr">ANDB</span> #$AA
+  <span class="instr">STB</span>  ,X+
+</pre>
+</figure>
+<p></a></p>
+<h2 id="result">Result</h2>
+<p>Code and data are shown with different background colours.
+Subroutines are cross-linked, to make them clickable at call sites.
+Chunks of data which represent graphics are rendered.</p>
+<ul>
+<li><a href="disassembly.html">Disassembly — about 3.5k lines of 6809
+assembly language</a>.</li>
+</ul>
+<h2 id="observations">Observations</h2>
+<p>Various features of the code struck me as interesting:</p>
+<ul>
+<li><strong>No pseudo-random numbers.</strong> Although the behaviour of
+the defenders seems random, there are not even any pseudo-random numbers
+involved. The random-looking behaviour emerges from the deterministic
+logic for starting new defender patrols.</li>
+<li><strong>Interleaved code and data.</strong> The lump of machine code
+is not neatly divided into data and code. Code is interspersed with
+data; sometimes a variable appears in the middle of the code for the
+subroutine it is used in.</li>
+<li><strong>Fine-grained movement for the player ship.</strong> The
+defenders move horizontally by four pixels at a time, allowing simpler
+code because four pixels are stored in one byte of video memory. The
+fact that the defenders move in four-pixel steps is part of the style of
+the game. But the player ship can move at a two-pixel resolution, and
+has two different bitmaps (<a
+href="disassembly.html#LBL--GFX_PlayerRightPosn">“right position”</a>
+and <a href="disassembly.html#LBL--GFX_PlayerLeftPosn">“left
+position”</a>) to support this.</li>
+<li><strong>Inventive use of the system stack.</strong> I saw a few nice
+examples of manipulating values stored on the system stack, for example
+overwriting a saved value, multiplying by three, and saving a
+<code>RTS</code> opcode by pulling the program counter in the same
+instruction as restoring a saved register.</li>
+<li><strong>Seemingly unused variables.</strong> There are a few
+locations which are written to but, as far as I could tell, never read
+from, so their purpose is unclear to me. There are other locations which
+are, as far as I can tell, completely unused.</li>
+<li><strong>Seemingly unused graphics.</strong> There are some bytes
+near the start which can be interpreted as <a
+href="disassembly.html#LBL--GFX_SmallUnusedDefender">a small
+defender-like graphic</a>. Maybe there were plans to use this as another
+“special” defender?</li>
+<li><strong>Fall-through code.</strong> In a few places, one subroutine
+“falls through” into another. Another way of thinking of this is that
+some routines have multiple entry points.</li>
+<li><strong>Collision detection via colours.</strong> In some
+situations, the code determines the game state by reading the video
+display memory, rather than with reference to stored program data. The
+code looks for the presence of, say, a defender, by looking for pixels
+which are either blue or red. I suspect the choice of this colour scheme
+was influenced by the fact that the two-bit codes for blue and red are
+<code>10</code> and <code>11</code> respectively, allowing a simple
+bitwise-and test for defender-coloured pixels.</li>
+<li><strong>Split responsibility for destroying defenders.</strong> As
+far as I can tell, the job of destroying a defender when a player’s shot
+hits it is split between the <a
+href="disassembly.html#LBL--Sub_MovePlayerShotsDown">subroutine which
+moves the shots</a>, and <a
+href="disassembly.html#LBL--Sub_MoveDefenderCheckHit">the subroutine
+which moves the defenders</a>. This all seems quite intricate but I
+expect is the best fit for the data structures used and the time
+constraints the code works under.</li>
+<li><strong>Timekeeping with delays or sounds.</strong> Each update
+usually ends with a do-nothing delay loop, which gets shorter as the
+player gets more points, speeding the game up. But when a sound effect
+is playing, bit-banging the audio output serves the dual purpose of
+creating the delay, so the do-nothing loop is skipped. The sound effects
+have to match the dynamic delay, so the sound effects get more frantic
+as the game speeds up — this counts as a feature I think.</li>
+<li><strong>Score stored in Binary Coded Decimal.</strong> The player’s
+score is stored in units of 100 points, as a four-digit BCD (16-bit)
+value. The code uses the special 6809 instruction <code>DAA</code> (for
+<em>Decimal Adjust after Addition</em>) for arithmetic with BCD values.
+The logic for awarding an extra life each 10,000 points falls out in a
+pleasingly simple way from this representation.</li>
+<li><strong>Differing basic block layout.</strong> Code which in a
+high-level language would be an <code>if/else</code> is laid out
+differently in different places. Sometimes one of the blocks is
+“inline”, and other times both the <code>if</code> and the
+<code>else</code> arms are separate and jumped to and from.</li>
+<li><strong>Iteration over arrays.</strong> Sometimes this is done by
+counting how many entries remain to be processed, and other times by
+comparing the record pointer with the “one past the end” value.</li>
+<li><strong>Looping and sequencing split over updates.</strong> The
+fundamental logic implemented by <a href="**TODO**">the code which
+animates the result of a defender shot hitting something</a> is
+reasonably straightforward. However, the code has to carefully track
+progress through the logic with an explicit state value, because it has
+to do a small piece of work each time it is called. This makes the code
+more complex.</li>
+<li><strong>Partially-written single joystick mode?</strong> There is
+some duplicated state for recording whether the game is in one- or
+two-player mode. Different variables are used in the logic for player
+state vs the logic for selecting which joystick to read. Perhaps there
+were plans to allow two players to play a two-player game where only one
+joystick was used?</li>
+<li><strong>Use of illegal opcode.</strong> At one point, in code which
+seems to be resetting the “number of shots” game parameter, the opcode
+<code>8F</code> is used, which is not a valid 6809 opcode. It is <a
+href="https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours#store-immediate">reported</a>
+as having a deterministic effect (<em>store X immediate</em>), but I did
+not get to the bottom of the effect on the game logic.</li>
+<li><strong>Stack leak.</strong> The code which implements the timeout
+when prompting the user for the speed and number of shots leaks two
+bytes of stack, because it does a <code>JMP</code> to the reset routine
+even though conceptually it is a subroutine. This was suspected by code
+inspection and verified under GDB. Compare the care taken in a similar
+situation in the <a
+href="disassembly.html#LBL--Sub_EndOfGame">end-of-game code</a>.</li>
+<li><strong>Unused slot for defender explosion data?</strong> There is
+<a href="disassembly.html#LBL--Arr_DefenderExplosions">space
+reserved</a> for up to ten defender explosions. However, the <a
+href="disassembly.html#LBL--Sub_StepDefenderExplns">code which processes
+this array</a> seems to only handle the first nine entries — it
+initialises a counter to <code>10</code> then, in each iteration,
+decrements this counter and then tests it for being non-zero. I wasn’t
+able to verify this behaviour in play though.</li>
+<li><strong>Large unused section of memory image.</strong> The cassette
+memory image has a 602-byte section (out of a 7,525-byte image) of
+meaningless values, as far as I can tell. Perhaps this came about from a
+development process which made it difficult to mode large blocks of code
+or data, and so space had to be reserved?</li>
+</ul>
+<h2 id="methods-used-while-reverse-engineering">Methods used while
+reverse-engineering</h2>
+<p>I had heard of, and wanted to try, the special-purpose
+reverse-engineering disassembler <a
+href="https://hex-rays.com/">IDA</a>, but the free version does not
+support the 6809 processor. Only too late did I discover the
+free-software <a href="https://cutter.re/">Cutter</a>, based on <a
+href="https://rizin.re/">Rizin</a>, which does support the 6809. This
+might be worth exploring if I do something like this again.</p>
+<p>The tool I ended up using was <a
+href="https://github.com/Arakula/f9dasm">f9dasm</a>. As well as the
+binary machine-code dump, you supply a separate file of annotations and
+other directives. The <code>f9dasm</code> tool then disassembles the
+machine code according to your directives and annotations. I added a
+post-processing step, implemented as a collection of ad-hoc Python
+scripts, to break the disassembly into “chunks” for more readable
+rendering in HTML. A “chunk” is a subroutine or a piece of data.</p>
+<p>The whole process was highly iterative. The starting point was to
+trace execution from the entry-point address, and then go round and
+round with a mixture of the following activities.</p>
+<ul>
+<li>Identify a subroutine or block of data.</li>
+<li>Decode a block of data representing a graphics sprite.</li>
+<li>Conjecture the fields of a data structure.</li>
+<li>Conjecture the semantics of a variable.</li>
+<li>Conjecture what a particular subroutine did with variables or
+overall machine state (e.g., display or sound).</li>
+<li>Make or refine notes and comments on a subroutine, variable, or data
+structure.</li>
+<li>Give a name to a subroutine or piece of data.</li>
+<li>Write some more ad-hoc Python code.</li>
+</ul>
+<p>Understanding a variable or data structure was the most important and
+helpful task. It was not always immediately obvious (to me) what role a
+particular variable had, so making a conjecture and then refining it was
+quite common.</p>
+<p>Looking for sections of code which write to video memory was a
+helpful technique, because by noting where the data was read from, I
+could tell whether that section drew the player ship, a defender ship,
+etc.</p>
+<p>Almost all of the work was done just by looking at the code, although
+for a handful of tricky parts I used <a
+href="https://www.6809.org.uk/xroar/">the XRoar emulator</a>, and its
+ability to act as a debug target for a custom build of the GNU Debugger.
+In particular, I decided that working out the exact waveform of a sound
+effect from the code was too much work; see below.</p>
+<h1 id="port-to-pytch">Port to Pytch</h1>
+<h2 id="graphics-layout">Graphics layout</h2>
+<p>The Dragon and Pytch screen dimensions differ. The Dragon, in the
+graphics mode used, has a 128×192 pixel grid, with each pixel twice as
+wide as it is high. The Pytch “stage” is 480×360.</p>
+<p>In broad terms, the game layout has an upper score/display area, and
+a lower play area, separated by a pair of thin red bars. The Dragon also
+has a fairly broad border round the active display area. I drew a static
+background image which I hope is a reasonable replication of the overall
+effect.</p>
+<p>The defenders patrol in horizontal “lanes”. I tried to get a close
+match to the spacing of these lanes, including a gap such that the
+player cannot be hit at a particular vertical position. This is coupled
+with the graphics design in terms of the dimensions of the sprites; see
+below.</p>
+<h2 id="movement">Movement</h2>
+<p>The horizontal “stepping” motion of the defenders and their base is
+part of the aesthetics of the design, so I kept that. In the Dragon
+original, the player ship has finer-grained movement; in the port I
+allow it to move with single-pixel resolution.</p>
+<h2 id="graphics">Graphics</h2>
+<p>To keep things on an integer grid, the sprites had to be different
+sizes to the originals. I redrew them by hand with reference to the
+originals, trying to keep the look and feel of images, but I did have to
+make some changes. In some cases I used the higher resolution available.
+For some explosion graphics, the original was not symmetrical; here I
+drew symmetrical versions, although I’m not sure whether this was the
+right thing to do.</p>
+<p>Example of a higher-resolution sprite:</p>
+<figure>
+<div
+style="background-color:#1dae15;display:grid;grid-template-columns:1fr 1fr;align-items:center;">
+<div style="margin:2.5rem;">
+<img src="d32-player-ship.png" width="100%">
+</div>
+<div style="margin:2.5rem;">
+<img src="pytch-player-ship.png" width="100%">
+</div>
+</div>
+<caption>
+<p style="margin:0.5rem;">
+Dragon 32 and Pytch graphics for the player’s ship.
+</p>
+</caption>
+</figure>
+<h2 id="sounds">Sounds</h2>
+<p>From inspection of the code, it was possible to tell that each sound
+effect consists of a sequence of “chirps” — short fragments of rising or
+falling pitch. However, replicating the sound effects based on the code
+would have required an exact understanding of the timing of the
+instructions used, so I took a different approach.</p>
+<p>Running the game under the XRoar emulator, I captured the sound
+effects. Analysing the sounds in Jupyter Lab, and using regression to
+estimate the starting pitch and rate of change of pitch for each chirp,
+allowed them to be re-synthesised. On the Dragon, the output waveform is
+essentially a square wave. In the re-synthesis, I used something
+slightly more rounded. This gives a softer sound, which I think I’m
+happy with.</p>
+<p>Example of captured vs re-synthesised sound effect:</p>
+<figure>
+<p style="margin:1rem;">
+<button id="sample-btn-1" style="margin:1rem 3rem;">
+<div>
+<p>
+<img style="margin: 1rem 0.5rem;" src="sound-wave.png">
+</p>
+<p style="font-size:3rem;">
+▶
+</p>
+<p>
+Captured original
+</p>
+</div>
+</button>
+<button id="sample-btn-2" style="margin:1rem 3rem;">
+<div>
+<p>
+<img style="margin: 1rem 0.5rem;" src="sound-wave.png">
+</p>
+<p style="font-size:3rem;">
+▶
+</p>
+<p>
+Re-synthesised
+</p>
+</div>
+</button>
+</p>
+<caption>
+<p>
+Sound effect when destroying the defender base, original and
+re-synthesised.
+</p>
+</caption>
+</figure>
+<script src="howler.core.min.js"></script>
+<script src="sound-samples.js"></script>
+<h2 id="code">Code</h2>
+<p>With the understanding of the game logic gained from the reverse
+engineering, I was able to write event-driven Python code in Pytch to
+give (something very close to) the same behaviour. In some cases, such
+as stepping through the phases of a defender explosion, the concurrency
+provided by Pytch made the code much simpler.</p>
+<h2 id="differences">Differences</h2>
+<p>The Pytch port is not a perfect re-creation. The main differences in
+the Pytch version are:</p>
+<ul>
+<li>The player has to use the keyboard; there is no joystick support —
+although see below.</li>
+<li>Only one player can play.</li>
+<li>The initial speed is fixed, and the player always has five
+shots.</li>
+<li>No high-score is maintained.</li>
+<li>The game plays once and then stops. You have to click Pytch’s “play”
+button to have another game.</li>
+<li>There is a sound effect when you gain an extra ship at multiples of
+10,000 points.</li>
+</ul>
+<h2 id="hardware-controller">Hardware controller</h2>
+<p>We have an experimental version of Pytch which can interface with
+hardware via the GPIO pins on a Raspberry Pi. In this version, you
+<em>can</em> play Invader’s Revenge with an arcade-style joystick and
+fire button.</p>
+<figure>
+<div style="display:grid;">
+<div style="margin:1rem;">
+<img src="Pytch-hw-invaders-revenge.jpg" width="100%">
+</div>
+</div>
+<caption>
+<p style="margin:0.5rem;">
+Hardware-enhanced Pytch version of <i>Invader’s Revenge</i> running on a
+Raspberry Pi 5.
+</p>
+</caption>
+</figure>
+<h1 id="conclusions">Conclusions</h1>
+<p>I ended up getting drawn into this project rather more than I
+originally planned, but the result was a full understanding of almost
+all of the code of the game. Porting the code to Pytch was an
+interesting exercise, and the resulting game is fun to play.</p>
+<h1 id="links">Links</h1>
+<ul>
+<li><a
+href="https://github.com/bennorth/dragon32-invaders-revenge">GitHub
+source, including ad-hoc Python code</a></li>
+<li><a
+href="https://www.lcurtisboyle.com/nitros9/interview.html">Interview
+with the game’s author, Ken Kalish</a></li>
+<li><a href="https://redfrontdoor.org/blog/?p=453"><em>Cobra</em>: A
+game my Dad and I wrote on the Dragon 32.</a></li>
+</ul>
+</body>
+</html>
