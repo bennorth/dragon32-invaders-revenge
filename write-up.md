@@ -22,6 +22,8 @@ I could probably have achieved this by taking screenshots and working out the ga
 
 # Pytch version
 
+This is the result.  You can play it below, or "see inside" by [opening the project within the Pytch IDE](https://pytch.org/app/suggested-demo/user-ben/invaders-revenge-20250914).
+
 <figure>
 <div style="margin:1rem auto;position:relative;width:90%;height:0px;padding-bottom:75%;">
 <iframe style="border:none;position:absolute;top:0px;height:100%;left:0px;width:100%;" src="https://pytch.org//app/play-demo/user-ben/invaders-revenge-20250914"></iframe>
@@ -29,11 +31,10 @@ I could probably have achieved this by taking screenshots and working out the ga
 <caption><p>Use arrow keys to move and space to fire!</p></caption>
 </figure>
 
-You can "see inside" by [opening the project within the Pytch IDE](https://pytch.org/app/suggested-demo/user-ben/invaders-revenge-20250914).
 
 # Annotated disassembly
 
-The starting point was a raw binary dump of the game, 7525 bytes long.  Using a combination of existing tools and various bits of ad-hoc Python code, I produced what I hope is a reasonably readable disassembly of the game's code and data.
+The starting point was a 7525-byte raw binary dump of the game from its cassette audio.  (I do own this cassette, but got the image from the web to save time.)  Using a combination of existing tools and various bits of ad-hoc Python code, I produced what I hope is a reasonably readable disassembly of the game's code and data.
 
 <style>
 pre.asm-snippet {
@@ -90,20 +91,20 @@ Various features of the code struck me as interesting:
 
 * **No pseudo-random numbers.**  Although the behaviour of the defenders seems random, there are not even any pseudo-random numbers involved.  The random-looking behaviour emerges from the deterministic logic for starting new defender patrols.
 * **Interleaved code and data.**  The lump of machine code is not neatly divided into data and code.  Code is interspersed with data; sometimes a variable appears in the middle of the code for the subroutine it is used in.
-* **Fine-grained movement for the player ship.**  The defenders move horizontally by four pixels at a time, allowing simpler code because four pixels are stored in one byte of video memory.  The fact that the defenders move in four-pixel steps is part of the style of the game.  But the player can move at a two-pixel resolution, and has two different bitmaps (["right position"](disassembly.html#LBL--GFX_PlayerRightPosn) and ["left position"](disassembly.html#LBL--GFX_PlayerLeftPosn)) to support this.
+* **Fine-grained movement for the player ship.**  The defenders move horizontally by four pixels at a time, allowing simpler code because four pixels are stored in one byte of video memory.  The fact that the defenders move in four-pixel steps is part of the style of the game.  But the player ship can move at a two-pixel resolution, and has two different bitmaps (["right position"](disassembly.html#LBL--GFX_PlayerRightPosn) and ["left position"](disassembly.html#LBL--GFX_PlayerLeftPosn)) to support this.
 * **Inventive use of the system stack.**  I saw a few nice examples of manipulating values stored on the system stack, for example overwriting a saved value, multiplying by three, and saving a `RTS` opcode by pulling the program counter in the same instruction as restoring a saved register.
 * **Seemingly unused variables.**  There are a few locations which are written to but, as far as I could tell, never read from, so their purpose is unclear to me.  There are other locations which are, as far as I can tell, completely unused.
 * **Seemingly unused graphics.**  There are some bytes near the start which can be interpreted as [a small defender-like graphic](disassembly.html#LBL--GFX_SmallUnusedDefender).  Maybe there were plans to use this as another "special" defender?
 * **Fall-through code.**  In a few places, one subroutine "falls through" into another.  Another way of thinking of this is that some routines have multiple entry points.
-* **Collision detection via colours.**  In some situations, the code measures the game state by reading the video display memory, rather than with reference to stored program data.  The code looks for the presence of, say, a defender, by looking for pixels which are either blue or red.  I suspect the choice of this colour scheme was influenced by the fact that the two-bit codes for blue and red are `10` and `11` respectively, allowing a simple bitwise-and test for defender-coloured pixels.
+* **Collision detection via colours.**  In some situations, the code determines the game state by reading the video display memory, rather than with reference to stored program data.  The code looks for the presence of, say, a defender, by looking for pixels which are either blue or red.  I suspect the choice of this colour scheme was influenced by the fact that the two-bit codes for blue and red are `10` and `11` respectively, allowing a simple bitwise-and test for defender-coloured pixels.
 * **Split responsibility for destroying defenders.**  As far as I can tell, the job of destroying a defender when a player's shot hits it is split between the [subroutine which moves the shots](disassembly.html#LBL--Sub_MovePlayerShotsDown), and [the subroutine which moves the defenders](disassembly.html#LBL--Sub_MoveDefenderCheckHit).  This all seems quite intricate but I expect is the best fit for the data structures used and the time constraints the code works under.
-* **Timekeeping with delays or sounds.**  Each update usually ends with a do-nothing delay loop, which gets shorter as the player gets more points.  But when a sound effect is playing, bit-banging the audio output serves the dual purpose of creating the delay, so the do-nothing loop is skipped.  The sound effects have to match the dynamic delay, so the sound effects get more frantic as the game speeds up — this counts as a feature I think.
+* **Timekeeping with delays or sounds.**  Each update usually ends with a do-nothing delay loop, which gets shorter as the player gets more points, speeding the game up.  But when a sound effect is playing, bit-banging the audio output serves the dual purpose of creating the delay, so the do-nothing loop is skipped.  The sound effects have to match the dynamic delay, so the sound effects get more frantic as the game speeds up — this counts as a feature I think.
 * **Score stored in Binary Coded Decimal.**  The player's score is stored in units of 100 points, as a four-digit BCD (16-bit) value.  The code uses the special 6809 instruction `DAA` (for _Decimal Adjust after Addition_) for arithmetic with BCD values.  The logic for awarding an extra life each 10,000 points falls out in a pleasingly simple way from this representation.
-* **Differing basic block layout.**  Code which in a high-level language would be an `if/else` is laid out differently in different places.  Sometimes one of the blocks is 'inline', and other times both the `if` and the `else` arms are separate and jumped to and from.
+* **Differing basic block layout.**  Code which in a high-level language would be an `if/else` is laid out differently in different places.  Sometimes one of the blocks is "inline", and other times both the `if` and the `else` arms are separate and jumped to and from.
 * **Iteration over arrays.**  Sometimes this is done by counting how many entries remain to be processed, and other times by comparing the record pointer with the "one past the end" value.
 * **Looping and sequencing split over updates.**  The fundamental logic implemented by [the code which animates the result of a defender shot hitting something](**TODO**) is reasonably straightforward.  However, the code has to carefully track progress through the logic with an explicit state value, because it has to do a small piece of work each time it is called.  This makes the code more complex.
-* **Partially-written single joystick mode?**  There is some duplicated state for recording whether the game is in one- or two-player mode.  Different variables are used in the logic for player state vs the logic for selecting which joystick to read.  I wonder whether there were plans to allow two players to play a two-player game where only one joystick was used.
-* **Use of illegal opcode.**  At one point, in code which seems to be resetting the "number of shots" game parameter, the opcode `8F` is used, which is not a valid 6809 opcode.  It is reported as having a deterministic effect (_store X immediate_), but I did not get to the bottom of the effect on the game logic.
+* **Partially-written single joystick mode?**  There is some duplicated state for recording whether the game is in one- or two-player mode.  Different variables are used in the logic for player state vs the logic for selecting which joystick to read.  Perhaps there were plans to allow two players to play a two-player game where only one joystick was used?
+* **Use of illegal opcode.**  At one point, in code which seems to be resetting the "number of shots" game parameter, the opcode `8F` is used, which is not a valid 6809 opcode.  It is [reported](https://github.com/hoglet67/6809Decoder/wiki/Undocumented-6809-Behaviours#store-immediate) as having a deterministic effect (_store X immediate_), but I did not get to the bottom of the effect on the game logic.
 * **Stack leak.**  The code which implements the timeout when prompting the user for the speed and number of shots leaks two bytes of stack, because it does a `JMP` to the reset routine even though conceptually it is a subroutine.  This was suspected by code inspection and verified under GDB.  Compare the care taken in a similar situation in the [end-of-game code](disassembly.html#LBL--Sub_EndOfGame).
 * **Unused slot for defender explosion data?**  There is [space reserved](disassembly.html#LBL--Arr_DefenderExplosions) for up to ten defender explosions.  However, the [code which processes this array](disassembly.html#LBL--Sub_StepDefenderExplns) seems to only handle the first nine entries — it initialises a counter to `10` then, in each iteration, decrements this counter and then tests it for being non-zero.  I wasn't able to verify this behaviour in play though.
 * **Large unused section of memory image.**  The cassette memory image has a 602-byte section (out of a 7,525-byte image) of meaningless values, as far as I can tell.  Perhaps this came about from a development process which made it difficult to mode large blocks of code or data, and so space had to be reserved?
@@ -123,6 +124,7 @@ The whole process was highly iterative.  The starting point was to trace executi
 * Conjecture what a particular subroutine did with variables or overall machine state (e.g., display or sound).
 * Make or refine notes and comments on a subroutine, variable, or data structure.
 * Give a name to a subroutine or piece of data.
+* Write some more ad-hoc Python code.
 
 Understanding a variable or data structure was the most important and helpful task.  It was not always immediately obvious (to me) what role a particular variable had, so making a conjecture and then refining it was quite common.
 
@@ -133,7 +135,7 @@ Almost all of the work was done just by looking at the code, although for a hand
 
 # Port to Pytch
 
-## Layout
+## Graphics layout
 
 The Dragon and Pytch screen dimensions differ.  The Dragon, in the graphics mode used, has a 128×192 pixel grid, with each pixel twice as wide as it is high.  The Pytch "stage" is 480×360.
 
@@ -171,13 +173,14 @@ Example of captured vs re-synthesised sound effect:
 <button id="sample-btn-1" style="margin:1rem 3rem;"><div><p><img style="margin: 1rem 0.5rem;" src="sound-wave.png"></p><p style="font-size:3rem;">▶</p><p>Captured original</p></div></button>
 <button id="sample-btn-2" style="margin:1rem 3rem;"><div><p><img style="margin: 1rem 0.5rem;" src="sound-wave.png"></p><p style="font-size:3rem;">▶</p><p>Re-synthesised</p></div></button>
 </p>
+<caption><p>Sound effect when destroying the defender base, original and re-synthesised.</p></caption>
 </figure>
 <script src="howler.core.min.js"></script>
 <script src="sound-samples.js"></script>
 
 ## Code
 
-With the understanding of the game logic gained from the reverse engineering, I was able to write event-driven code to give (something very close to) the same behaviour.  In some cases, such as stepping through the phases of a defender explosion, the concurrency provided by Pytch made the code much simpler.
+With the understanding of the game logic gained from the reverse engineering, I was able to write event-driven Python code in Pytch to give (something very close to) the same behaviour.  In some cases, such as stepping through the phases of a defender explosion, the concurrency provided by Pytch made the code much simpler.
 
 ## Differences
 
@@ -208,5 +211,6 @@ I ended up getting drawn into this project rather more than I originally planned
 
 # Links
 
+* [GitHub source, including ad-hoc Python code](https://github.com/bennorth/dragon32-invaders-revenge)
 * [Interview with the game's author, Ken Kalish](https://www.lcurtisboyle.com/nitros9/interview.html)
 * [*Cobra*: A game my Dad and I wrote on the Dragon 32.](https://redfrontdoor.org/blog/?p=453)
