@@ -24,12 +24,12 @@ I could probably have achieved this by taking screenshots and working out the ga
 
 <figure>
 <div style="margin:1rem auto;position:relative;width:90%;height:0px;padding-bottom:75%;">
-<iframe style="border:none;position:absolute;top:0px;height:100%;left:0px;width:100%;" src="https://pytch.org//app/play-demo/user-ben/invaders-revenge-20250913"></iframe>
+<iframe style="border:none;position:absolute;top:0px;height:100%;left:0px;width:100%;" src="https://pytch.org//app/play-demo/user-ben/invaders-revenge-20250914"></iframe>
 </div>
 <caption><p>Use arrow keys to move and space to fire!</p></caption>
 </figure>
 
-You can "see inside" by [opening the project within the Pytch IDE](https://pytch.org/app/suggested-demo/user-ben/invaders-revenge-20250913).
+You can "see inside" by [opening the project within the Pytch IDE](https://pytch.org/app/suggested-demo/user-ben/invaders-revenge-20250914).
 
 # Annotated disassembly
 
