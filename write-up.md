@@ -123,6 +123,7 @@ The whole process was highly iterative.  The starting point was to trace executi
 * Conjecture the semantics of a variable.
 * Conjecture what a particular subroutine did with variables or overall machine state (e.g., display or sound).
 * Make or refine notes and comments on a subroutine, variable, or data structure.
+* Refer to Dragon 32 ROM information (either [Inside The Dragon](http://www.dragondata.co.uk/Publications/inside-dragon.html) or [this disassembly](https://github.com/prime6809/DragonRom))
 * Give a name to a subroutine or piece of data.
 * Write some more ad-hoc Python code.
 
@@ -214,3 +215,5 @@ I ended up getting drawn into this project rather more than I originally planned
 * [GitHub source, including ad-hoc Python code](https://github.com/bennorth/dragon32-invaders-revenge)
 * [Interview with the game's author, Ken Kalish](https://www.lcurtisboyle.com/nitros9/interview.html)
 * [*Cobra*: A game my Dad and I wrote on the Dragon 32.](https://redfrontdoor.org/blog/?p=453)
+* [Dragon 32 ROM disassembly](https://github.com/prime6809/DragonRom)
+* [_Inside the Dragon_ book](https://archive.worldofdragon.org/browse/downloads/Books/InsideTheDragon%20-%20Smeed%20and%20Sommerville%20%281983%29.pdf)
