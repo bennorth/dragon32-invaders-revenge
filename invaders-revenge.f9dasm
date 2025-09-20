@@ -586,7 +586,6 @@ COMMENT 30DE </UCHUNK>
 LABEL 30DF Sub_MainPlayLoop
 COMMENT 30DF <CCHUNK>
 COMMENT 30DF %%AUTOTITLE
-COMMENT 30DF
 COMMENT 30DF Infinite loop, performing all tasks for playing the game:
 COMMENT 30DF ;;
 COMMENT 30DF Move all the player's shots down, checking for hitting something
@@ -788,7 +787,6 @@ COMMENT 325D </CCHUNK>
 LABEL 325D Sub_MovePlayerUp
 COMMENT 325D <CCHUNK>
 COMMENT 325D %%AUTOTITLE
-COMMENT 325D
 COMMENT 325D Compute screen location two rows higher
 COMMENT 3263
 COMMENT 3263 If proposed new location is too high up screen...
@@ -799,7 +797,6 @@ COMMENT 326D </CCHUNK>
 LABEL 326D Sub_MovePlayerDown
 COMMENT 326D <CCHUNK>
 COMMENT 326D %%AUTOTITLE
-COMMENT 326D
 COMMENT 326D Compute screen location two rows lower
 COMMENT 3273
 COMMENT 3273 If player is above double-stripe...
@@ -2122,7 +2119,6 @@ COMMENT 3D5A </CCHUNK>
 LABEL 3D60 Sub_PlayerExplnSound
 COMMENT 3D60 <CCHUNK>
 COMMENT 3D60 %%AUTOTITLE
-COMMENT 3D60
 COMMENT 3D60 Play repeated rising-tone chirps for a duration based on PostDrawDelay,
 COMMENT 3D60 with a starting period based on how far through the player explosion
 COMMENT 3D60 animation we are.  This information is provided in A on entry, 0 <= A < 12,
@@ -2377,7 +2373,6 @@ COMMENT 4179 </CCHUNK>
 LABEL 4179 Sub_InitLastJoyValues
 COMMENT 4179 <CCHUNK>
 COMMENT 4179 %%AUTOTITLE
-COMMENT 4179
 COMMENT 4179 Act as though right joystick was most recently at top-left
 COMMENT 417F
 COMMENT 417F Act as though left joystick was most recently at top-right
