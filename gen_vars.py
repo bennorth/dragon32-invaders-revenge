@@ -14,7 +14,7 @@ for line in map(str.strip, open("vars.txt", "rt")):
     kind = pieces[0]
     addr = pieces[1]
 
-    qual = "Var" if kind in "bwsp" else "Const"
+    qual = "Var" if kind in "bwsp" else "Con"
 
     name = f"{qual}_{kind}_" + (f"Unused_{next_id()}" if len(pieces) < 3 else pieces[2])
     comment = None if len(pieces) < 4 else pieces[3]
