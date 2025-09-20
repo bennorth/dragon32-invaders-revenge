@@ -25,6 +25,32 @@
           the subroutines called from within this code.
     </ul>
 
+    <p>I have used the following convention for prefixes of variable names:</p>
+    <ul class="var-name-conventions">
+      <li><code>Var_b_</code> — a byte variable
+      <li><code>Con_B_</code> — a constant byte value
+      <li><code>Var_w_</code> — a word (two-byte) variable
+      <li><code>Con_W_</code> — a constant word value
+      <li><code>Var_s_</code> — a word variable whose value is understood as a pointer into screen memory
+      <li><code>Var_p_</code> — a word variable whose value is understood as a pointer to some non-screen data
+      <li><code>Con_P_</code> — a constant word value used as a pointer
+    </ul>
+
+    <p>And some other abbreviations, used where necessary to stop symbol names becoming too long:</p>
+    <ul class="var-name-conventions">
+      <li><code>Plr</code> — player
+      <li><code>Dfr</code> — defender (the player's enemies)
+      <li><code>Norm</code> — normal (of a defender, the blue ones)
+      <li><code>Spcl</code> — special (of a defender, the red ones)
+      <li><code>Expln</code> — explosion
+      <li><code>Kbd</code> — keyboard
+      <li><code>Joy</code> — joystick
+      <li><code>Instrns</code> — instructions (to the player, not assembly-language or machine code instructions)
+      <li><code>_0</code> — suffix indicating “initial value of” or “first element of array”
+    </ul>
+
+    <p>Many variables also have another prefix which is the initials of the subroutine they are most associated with.  E.g., the variable <code>Var_b_INDE_Rows</code> is a byte variable associated with the subroutine <code>Sub_InitNormalDefenderExpln</code>.
+
     <main>
     </main>
 
