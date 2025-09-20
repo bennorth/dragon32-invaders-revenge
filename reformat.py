@@ -463,15 +463,15 @@ all_chunk_labels = set(
     [
         "MPR_L1",
         "MPR_L2",
-        "PlayerData_0_b_NLives",
-        "PlayerData_1_b_NLives",
+        "PlrData_0_b_NLives",
+        "PlrData_1_b_NLives",
         "Arr_PlayerData_1",
-        "PlayerData_0_s_ScoreDisplay",
-        "PlayerData_1_s_ScoreDisplay",
+        "PlrData_0_s_ScoreDisplay",
+        "PlrData_1_s_ScoreDisplay",
         "Arr_DefendersData_Loc",
-        "PlayerData_0_s_TopLifeShip",
-        "PlayerData_1_s_TopLifeShip",
-        "MPL_MovePlayerFromKeyboard"
+        "PlrData_0_s_TopLifeShip",
+        "PlrData_1_s_TopLifeShip",
+        "MPL_MovePlrFromKbd"
     ]
 )
 

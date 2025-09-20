@@ -222,7 +222,7 @@ COMMENT 2DE9 Continue search for free slot
 LABEL 2DE9 IDP_L9
 COMMENT 2DEF </CCHUNK>
 
-LABEL 2DEF Arr_Const_IDP_LaunchLocs
+LABEL 2DEF Arr_Con_IDP_LaunchLocs
 COMMENT 2DEF <DCHUNK>
 COMMENT 2DEF %%AUTOTITLE
 COMMENT 2DEF Start points of patrols.  They are all pointers to the last byte of a
@@ -236,7 +236,7 @@ COMMENT 2DEF
 WORD 2DEF-2E08
 COMMENT 2E09 </DCHUNK>
 
-LABEL 2E0D Sub_FinishDefenderPatrolStartNew
+LABEL 2E0D Sub_EndDfrPatrolStartNew
 COMMENT 2E0D <CCHUNK>
 COMMENT 2E0D %%AUTOTITLE
 COMMENT 2E0D Mark the entry of the Arr_DefendersData array immediately before the one
@@ -351,7 +351,7 @@ HEX 2EB2-2EDD
 LABEL 2EB4 Arr_DefendersData_Loc
 COMMENT 2EDE </DCHUNK>
 
-LABEL 2EE2 Sub_StepDefendersMovement
+LABEL 2EE2 Sub_StepDfrsMovement
 COMMENT 2EE2 <CCHUNK>
 COMMENT 2EE2 %%AUTOTITLE
 COMMENT 2EE2 If we're at the correct phase (when Var_b_SDM_Phase is 1 on entry to this
@@ -359,7 +359,7 @@ COMMENT 2EE2 subroutine), reset the phase to the DefenderMovementPeriod slot of 
 COMMENT 2EE2 active player, and do one step of movement for all active defenders.
 COMMENT 2EE2
 COMMENT 2EE7
-COMMENT 2EE7 MovePhase = active_player->DefenderMovePeriod
+COMMENT 2EE7 MovePhase = active_player->DfrMvPeriod
 COMMENT 2EEF
 DEC 2EF4
 COMMENT 2EF8
@@ -394,7 +394,7 @@ COMMENT 2F1A %%AUTOTITLE
 DATA 2F1A-2F27
 COMMENT 2F28 </DCHUNK>
 
-LABEL 2F29 Sub_InitNormalDefenderExpln
+LABEL 2F29 Sub_InitNormalDfrExpln
 COMMENT 2F29 <CCHUNK>
 COMMENT 2F29 %%AUTOTITLE
 COMMENT 2F29 Blt the initial "normal defender" explosion graphic to X, and play a short
@@ -429,7 +429,7 @@ COMMENT 2F64 %%AUTOTITLE
 DATA 2F64-2F71
 COMMENT 2F72 </DCHUNK>
 
-LABEL 2F74 Sub_InitSpecialDefenderExpln
+LABEL 2F74 Sub_InitSpclDfrExpln
 COMMENT 2F74 <CCHUNK>
 COMMENT 2F74 %%AUTOTITLE
 COMMENT 2F74 Blt the initial "special defender" explosion graphic to X, and play two
@@ -611,11 +611,11 @@ COMMENT 30E9
 COMMENT 30E9 If key "P" pressed...
 COMMENT 30F3 ....enter flashing PAUSE loop
 COMMENT 30F7
-COMMENT 30F7 Three bytes at MPL_MovePlayerFromKeyboard are overwritten by "JMP $4100"
+COMMENT 30F7 Three bytes at MPL_MovePlrFromKbd are overwritten by "JMP $4100"
 COMMENT 30F7 if joysticks are enabled.
 COMMENT 30F7
 COMMENT 30F7 If key "right arrow" pressed...
-LABEL 30F7 MPL_MovePlayerFromKeyboard
+LABEL 30F7 MPL_MovePlrFromKbd
 COMMENT 3103 ....update position to move right
 COMMENT 3106
 COMMENT 3106 If key "left arrow" pressed...
@@ -961,7 +961,7 @@ COMMENT 3378 %%AUTOTITLE
 DATA 3378-3389
 COMMENT 338A </DCHUNK>
 
-LABEL 3391 Sub_MoveDefenderBaseCheckHit
+LABEL 3391 Sub_MoveDfrBaseCheckHit
 COMMENT 3391 <CCHUNK>
 COMMENT 3391 %%AUTOTITLE
 COMMENT 3391 Move the defender base and check whether it's been hit, launching the
@@ -1022,7 +1022,7 @@ COMMENT 3423 four frames before erasing it; on the next frame, launch a new shot
 COMMENT 3423 become idle.  Progression through this sequence is tracked by the variable
 COMMENT 3423 Var_b_DefenderShot_State, which can acquire a non-idle state externally by:
 COMMENT 3423 ;;
-COMMENT 3423 .  Sub_StepDefenderShotMovement setting DefenderShot_State to 0 when the
+COMMENT 3423 .  Sub_StepDfrShotMovement setting DefenderShot_State to 0 when the
 COMMENT 3423 .  shot reaches the top of the play area, causing a new shot to be launched
 COMMENT 3423 ;;
 COMMENT 3423 or
@@ -1039,7 +1039,7 @@ COMMENT 3423 .  1: erase mini explosion; move to state 0
 COMMENT 3423 .  0: launch new shot; move to state -1
 COMMENT 3423 .  -1: idle; do nothing; stay in state -1
 COMMENT 3423
-LABEL 3423 Sub_StepDefenderShotHitAnimation
+LABEL 3423 Sub_StepDfrShotHitAnimn
 COMMENT 3423 Branch according to state; if zero...
 COMMENT 3426 ....launch new shot
 COMMENT 3428 ....else if negative (in practice only ever -1), do nothing
@@ -1069,7 +1069,7 @@ LABEL 346B SDSHA_L6
 LABEL 3472 SDSHA_L7
 COMMENT 347B </CCHUNK>
 
-LABEL 347B Sub_StepDefenderShotMovement
+LABEL 347B Sub_StepDfrShotMovement
 COMMENT 347B <CCHUNK>
 COMMENT 347B %%AUTOTITLE
 COMMENT 347B Perform one frame of work for dealing with the shot fired by the defender
@@ -1150,7 +1150,7 @@ LABEL 34FC Sub_FlashColourSets
 COMMENT 34FC <CCHUNK>
 COMMENT 34FC %%AUTOTITLE
 COMMENT 34FC Briefly flash the screen by selecting Colour Set 1 (buff, cyan, magenta,
-COMMENT 34FC orange), and then falling through into Sub_LongFallingPitchSound, which
+COMMENT 34FC orange), and then falling through into Sub_LongFallPitchSound, which
 COMMENT 34FC will at its end revert to Colour Set 0 (green, yellow, blue, red).
 COMMENT 34FC
 CONST 3505
@@ -1159,7 +1159,7 @@ COMMENT 350D
 COMMENT 350D Fall through...
 COMMENT 350D </CCHUNK>
 
-LABEL 350D Sub_LongFallingPitchSound
+LABEL 350D Sub_LongFallPitchSound
 COMMENT 350D <CCHUNK>
 COMMENT 350D %%AUTOTITLE
 COMMENT 350D Play a reasonably long sound of falling pitch, starting at a high pitch,
@@ -1176,7 +1176,7 @@ COMMENT 3530 Choose Colour Set 0 (green/yellow/blue/red)
 COMMENT 3538
 COMMENT 3539 </CCHUNK>
 
-LABEL 353A GFX_YellowExplodingPlayer
+LABEL 353A GFX_YellowExplodingPlr
 COMMENT 353A <DCHUNK>
 COMMENT 353A %%GFX 4
 COMMENT 353A %%RFD 4
@@ -1186,7 +1186,7 @@ COMMENT 353A
 DATA 353A-3559
 COMMENT 355A </DCHUNK>
 
-LABEL 355E Sub_DrawOrErasePlayerExpln
+LABEL 355E Sub_DrawOrErasePlrExpln
 COMMENT 355E <CCHUNK>
 COMMENT 355E %%AUTOTITLE
 COMMENT 355E Either draw or erase the player explosion graphic, and (in either case)
@@ -1319,7 +1319,7 @@ COMMENT 3646 <CCHUNK>
 COMMENT 3646 %%AUTOTITLE
 COMMENT 3646 Reset some bits of state ready to start a new game, as follows.  Mark all
 COMMENT 3646 defender-explosion and player-shot structs as inactive.  Prepare to launch
-COMMENT 3646 new defender shot on first call to Sub_StepDefenderShotHitAnimation.
+COMMENT 3646 new defender shot on first call to Sub_StepDfrShotHitAnimn.
 COMMENT 3646
 DEC 364D
 COMMENT 3659
@@ -1447,7 +1447,7 @@ COMMENT 376C
 COMMENT 376C If an even-indexed iteration...
 COMMENT 3771 ....skip to delay
 COMMENT 3773 ....else (odd-indexed) play sound effect; there is a check inside
-COMMENT 3773 Sub_InitSpecialDefenderExpln which skips the graphics part if X is out of
+COMMENT 3773 Sub_InitSpclDfrExpln which skips the graphics part if X is out of
 COMMENT 3773 range for the play area
 COMMENT 3778
 COMMENT 3778 Perform a short delay
@@ -1462,7 +1462,7 @@ COMMENT 3789
 LABEL 3789 MNHS_L7
 COMMENT 378A </CCHUNK>
 
-LABEL 378A Sub_ResetAndDisplayScores
+LABEL 378A Sub_ResetDisplayScores
 COMMENT 378A <CCHUNK>
 COMMENT 378A %%AUTOTITLE
 COMMENT 378A Reset both players' scores to zero, and update display to match.
@@ -1483,28 +1483,28 @@ COMMENT 37A1 %%AUTOTITLE
 COMMENT 37A1 Array of two 12-byte structures, one per player.
 COMMENT 37A1
 COMMENT 37A1 [0]    b BaseMovePeriod — how often defender base moves
-COMMENT 37A1 [1]    b DefenderMovePeriod — how often patrolling defenders move
+COMMENT 37A1 [1]    b DfrMvPeriod — how often patrolling defenders move
 COMMENT 37A1 [2]    b NLives
 COMMENT 37A1 [3:4]  s TopLivesShip — location of current top spare lives ship
 COMMENT 37A1 [5:6]  w Score — in units of 100 points
-COMMENT 37A1 [7:8]  w NextSpeedUpScore — score (in 100s) for next speed-up
+COMMENT 37A1 [7:8]  w SpeedUpScore — score (in 100s) for next speed-up
 COMMENT 37A1 [9:10] s ScoreDisplay — location where score is drawn
-COMMENT 37A1 [11]   b XPositionFraction — $00 right posn; $FF left posn
+COMMENT 37A1 [11]   b XFraction — $00 right posn; $FF left posn
 COMMENT 37A1
 HEX 37A1-37AC
-LABEL 37A2 PlayerData_0_b_DefenderMovePeriod
-LABEL 37A3 PlayerData_0_b_NLives
-LABEL 37A4 PlayerData_0_s_TopLifeShip
+LABEL 37A2 PlrData_0_b_DfrMvPeriod
+LABEL 37A3 PlrData_0_b_NLives
+LABEL 37A4 PlrData_0_s_TopLifeShip
 WORD 37A4
-LABEL 37A6 PlayerData_0_w_Score
+LABEL 37A6 PlrData_0_w_Score
 WORD 37A6
 CONST 37A6
-LABEL 37A8 PlayerData_0_w_NextSpeedUpScore
+LABEL 37A8 PlrData_0_w_SpeedUpScore
 WORD 37A8
 CONST 37A8
-LABEL 37AA PlayerData_0_s_ScoreDisplay
+LABEL 37AA PlrData_0_s_ScoreDisplay
 WORD 37AA
-LABEL 37AC PlayerData_0_b_XPositionFraction
+LABEL 37AC PlrData_0_b_XFraction
 COMMENT 37B9 </DCHUNK>
 
 LABEL 37AD Arr_PlayerData_1
@@ -1512,19 +1512,19 @@ COMMENT 37AD
 COMMENT 37AD This data block is 12 bytes on from block 0
 HEX 37AD-37AE
 HEX 37AD-37B8
-LABEL 37AE PlayerData_1_b_DefenderMovePeriod
-LABEL 37AF PlayerData_1_b_NLives
-LABEL 37B0 PlayerData_1_s_TopLifeShip
+LABEL 37AE PlrData_1_b_DfrMvPeriod
+LABEL 37AF PlrData_1_b_NLives
+LABEL 37B0 PlrData_1_s_TopLifeShip
 WORD 37B0
-LABEL 37B2 PlayerData_1_s_Score
+LABEL 37B2 PlrData_1_s_Score
 WORD 37B2
 CONST 37B2
-LABEL 37B4 PlayerData_1_w_NextSpeedUpScore
+LABEL 37B4 PlrData_1_w_SpeedUpScore
 WORD 37B4
 CONST 37B4
-LABEL 37B6 PlayerData_1_s_ScoreDisplay
+LABEL 37B6 PlrData_1_s_ScoreDisplay
 WORD 37B6
-LABEL 37B8 PlayerData_1_b_XPositionFraction
+LABEL 37B8 PlrData_1_b_XFraction
 
 LABEL 37BB Sub_AwardPoints
 COMMENT 37BB <CCHUNK>
@@ -1537,7 +1537,7 @@ COMMENT 37BB points, award an extra life (up to the maximum of the life in play 
 COMMENT 37BB three spares).
 COMMENT 37BB ;;
 COMMENT 37BB If the new points move the score over the next threshold where we should
-COMMENT 37BB increase the overall game speed, do so (Sub_MaybeIncreaseDifficulty)
+COMMENT 37BB increase the overall game speed, do so (Sub_MaybeSpeedUp)
 COMMENT 37BB
 COMMENT 37BE
 COMMENT 37BE active_player->Score[Hundreds/Thousands] += A with BCD
@@ -1549,7 +1549,7 @@ COMMENT 37C7
 COMMENT 37C7 There was a carry; add it to the ten-thousands/hundred-thousands
 COMMENT 37CD
 COMMENT 37CD X = active_player->TopLifeShip
-COMMENT 37CF A = active_player->XPositionFraction
+COMMENT 37CF A = active_player->XFraction
 COMMENT 37D1
 COMMENT 37D1 If top life-ship high enough up that there must already be three...
 COMMENT 37D4 ....no extra life possible
@@ -1580,7 +1580,7 @@ COMMENT 3804 .  X → destination of units zero on screen
 COMMENT 3804
 COMMENT 3810 </CCHUNK>
 
-LABEL 3810 Sub_MaybeIncreaseDifficulty
+LABEL 3810 Sub_MaybeSpeedUp
 COMMENT 3810 <CCHUNK>
 COMMENT 3810 %%AUTOTITLE
 COMMENT 3810 If the active player's score has reached the next threshold for a speed
@@ -1589,27 +1589,27 @@ COMMENT 3810 score".  Speed the game up by reducing the base-move period and
 COMMENT 3810 defender-move period.
 COMMENT 3810
 COMMENT 3813
-COMMENT 3813 If active_player->Score < active_player->NextSpeedUpScore...
+COMMENT 3813 If active_player->Score < active_player->SpeedUpScore...
 COMMENT 3818 ....do nothing
 COMMENT 381A
 COMMENT 381A Compute proposed next speed-up score
 CONST 381E
 CONST 3823
-LABEL 3825 MID_L1
+LABEL 3825 MSU_L1
 CONST 3826
 COMMENT 3828
 COMMENT 3828 If proposed speed-up score exceeds 15,000...
 CONST 382A
 COMMENT 382C ....do nothing
 COMMENT 382E
-COMMENT 382E active_player->NextSpeedUpScore = proposed value
+COMMENT 382E active_player->SpeedUpScore = proposed value
 COMMENT 3830
 COMMENT 3830 Decrease active_player->BaseMovePeriod but only down to 1
 COMMENT 3836
-COMMENT 3836 Decrease active_player->DefenderMovePeriod but only down to 1
+COMMENT 3836 Decrease active_player->DfrMvPeriod but only down to 1
 COMMENT 383C
-LABEL 3836 MID_L2
-LABEL 383C MID_L3
+LABEL 3836 MSU_L2
+LABEL 383C MSU_L3
 COMMENT 383D </CCHUNK>
 
 LABEL 383D Sub_TwoDigitsOut
@@ -1669,7 +1669,7 @@ COMMENT 38E2 %%AUTOTITLE
 CHAR 38E2-3902
 COMMENT 3903 </DCHUNK>
 
-LABEL 3903 Sub_ShowIntroTextQueryNPlayers
+LABEL 3903 Sub_ShowIntroQryNPlayers
 COMMENT 3903 <CCHUNK>
 COMMENT 3903 %%AUTOTITLE
 COMMENT 3903 Clear the text-mode screen, write the introductory message, and play a long
@@ -1690,8 +1690,8 @@ COMMENT 393E Convert key code into number 0 or 1...
 COMMENT 3941 ....and use to set state for one- or two-player mode
 COMMENT 3944
 CONST 391E
-LABEL 3926 M1_L1
-LABEL 3932 M1_L2
+LABEL 3926 SIQNP_L1
+LABEL 3932 SIQNP_L2
 CHAR 3937
 CHAR 393B
 COMMENT 3947
@@ -1711,12 +1711,12 @@ COMMENT 394A Init active player's X-coord-whole to 1
 COMMENT 394F
 COMMENT 394F Set Player One as active player
 COMMENT 3955
-COMMENT 3955 Init both players' NextSpeedUpScore to 3
+COMMENT 3955 Init both players' SpeedUpScore to 3
 CONST 3956
 COMMENT 395D
 COMMENT 395D Init both players' BaseMovePeriod to 13
 COMMENT 3964
-COMMENT 3964 Init both players' DefenderMovePeriod to 13
+COMMENT 3964 Init both players' DfrMvPeriod to 13
 COMMENT 396B
 COMMENT 396B Init all defenders as left-to-right normal
 CONST 396C
@@ -1746,7 +1746,7 @@ COMMENT 39C7 x-posn-fraction value from Var_b_ActivePlayer_X_fraction
 COMMENT 39C7
 COMMENT 39D5 </CCHUNK>
 
-LABEL 39D5 Sub_WriteDefendersDataWords
+LABEL 39D5 Sub_WriteDfrsDataWords
 COMMENT 39D5 <CCHUNK>
 COMMENT 39D5 %%AUTOTITLE
 COMMENT 39D5 Write D to X and then every fourth address after that (so X, X+4, X+8, ...)
@@ -1754,7 +1754,7 @@ COMMENT 39D5 as long as the address is within the Arr_DefendersData array of str
 COMMENT 39D5
 COMMENT 39DF </CCHUNK>
 
-LABEL 39E4 Sub_InitDefenderExplosion
+LABEL 39E4 Sub_InitDfrExplosion
 COMMENT 39E4 <CCHUNK>
 COMMENT 39E4 %%AUTOTITLE
 COMMENT 39E4 Find a free slot in the Arr_DefenderExplosions array and populate it.  A
@@ -1896,7 +1896,7 @@ COMMENT 3AF1
 COMMENT 3AF1 Mark this explosion as finished and loop back for next
 COMMENT 3AF8 </CCHUNK>
 
-LABEL 3AF9 GFX_YellowNormalDefender
+LABEL 3AF9 GFX_NormDfrYellow
 COMMENT 3AF9 <DCHUNK>
 COMMENT 3AF9 %%GFX 2
 COMMENT 3AF9 %%RFD 2
@@ -1904,7 +1904,7 @@ COMMENT 3AF9 %%AUTOTITLE
 DATA 3AF9-3B06
 COMMENT 3B07 </DCHUNK>
 
-LABEL 3B07 GFX_RedYellowEyesNormalDefender
+LABEL 3B07 GFX_NormDfrRedYellowEyes
 COMMENT 3B07 <DCHUNK>
 COMMENT 3B07 %%GFX 2
 COMMENT 3B07 %%RFD 2
@@ -1912,7 +1912,7 @@ COMMENT 3B07 %%AUTOTITLE
 DATA 3B07-3B14
 COMMENT 3B15 </DCHUNK>
 
-LABEL 3B15 GFX_YellowSpecialDefender
+LABEL 3B15 GFX_SpclDfrYellow
 COMMENT 3B15 <DCHUNK>
 COMMENT 3B15 %%GFX 2
 COMMENT 3B15 %%RFD 2
@@ -1920,7 +1920,7 @@ COMMENT 3B15 %%AUTOTITLE
 DATA 3B15-3B22
 COMMENT 3B23 </DCHUNK>
 
-LABEL 3B23 GFX_RedYellowEyesSpecialDefender
+LABEL 3B23 GFX_SpclDfrRedYellowEyes
 COMMENT 3B23 <DCHUNK>
 COMMENT 3B23 %%GFX 2
 COMMENT 3B23 %%RFD 2
@@ -2203,7 +2203,7 @@ COMMENT 3DF4
 COMMENT 3DFA
 COMMENT 3DFD </CCHUNK>
 
-LABEL 3DFD Sub_PromptedReadKbd_1_5_R
+LABEL 3DFD Sub_ReadKbd_1_5_R
 COMMENT 3DFD <CCHUNK>
 COMMENT 3DFD %%AUTOTITLE
 COMMENT 3DFD Write a question to the screen, then loop until timeout or until one of
@@ -2241,9 +2241,9 @@ COMMENT 3E28
 COMMENT 3E28 If keypress was NOT a digit key from "1" up to "5", loop
 COMMENT 3E30
 COMMENT 3E30 Map keypress "1" to "5" to value $01 to $05 and return it
-LABEL 3E0F PRK_L1
-LABEL 3E1D PRK_L2
-LABEL 3E32 PRK_L3
+LABEL 3E0F RK15_L1
+LABEL 3E1D RK15_L2
+LABEL 3E32 RK15_L3
 COMMENT 408D </CCHUNK>
 
 LABEL 408D Sub_InitialEntryPoint
@@ -2312,7 +2312,7 @@ DATA 40FC-40FF
 HEX 40FC-40FF
 COMMENT 4100 </UCHUNK>
 
-LABEL 4100 Sub_MovePlayerByActiveJoystick
+LABEL 4100 Sub_MovePlrByActiveJoy
 COMMENT 4100 <CCHUNK>
 COMMENT 4100 %%AUTOTITLE
 COMMENT 4100 Read the "active" joystick (identified by ActiveJoystickIdx) and move the
@@ -2346,7 +2346,7 @@ COMMENT 4158
 LABEL 4158 MPBAJ_L6
 COMMENT 4160 </CCHUNK>
 
-LABEL 4160 Sub_MaybeUpdateActiveJoystick
+LABEL 4160 Sub_MaybeUpdateActiveJoy
 COMMENT 4160 <CCHUNK>
 COMMENT 4160 %%AUTOTITLE
 COMMENT 4160 If required, switch which is the "active" joystick.  Also erase the
@@ -2374,7 +2374,7 @@ COMMENT 4179
 COMMENT 4179 Fall through...
 COMMENT 4179 </CCHUNK>
 
-LABEL 4179 Sub_InitLastJoystickValues
+LABEL 4179 Sub_InitLastJoyValues
 COMMENT 4179 <CCHUNK>
 COMMENT 4179 %%AUTOTITLE
 COMMENT 4179
@@ -2384,12 +2384,12 @@ COMMENT 417F Act as though left joystick was most recently at top-right
 COMMENT 4187
 COMMENT 4188 </CCHUNK>
 
-LABEL 4188 Sub_MovePlayerByLeftJoystick
+LABEL 4188 Sub_MovePlrByLeftJoy
 COMMENT 4188 <CCHUNK>
 COMMENT 4188 %%AUTOTITLE
 COMMENT 4188 Move the active player according to the position of the left joystick, and
 COMMENT 4188 launch a player shot if the left fire button is down.  Analogous to the
-COMMENT 4188 code in MovePlayerByActiveJoystick.
+COMMENT 4188 code in Sub_MovePlrByActiveJoy.
 COMMENT 4188
 COMMENT 4192
 LABEL 4192 CLJ_L1
@@ -2448,7 +2448,7 @@ COMMENT 48B3 %%AUTOTITLE
 CHAR 48B3-4A3F
 COMMENT 4A40 </DCHUNK>
 
-LABEL 4A40 Sub_MaybeShowInstructions
+LABEL 4A40 Sub_MaybeShowInstrns
 COMMENT 4A40 <CCHUNK>
 COMMENT 4A40 %%AUTOTITLE
 COMMENT 4A40 Ask the user whether they want instructions.  If so, show the instructions

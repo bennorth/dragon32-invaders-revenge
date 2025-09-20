@@ -1,6 +1,6 @@
 b 2D88
 
-b 2F28 NDE_BeepHPeriodC Complement of current half-period of beep for normal defender hit
+b 2F28 INDE_BeepHPeriodC Complement of current half-period of beep for normal defender hit
 w 372C HighScore Highest score yet, units of 100
 
 b 3645 TwoPlayerMode
@@ -16,17 +16,17 @@ b 3297 ShotInProgress
 
 b 3173 Init_PostDrawDelay
 b 30DE PostDrawDelay Init 12; set to 0, or 14, or 25 (whence steps down to 9), or 40
-b 30C9 IntroSoundPostDrawDelay
+b 30C9 IntroSoundPDDelay
 
 b 36C3 SixZerosOut_NPairs
 b 32E1 ShotSoundProgress Make sound for 1,2,3,4,5 but not at 6
 b 3BDE
-b 333F PlayerShotHit_Rows
-b 2F19 NormalDefenderExpln_Rows
+b 333F PSH_Rows
+b 2F19 INDE_Rows
 
-b 3A11 StepDefenderExplns_Phase
-b 3A12 StepDefenderExplns_Rows
-b 3A13 StepDefenderExplns_Explns
+b 3A11 SDE_Phase
+b 3A12 SDE_Rows
+b 3A13 SDE_Explns
 
 b 2EDE SDM_MovePhase
 
@@ -36,11 +36,11 @@ b 2D89 IDP_NextXVelocity
 b 2D8A IDP_NRemaining
 b 2D8B IDP_NextKindPhase
 p 2E09 IDP_LaunchLoc
-P 2E0B Arr_IDP_LaunchLocs_start
+P 2E0B IDP_LaunchLocs_0
 
-B 2EDF Init_DefenderMovePeriod
+B 2EDF DfrMovePeriod_0
 b 2EE0
-B 338C Init_BaseFirePeriod
+B 338C BaseFirePeriod_0
 
 b 2EE1 SDM_NRemaining
 
@@ -50,32 +50,32 @@ b 2F63 ISDE_Rows
 B 2F72 ISDE_InitPeriod
 b 2F73 ISDE_Period
 
-b 372E CheckHighScore_NFlashesLeft
+b 372E CHS_NFlashesLeft
 
-b 3B67 PlaySoundSlice_HalfCycles
+b 3B67 PSS_HalfCycles
 w 3B68
-b 3B6C PlaySoundSlice_InitHalfPeriod
+b 3B6C PSS_InitHalfPeriod
 
 b 3B6A
-b 3B6B SDE_SoundSliceParamPrecursor
-b 3AF8 StepDefenderExplns_EraseRows
+b 3B6B SDE_HPeriodPreVal
+b 3AF8 SDE_EraseRows
 
-b 338F DefenderBase_X_bytes
+b 338F DfrBase_X_bytes
 s 338A DefenderBase
 b 338D MDBCH_MovePhase
 b 338E
-b 39DF LastDefenderDestroyedKind 1=normal, 10=special, 12=base
-s 39E0 LastDestroyedDefender
+b 39DF LastDfrExplnKind 1=normal, 10=special, 12=base
+s 39E0 LastDfrExpln
 w 39E2
-b 3390 DefenderBase_SpawnSide Edge to spawn next defender base ($00=right, $FF=left)
+b 3390 MDBCH_SpawnSide Edge to spawn next defender base ($00=right, $FF=left)
 
-s 3174 ClearLowerScreen_Start
+s 3174 ClrLowerScreen_0
 
 b 31C0 RP_Rows
 b 3231 EP_Rows
 
-b 31E5 ActivePlayer_X_fraction Whether player in left ($FF) or right ($00) position for its byte-column
-b 31E6 ActivePlayer_X_whole Byte-column of centre of three-byte-column image of player ship
+b 31E5 ActivePlr_Xfrac Whether player in left ($FF) or right ($00) position for its byte-column
+b 31E6 ActivePlr_Xwhole Byte-column of centre of three-byte-column image of player ship
 
 s 31E7 ActivePlayer
 s 31E9 ActivePlayer_Prev
@@ -91,14 +91,14 @@ w 34F8 SoundPeriodIncr
 w 34FA SoundPeriod
 
 b 355A DOEPE_Rows
-b 355B PlayerExplosion_Erase
+b 355B DOEPE_Erase
 s 355C PlayerExplosion
 
-b 35A0 EraseTopLivesShip_Rows
+b 35A0 ETLS_Rows
 
 # Following is multiplied by 4 in Sub_24
 b 3CC3 SPE_ActionPhase
-b 3CC4 PlayerExplnUnderway
+b 3CC4 PlrExplnUnderway
 s 3CC5 LastPlayerExpln
 b 3CC7 SPE_FragmentPhase
 
@@ -106,11 +106,11 @@ b 3539
 
 b 3D5A
 
-b 3D5B ActivePlayerAllLivesGone
+b 3D5B ActivePlrNoLives
 b 3D5C
 b 3D5D
 
-b 3D5E PlayerExplnSound_HalfPeriod
+b 3D5E PES_HalfPeriod
 
 b 3D5F
 b 384E

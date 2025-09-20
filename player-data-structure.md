@@ -10,7 +10,7 @@
 b int8 x_position_fraction;
 
 
-## Sub_MaybeIncreaseDifficulty
+## Sub_MaybeSpeedUp
 
 ``` c
 d = active_player->score;

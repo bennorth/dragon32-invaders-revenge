@@ -96,7 +96,7 @@ Pointers into arrays stored just after that array, giving rise to code comparing
 
 When blitting, checks that destination is in range (within screen memory) which panic if fail.
 
-Use of colour checks for hit detection, e.g., `Sub_StepDefenderShotMovement`.  Choice of colours for sprites is influenced by making it easier for the code to detect them.
+Use of colour checks for hit detection, e.g., `Sub_StepDfrShotMovement`.  Choice of colours for sprites is influenced by making it easier for the code to detect them.
 
 Job of destroying defender split between `MovePlayerShotsDown` (which turns the defender yellow) and `MoveDefenderCheckHit` (which draws the explosion, calls "award points" routine, etc.).  This seems quite intricate and means jobs have to be done in a certain order; could it have been done by comparing coordinates?  The data structures aren't really set up to make that easy, though — would have to scan all defenders to see whether one is patrolling on that row.
 
@@ -120,7 +120,7 @@ Code at `CLS_L2` is unclear; looks like the `BNE` will never be taken, because X
 
 Code for moving player: why do we store unchanged X?
 
-The sequence and loop of `StepDefenderShotHitAnimation` would be straightforward if it just ran straight through, but because it needs to do a bit per frame, needs to track state explicitly.
+The sequence and loop of `StepDfrShotHitAnim` would be straightforward if it just ran straight through, but because it needs to do a bit per frame, needs to track state explicitly.
 
 The "colour whole defender yellow" logic doesn't always get the whole base, because of the narrow bit at the top.  (Discovered via GDB not code inspection.)  But both the defender base and the patrolling defender hit checks look at bytes from both halves of the image, so it works.
 
