@@ -17,7 +17,7 @@ main {
 
 main {
     margin-top: 2rem;
-    --column-0-width: 18rem;
+    --column-0-width: 14rem;
     --column-1-width: 2.75rem;
     pre {
         margin: 2px 0px;
@@ -86,7 +86,7 @@ span.asm-code-instr {
 }
 span.asm-code-operand {
     display: inline-block;
-    width: 18rem;
+    width: var(--column-0-width);
 }
 span.asm-code-dump-addr {
     color: #903768;
