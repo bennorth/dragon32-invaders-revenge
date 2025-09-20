@@ -9,6 +9,8 @@ article {
     h1 { font-size: 2rem; }
 }
 
+ul.var-name-conventions code { background-color: #E4F0FC; padding: 1px 2px; }
+
 main {
     font-family: "Menlo", "Monaco", "Ubuntu Mono", "Consolas", "source-code-pro", monospace;
 }
