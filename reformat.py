@@ -491,3 +491,8 @@ for chunk in all_chunks:
 
 # Not "prettify()" because that inserts unwanted spaces:
 print(str(soup))
+
+# all_lbls = list(chunk_from_label.keys())
+# all_lbls.sort(key=len)
+# for lbl in all_lbls:
+#     print(f"{len(lbl):4}  {lbl}")
