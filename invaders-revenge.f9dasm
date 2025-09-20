@@ -1233,7 +1233,7 @@ COMMENT 35A0 </CCHUNK>
 LABEL 35A1 Sub_HandlePlayerCrash
 COMMENT 35A1 <CCHUNK>
 COMMENT 35A1 %%AUTOTITLE
-COMMENT 35A1 Performs required tasks when the player ship is hit:
+COMMENT 35A1 Perform required tasks when the player ship is hit:
 COMMENT 35A1 ;;
 COMMENT 35A1 Cancel other sound effects
 COMMENT 35A1 Launch the scattering-fragment explosion animation
