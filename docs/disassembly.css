@@ -9,13 +9,20 @@ article {
     h1 { font-size: 2rem; }
 }
 
+ul.var-name-conventions code { background-color: #E4F0FC; padding: 1px 2px; }
+
+section.intro { font-size: 16px; margin: auto; width: 100%; }
+
+@media (min-width: 900px){section.intro{font-size:17px;margin-left:auto;margin-right:auto;margin-top:30px;margin-bottom:25px;width:836px}}
+@media (min-width: 1800px){section.intro{font-size:18px;margin-left:auto;margin-right:auto;margin-top:30px;margin-bottom:25px;width:1000px}}
+
 main {
     font-family: "Menlo", "Monaco", "Ubuntu Mono", "Consolas", "source-code-pro", monospace;
 }
 
 main {
     margin-top: 2rem;
-    --column-0-width: 18rem;
+    --column-0-width: 14rem;
     --column-1-width: 2.75rem;
     pre {
         margin: 2px 0px;
@@ -32,7 +39,8 @@ main div.chunk-prelude { --chunk-background: #f7eaf1; }
 main div.listing-chunk {
     background-color: var(--chunk-background);
     padding: 4px 0px;
-    margin: 0.75rem 0px;
+    width: 52rem;
+    margin: 0.75rem auto;
 
     h2 {
         color: #005740;
@@ -84,7 +92,7 @@ span.asm-code-instr {
 }
 span.asm-code-operand {
     display: inline-block;
-    width: 18rem;
+    width: var(--column-0-width);
 }
 span.asm-code-dump-addr {
     color: #903768;
