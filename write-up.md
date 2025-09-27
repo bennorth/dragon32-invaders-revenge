@@ -12,7 +12,7 @@ In my increasingly-distant youth, my family had a Dragon 32 home computer, which
 <div style="display:grid;grid-template-columns:7fr 5fr;align-items:center;">
 <div style="margin:1rem;"><img src="screenshot-1.png" width="100%"></div>
 <div style="margin:1rem;"><img src="cassette-inlay.jpg" width="100%"></div></div>
-<caption><p style="margin:0.5rem;">Screenshot and cassette inlay for <i>Invader's Revenge</i>.</p><p style="font-size:0.9rem;"><i>Cassette inlay image from <a href="https://archive.worldofdragon.org/">The Dragon Archive</a></i>.</p></caption>
+<figcaption><p style="margin:0.5rem;">Screenshot and cassette inlay for <i>Invader's Revenge</i>.</p><p style="font-size:0.9rem;"><i>Cassette inlay image from <a href="https://archive.worldofdragon.org/">The Dragon Archive</a></i>.</p></figcaption>
 </figure>
 
 In my current job, I am developing and researching [Pytch](https://pytch.org/), a free online educational coding platform which helps people learn Python by writing "Scratch-like" programs.  I thought a port of *Invader's Revenge* could be a good example of what can be made in Pytch.
@@ -28,7 +28,7 @@ This is the result.  You can play it below, or "see inside" by [opening the proj
 <div style="margin:1rem auto;position:relative;width:90%;height:0px;padding-bottom:75%;">
 <iframe style="border:none;position:absolute;top:0px;height:100%;left:0px;width:100%;" src="https://pytch.org//app/play-demo/user-ben/invaders-revenge-20250914"></iframe>
 </div>
-<caption><p>Use arrow keys to move and space to fire!</p></caption>
+<figcaption><p>Use arrow keys to move and space to fire!</p></figcaption>
 </figure>
 
 
@@ -158,7 +158,7 @@ Example of a higher-resolution sprite:
 <div style="background-color:#1dae15;display:grid;grid-template-columns:1fr 1fr;align-items:center;">
 <div style="margin:2.5rem;"><img src="d32-player-ship.png" width="100%"></div>
 <div style="margin:2.5rem;"><img src="pytch-player-ship.png" width="100%"></div></div>
-<caption><p style="margin:0.5rem;">Dragon 32 and Pytch graphics for the player's ship.</p></caption>
+<figcaption><p style="margin:0.5rem;">Dragon 32 and Pytch graphics for the player's ship.</p></figcaption>
 </figure>
 
 ## Sounds
@@ -174,7 +174,7 @@ Example of captured vs re-synthesised sound effect:
 <button id="sample-btn-1" style="margin:1rem 3rem;"><div><p><img style="margin: 1rem 0.5rem;" src="sound-wave.png"></p><p style="font-size:3rem;">▶</p><p>Captured original</p></div></button>
 <button id="sample-btn-2" style="margin:1rem 3rem;"><div><p><img style="margin: 1rem 0.5rem;" src="sound-wave.png"></p><p style="font-size:3rem;">▶</p><p>Re-synthesised</p></div></button>
 </p>
-<caption><p>Sound effect when destroying the defender base, original and re-synthesised.</p></caption>
+<figcaption><p>Sound effect when destroying the defender base, original and re-synthesised.</p></figcaption>
 </figure>
 <script src="howler.core.min.js"></script>
 <script src="sound-samples.js"></script>
@@ -201,7 +201,7 @@ We have an experimental version of Pytch which can interface with hardware via t
 <figure>
 <div style="display:grid;">
 <div style="margin:1rem;"><img src="Pytch-hw-invaders-revenge.jpg" width="100%"></div></div>
-<caption><p style="margin:0.5rem;">Hardware-enhanced Pytch version of <i>Invader's Revenge</i> running on a Raspberry Pi&nbsp;5.</p></caption>
+<figcaption><p style="margin:0.5rem;">Hardware-enhanced Pytch version of <i>Invader's Revenge</i> running on a Raspberry Pi&nbsp;5.</p></figcaption>
 </figure>
 
 
