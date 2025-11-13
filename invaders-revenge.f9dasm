@@ -2178,6 +2178,8 @@ COMMENT 3DE1 ....leave setting as previously (or default)
 COMMENT 3DE3
 COMMENT 3DE3 Compute delay value from chosen speed:
 COMMENT 3DE3 .  Init_PostDrawDelay = 20 - 2 × (speed) = 18,16,14,12,10
+COMMENT 3DE3 Bug (pointed out by L. Curtis Boyle): Player can press "R" at the "SELECT
+COMMENT 3DE3 SPEED" prompt, in which case game plays extremely slowly.
 DEC 3DE6
 COMMENT 3DEA
 COMMENT 3DEA Fall through...
